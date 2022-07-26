@@ -111,7 +111,7 @@ func (s *RoomTestSuite) TestNewRoom() {
 				},
 			},
 			want: nil,
-			err:  fmt.Errorf("room price must be greater equal than %d", domain.MinRoomPrice),
+			err:  fmt.Errorf("room price must be greater equal than $ %.2f", domain.MinRoomPrice),
 		},
 		{
 			name: "should return an error if price is greater than the maximum",
@@ -125,7 +125,7 @@ func (s *RoomTestSuite) TestNewRoom() {
 				},
 			},
 			want: nil,
-			err:  fmt.Errorf("room price must be less equal than %d", domain.MaxRoomPrice),
+			err:  fmt.Errorf("room price must be less equal than $ %.2f", domain.MaxRoomPrice),
 		},
 		{
 			name: "should return an error if description is greater than maximum characters length",

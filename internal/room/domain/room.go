@@ -12,10 +12,10 @@ const (
 	MinRoomBedCount = 1
 
 	// MinRoomPrice is the minimum price of a room in dollar.
-	MinRoomPrice = 1
+	MinRoomPrice = 1.00
 
 	// MaxRoomPrice is the maximum price of a room in dollar.
-	MaxRoomPrice = 999
+	MaxRoomPrice = 999.99
 
 	// MinRoomDescriptionLen is the minimum length of a room description.
 	MinRoomDescriptionLen = 10
@@ -60,11 +60,11 @@ func NewRoom(room *Room) (*Room, error) {
 	}
 
 	if room.Price < MinRoomPrice {
-		return nil, fmt.Errorf("room price must be greater equal than %d", MinRoomPrice)
+		return nil, fmt.Errorf("room price must be greater equal than $ %.2f", MinRoomPrice)
 	}
 
 	if room.Price > MaxRoomPrice {
-		return nil, fmt.Errorf("room price must be less equal than %d", MaxRoomPrice)
+		return nil, fmt.Errorf("room price must be less equal than $ %.2f", MaxRoomPrice)
 	}
 
 	return &Room{
