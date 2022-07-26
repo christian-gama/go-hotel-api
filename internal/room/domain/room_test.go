@@ -140,6 +140,20 @@ func (s *RoomTestSuite) TestNewRoom() {
 			want: nil,
 			err:  errors.New("room description must be less equal than 255 characters"),
 		},
+		{
+			name: "should return an error if description is less than 10 characters",
+			args: args{
+				&domain.Room{
+					Id:          NewRoom().Id,
+					Name:        NewRoom().Name,
+					Description: strings.Repeat("a", 9),
+					BedCount:    NewRoom().BedCount,
+					Price:       NewRoom().Price,
+				},
+			},
+			want: nil,
+			err:  errors.New("room description must be greater equal than 10 characters"),
+		},
 	}
 
 	for _, tt := range tests {

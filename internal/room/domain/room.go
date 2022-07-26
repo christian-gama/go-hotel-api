@@ -32,6 +32,10 @@ func NewRoom(room *Room) (*Room, error) {
 		return nil, errors.New("room description must be less equal than 255 characters")
 	}
 
+	if len(room.Description) < MinDescriptionLength {
+		return nil, errors.New("room description must be greater equal than 10 characters")
+	}
+
 	if room.BedCount < MinBedCount {
 		return nil, errors.New("room bed count must have at least one bed")
 	}
