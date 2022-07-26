@@ -110,7 +110,7 @@ func (s *RoomTestSuite) TestNewRoom() {
 				},
 			},
 			want: nil,
-			err:  errors.New("room price must be greater than zero"),
+			err:  errors.New("room price must be greater equal than 1"),
 		},
 		{
 			name: "should return an error if price is greater than 999",
