@@ -1,0 +1,57 @@
+#!/usr/bin/env node
+const fs = require("fs");
+const log = require("./core/log");
+
+const hookName = "commit-msg";
+const messageFile = process.argv[2];
+const file = fs.readFileSync(messageFile, "utf8");
+const message = file.split(":");
+const tag = message[0];
+const subject = message.slice(1).join(":").replace(/\n/g, "");
+const tags = [
+  "fix",
+  "feat",
+  "docs",
+  "style",
+  "refactor",
+  "perf",
+  "test",
+  "chore",
+];
+
+if (message.length === 0) {
+  log.error(hookName, "No commit message");
+}
+
+if (tags.indexOf(tag) === -1) {
+  log.error(
+    hookName,
+    `Tag is not valid. Use one of the following: ${tags.join(", ")}`
+  );
+}
+
+if (subject.length === 0) {
+  log.error(hookName, "Subject is empty");
+}
+
+if (!subject.startsWith(" ")) {
+  log.error(hookName, "Subject must start with a space");
+}
+
+if (subject.length > 100) {
+  log.error(
+    hookName,
+    "Subject is too long. Max 100 characters, received: " + subject.length
+  );
+}
+
+if (subject.toLowerCase() !== subject) {
+  log.error(hookName, "Subject must be in lowercase");
+}
+
+if (subject[subject.length - 1] === ".") {
+  log.error(hookName, "Subject must not end with a period");
+}
+
+log.success(hookName, "Commit message is valid");
+process.exit(0);

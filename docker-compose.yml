@@ -1,0 +1,63 @@
+version: '3.8'
+services:
+  psql:
+    container_name: go_booking_psql
+    image: postgres:14-alpine
+    restart: always
+    environment:
+      - POSTGRES_USER=${DB_USER}
+      - POSTGRES_PASSWORD=${DB_PASSWORD}
+      - POSTGRES_DB=${DB_NAME}
+      - POSTGRES_HOST=${DB_HOST}
+      - PGDATA=${DB_PGDATA}
+    volumes:
+      - ./.generated/db_data:/${DB_PGDATA}
+    ports:
+      - "18500:5432"
+  
+  api:
+    container_name: go_booking_api
+    restart: always
+    build: 
+      context: .
+      dockerfile: Dockerfile
+      args:
+        - WORKDIR=/go/src/github.com/christian-gama/go-booking-api
+    ports:
+      - "${APP_PORT}:${APP_PORT}"
+    env_file:
+      - .env.${ENV}
+    depends_on:
+      - ${DB_HOST}
+    links:
+      - ${DB_HOST}
+    volumes:
+      - ./cmd:/go/src/github.com/christian-gama/go-booking-api/cmd
+      - ./db:/go/src/github.com/christian-gama/go-booking-api/db
+      - ./internal:/go/src/github.com/christian-gama/go-booking-api/internal
+      - ./test/:/go/src/github.com/christian-gama/go-booking-api/test
+      - ./vendor/:/go/src/github.com/christian-gama/go-booking-api/vendor
+      - ./.env.dev:/go/src/github.com/christian-gama/go-booking-api/.env.dev
+      - ./.env.prod:/go/src/github.com/christian-gama/go-booking-api/.env.prod
+      - ./.env.test:/go/src/github.com/christian-gama/go-booking-api/.env.test
+      - ./.golangci.yml:/go/src/github.com/christian-gama/go-booking-api/.golangci.yml
+      - ./go.mod:/go/src/github.com/christian-gama/go-booking-api/go.mod
+      - ./go.sum:/go/src/github.com/christian-gama/go-booking-api/go.sum
+      - ./Makefile:/go/src/github.com/christian-gama/go-booking-api/Makefile
+      - ./.generated/coverage:/go/src/github.com/christian-gama/go-booking-api/.generated/coverage
+      - ./.generated/build:/go/src/github.com/christian-gama/go-booking-api/.generated/build
+      - ./mocks:/go/src/github.com/christian-gama/go-booking-api/mocks
+  
+  psql_test:
+    container_name: go_booking_psql_test
+    image: postgres:14-alpine
+    restart: "no"
+    environment:
+      - POSTGRES_USER=${DB_USER}
+      - POSTGRES_PASSWORD=${DB_PASSWORD}
+      - POSTGRES_DB=${DB_NAME}
+      - POSTGRES_HOST=${DB_HOST}
+    tmpfs:
+      - /var/lib/postgresql/data
+    ports:
+      - "18501:5432"

@@ -1,0 +1,7 @@
+#!/usr/bin/env node
+const run = require("./core/run");
+
+(async () => {
+  await run("lint", "make lint");
+  await run("test", "make test");
+})();
