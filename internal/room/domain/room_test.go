@@ -81,14 +81,26 @@ func (s *RoomTestSuite) TestNewRoom() {
 				},
 			},
 			want: nil,
-			err:  errors.New("room bed count must be greater than zero"),
+			err:  errors.New("room bed count must have at least one bed"),
+		},
+		{
+			name: "should return an error if bed count is greater than 6",
+			args: args{
+				&domain.Room{
+					Id:          NewRoom().Id,
+					Name:        NewRoom().Name,
+					Description: NewRoom().Description,
+					BedCount:    7,
+					Price:       NewRoom().Price,
+				},
+			},
 		},
 	}
 
 	for _, tt := range tests {
 		got, err := domain.NewRoom(tt.args.Room)
 		if tt.err != nil {
-			s.Error(err)
+			s.EqualError(err, tt.err.Error())
 		}
 
 		s.Equal(tt.want, got)
