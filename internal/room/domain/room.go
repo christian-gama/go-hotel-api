@@ -45,7 +45,7 @@ func NewRoom(room *Room) (*Room, error) {
 	}
 
 	if room.Price > MaxPrice {
-		return nil, errors.New("room price must be less than 999")
+		return nil, errors.New("room price must be less equal than 999")
 	}
 
 	return &Room{

@@ -113,6 +113,20 @@ func (s *RoomTestSuite) TestNewRoom() {
 			err:  errors.New("room price must be greater than zero"),
 		},
 		{
+			name: "should return an error if price is greater than 999",
+			args: args{
+				&domain.Room{
+					Id:          NewRoom().Id,
+					Name:        NewRoom().Name,
+					Description: NewRoom().Description,
+					BedCount:    NewRoom().BedCount,
+					Price:       1000,
+				},
+			},
+			want: nil,
+			err:  errors.New("room price must be less equal than 999"),
+		},
+		{
 			name: "should return an error if description is greater than 255 characters",
 			args: args{
 				&domain.Room{
