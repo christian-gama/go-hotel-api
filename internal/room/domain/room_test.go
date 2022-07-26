@@ -69,6 +69,20 @@ func (s *RoomTestSuite) TestNewRoom() {
 			want: nil,
 			err:  errors.New("room name cannot be empty"),
 		},
+		{
+			name: "should return an error if bed count is zero",
+			args: args{
+				&domain.Room{
+					Id:          NewRoom().Id,
+					Name:        NewRoom().Name,
+					Description: NewRoom().Description,
+					BedCount:    0,
+					Price:       NewRoom().Price,
+				},
+			},
+			want: nil,
+			err:  errors.New("room bed count must be greater than zero"),
+		},
 	}
 
 	for _, tt := range tests {

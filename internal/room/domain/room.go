@@ -19,6 +19,10 @@ func NewRoom(room *Room) (*Room, error) {
 		return nil, errors.New("room name cannot be empty")
 	}
 
+	if room.BedCount == 0 {
+		return nil, errors.New("room bed count must be greater than zero")
+	}
+
 	return &Room{
 		Id:          room.Id,
 		Name:        room.Name,
