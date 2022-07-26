@@ -95,6 +95,20 @@ func (s *RoomTestSuite) TestNewRoom() {
 				},
 			},
 		},
+		{
+			name: "should return an error if price is zero",
+			args: args{
+				&domain.Room{
+					Id:          NewRoom().Id,
+					Name:        NewRoom().Name,
+					Description: NewRoom().Description,
+					BedCount:    NewRoom().BedCount,
+					Price:       0,
+				},
+			},
+			want: nil,
+			err:  errors.New("room price must be greater than zero"),
+		},
 	}
 
 	for _, tt := range tests {

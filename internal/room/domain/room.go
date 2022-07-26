@@ -5,7 +5,7 @@ import "errors"
 const (
 	MaxBedCount = 6
 	MinBedCount = 1
-	MinPrice    = 0
+	MinPrice    = 1
 	MaxPrice    = 999
 )
 
@@ -31,6 +31,10 @@ func NewRoom(room *Room) (*Room, error) {
 	}
 
 	if room.BedCount > MaxBedCount {
+		return nil, errors.New("room price must be greater than zero")
+	}
+
+	if room.Price < MinPrice {
 		return nil, errors.New("room price must be greater than zero")
 	}
 
