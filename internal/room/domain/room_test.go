@@ -2,6 +2,7 @@ package domain_test
 
 import (
 	"errors"
+	"strings"
 	"testing"
 
 	"github.com/christian-gama/go-booking-api/internal/room/domain"
@@ -110,6 +111,20 @@ func (s *RoomTestSuite) TestNewRoom() {
 			},
 			want: nil,
 			err:  errors.New("room price must be greater than zero"),
+		},
+		{
+			name: "should return an error if description is greater than 255 characters",
+			args: args{
+				&domain.Room{
+					Id:          NewRoom().Id,
+					Name:        NewRoom().Name,
+					Description: strings.Repeat("a", 256),
+					BedCount:    NewRoom().BedCount,
+					Price:       NewRoom().Price,
+				},
+			},
+			want: nil,
+			err:  errors.New("room description must be less equal than 255 characters"),
 		},
 	}
 
