@@ -1,5 +1,7 @@
 package domain
 
+import "errors"
+
 type Room struct {
 	Id          uint32
 	Name        string
@@ -8,7 +10,11 @@ type Room struct {
 	Price       float32
 }
 
-func NewRoom(room *Room) (*Room, error) {
+func NewRoom(room Room) (*Room, error) {
+	if room.Id == 0 {
+		return nil, errors.New("room id must be greater than zero")
+	}
+
 	return &Room{
 		Id:          room.Id,
 		Name:        room.Name,
