@@ -2,6 +2,7 @@ package domain_test
 
 import (
 	"errors"
+	"fmt"
 	"strings"
 	"testing"
 
@@ -71,7 +72,7 @@ func (s *RoomTestSuite) TestNewRoom() {
 			err:  errors.New("room name cannot be empty"),
 		},
 		{
-			name: "should return an error if bed count is zero",
+			name: "should return an error if bed count is less than minimum",
 			args: args{
 				&domain.Room{
 					Id:          NewRoom().Id,
@@ -82,10 +83,10 @@ func (s *RoomTestSuite) TestNewRoom() {
 				},
 			},
 			want: nil,
-			err:  errors.New("room bed count must have at least one bed"),
+			err:  fmt.Errorf("room bed count must have at least %d bed", domain.MinRoomBedCount),
 		},
 		{
-			name: "should return an error if bed count is greater than 6",
+			name: "should return an error if bed count is greater than maximum",
 			args: args{
 				&domain.Room{
 					Id:          NewRoom().Id,
@@ -96,10 +97,10 @@ func (s *RoomTestSuite) TestNewRoom() {
 				},
 			},
 			want: nil,
-			err:  errors.New("room bed count must have less than six beds"),
+			err:  fmt.Errorf("room bed count must have less than %d beds", domain.MaxRoomBedCount),
 		},
 		{
-			name: "should return an error if price is zero",
+			name: "should return an error if price is less than minimum",
 			args: args{
 				&domain.Room{
 					Id:          NewRoom().Id,
@@ -110,10 +111,10 @@ func (s *RoomTestSuite) TestNewRoom() {
 				},
 			},
 			want: nil,
-			err:  errors.New("room price must be greater equal than 1"),
+			err:  fmt.Errorf("room price must be greater equal than %d", domain.MinRoomPrice),
 		},
 		{
-			name: "should return an error if price is greater than 999",
+			name: "should return an error if price is greater than the maximum",
 			args: args{
 				&domain.Room{
 					Id:          NewRoom().Id,
@@ -124,10 +125,10 @@ func (s *RoomTestSuite) TestNewRoom() {
 				},
 			},
 			want: nil,
-			err:  errors.New("room price must be less equal than 999"),
+			err:  fmt.Errorf("room price must be less equal than %d", domain.MaxRoomPrice),
 		},
 		{
-			name: "should return an error if description is greater than 255 characters",
+			name: "should return an error if description is greater than maximum characters length",
 			args: args{
 				&domain.Room{
 					Id:          NewRoom().Id,
@@ -138,10 +139,10 @@ func (s *RoomTestSuite) TestNewRoom() {
 				},
 			},
 			want: nil,
-			err:  errors.New("room description must be less equal than 255 characters"),
+			err:  fmt.Errorf("room description must be less equal than %d characters", domain.MaxRoomDescriptionLen),
 		},
 		{
-			name: "should return an error if description is less than 10 characters",
+			name: "should return an error if description is less than minimum characters length",
 			args: args{
 				&domain.Room{
 					Id:          NewRoom().Id,
@@ -152,7 +153,7 @@ func (s *RoomTestSuite) TestNewRoom() {
 				},
 			},
 			want: nil,
-			err:  errors.New("room description must be greater equal than 10 characters"),
+			err:  fmt.Errorf("room description must be greater equal than %d characters", domain.MinRoomDescriptionLen),
 		},
 	}
 
