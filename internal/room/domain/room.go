@@ -30,12 +30,16 @@ func NewRoom(room *Room) (*Room, error) {
 		return nil, errors.New("room bed count must have at least one bed")
 	}
 
-	if room.BedCount > MaxBedCount {
-		return nil, errors.New("room price must be greater than zero")
+	if room.BedCount >= MaxBedCount {
+		return nil, errors.New("room bed count must have less than six beds")
 	}
 
 	if room.Price < MinPrice {
 		return nil, errors.New("room price must be greater than zero")
+	}
+
+	if room.Price >= MaxPrice {
+		return nil, errors.New("room price must be less than 999")
 	}
 
 	return &Room{

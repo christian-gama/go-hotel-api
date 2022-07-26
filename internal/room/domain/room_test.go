@@ -94,6 +94,8 @@ func (s *RoomTestSuite) TestNewRoom() {
 					Price:       NewRoom().Price,
 				},
 			},
+			want: nil,
+			err:  errors.New("room bed count must have less than six beds"),
 		},
 		{
 			name: "should return an error if price is zero",
