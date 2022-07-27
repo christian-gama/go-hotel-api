@@ -21,6 +21,7 @@ func NewRoom() *domain.Room {
 		Description: "Any description",
 		BedCount:    1,
 		Price:       1,
+		IsBusy:      false,
 	}
 }
 
@@ -52,6 +53,7 @@ func (s *RoomTestSuite) TestNewRoom() {
 					Description: NewRoom().Description,
 					BedCount:    NewRoom().BedCount,
 					Price:       NewRoom().Price,
+					IsBusy:      NewRoom().IsBusy,
 				},
 			},
 			want: nil,
@@ -66,6 +68,7 @@ func (s *RoomTestSuite) TestNewRoom() {
 					Description: NewRoom().Description,
 					BedCount:    NewRoom().BedCount,
 					Price:       NewRoom().Price,
+					IsBusy:      NewRoom().IsBusy,
 				},
 			},
 			want: nil,
@@ -80,6 +83,7 @@ func (s *RoomTestSuite) TestNewRoom() {
 					Description: NewRoom().Description,
 					BedCount:    0,
 					Price:       NewRoom().Price,
+					IsBusy:      NewRoom().IsBusy,
 				},
 			},
 			want: nil,
@@ -94,6 +98,7 @@ func (s *RoomTestSuite) TestNewRoom() {
 					Description: NewRoom().Description,
 					BedCount:    7,
 					Price:       NewRoom().Price,
+					IsBusy:      NewRoom().IsBusy,
 				},
 			},
 			want: nil,
@@ -108,6 +113,7 @@ func (s *RoomTestSuite) TestNewRoom() {
 					Description: NewRoom().Description,
 					BedCount:    NewRoom().BedCount,
 					Price:       0,
+					IsBusy:      NewRoom().IsBusy,
 				},
 			},
 			want: nil,
@@ -122,6 +128,7 @@ func (s *RoomTestSuite) TestNewRoom() {
 					Description: NewRoom().Description,
 					BedCount:    NewRoom().BedCount,
 					Price:       1000,
+					IsBusy:      NewRoom().IsBusy,
 				},
 			},
 			want: nil,
@@ -136,6 +143,7 @@ func (s *RoomTestSuite) TestNewRoom() {
 					Description: strings.Repeat("a", 256),
 					BedCount:    NewRoom().BedCount,
 					Price:       NewRoom().Price,
+					IsBusy:      NewRoom().IsBusy,
 				},
 			},
 			want: nil,
@@ -150,6 +158,7 @@ func (s *RoomTestSuite) TestNewRoom() {
 					Description: strings.Repeat("a", 9),
 					BedCount:    NewRoom().BedCount,
 					Price:       NewRoom().Price,
+					IsBusy:      NewRoom().IsBusy,
 				},
 			},
 			want: nil,
@@ -167,6 +176,6 @@ func (s *RoomTestSuite) TestNewRoom() {
 	}
 }
 
-func TestRoom(t *testing.T) {
+func TestRoomTestSuite(t *testing.T) {
 	suite.Run(t, new(RoomTestSuite))
 }

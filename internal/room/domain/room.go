@@ -31,6 +31,7 @@ type Room struct {
 	Description string
 	BedCount    uint8
 	Price       float32
+	IsBusy      bool
 }
 
 // NewRoom creates a new room. It will return an error if does not pass the validation.
