@@ -13,106 +13,92 @@ type CheckinTestSuite struct {
 	suite.Suite
 }
 
-// checkinDate and checkouDate are assigned here to avoid imprecision when running each test.
 var (
-	checkinDate  = time.Now().Add(domain.WaitTimeToCheckin + (1 * time.Minute))
-	checkoutDate = time.Now().Add(domain.WaitTimeToCheckout + (1 * time.Minute))
+	checkinId    uint32    = 1
+	guest, _               = domain.NewGuest(1, 0, make([]uint8, domain.MaxRooms))
+	roomId       uint32    = 1
+	checkinDate  time.Time = time.Now().Add(domain.WaitTimeToCheckin + (1 * time.Minute))
+	checkoutDate time.Time = time.Now().Add(domain.WaitTimeToCheckout + (1 * time.Minute))
 )
-
-func Checkin() *domain.Checkin {
-	return &domain.Checkin{
-		Id:           1,
-		Guest:        Guest(),
-		RoomId:       1,
-		CheckinDate:  checkinDate,
-		CheckoutDate: checkoutDate,
-	}
-}
 
 func (s *CheckinTestSuite) TestNewCheckin() {
 	type args struct {
-		*domain.Checkin
+		id           uint32
+		guest        *domain.Guest
+		roomId       uint32
+		checkinDate  time.Time
+		checkoutDate time.Time
 	}
 
 	tests := []struct {
 		name string
 		args args
-		want *domain.Checkin
 		err  error
 	}{
 		{
 			name: "should create a new checkin",
 			args: args{
-				Checkin(),
+				id:           checkinId,
+				guest:        guest,
+				roomId:       roomId,
+				checkinDate:  checkinDate,
+				checkoutDate: checkoutDate,
 			},
-			want: Checkin(),
-			err:  nil,
+			err: nil,
 		},
 		{
 			name: "should return an error when checkin id is zero",
 			args: args{
-				&domain.Checkin{
-					Id:           0,
-					Guest:        Checkin().Guest,
-					RoomId:       Checkin().RoomId,
-					CheckinDate:  Checkin().CheckinDate,
-					CheckoutDate: Checkin().CheckoutDate,
-				},
+				id:           0,
+				guest:        guest,
+				roomId:       roomId,
+				checkinDate:  checkinDate,
+				checkoutDate: checkoutDate,
 			},
+			err: fmt.Errorf("checkin id must be greater than zero"),
 		},
 		{
 			name: "should return an error when room id is zero",
 			args: args{
-				&domain.Checkin{
-					Id:           Checkin().Id,
-					Guest:        Checkin().Guest,
-					RoomId:       0,
-					CheckinDate:  Checkin().CheckinDate,
-					CheckoutDate: Checkin().CheckoutDate,
-				},
+				id:           checkinId,
+				guest:        guest,
+				roomId:       0,
+				checkinDate:  checkinDate,
+				checkoutDate: checkoutDate,
 			},
+			err: fmt.Errorf("room id must be greater than zero"),
 		},
 		{
 			name: "should return an error when guest is nil",
 			args: args{
-				&domain.Checkin{
-					Id:           Checkin().Id,
-					Guest:        nil,
-					RoomId:       Checkin().RoomId,
-					CheckinDate:  Checkin().CheckinDate,
-					CheckoutDate: Checkin().CheckoutDate,
-				},
+				id:           checkinId,
+				guest:        nil,
+				roomId:       roomId,
+				checkinDate:  checkinDate,
+				checkoutDate: checkoutDate,
 			},
-			want: nil,
-			err:  fmt.Errorf("guest must not be nil"),
+			err: fmt.Errorf("guest must not be nil"),
 		},
 		{
 			name: "should return an error when checkin is made in less than the wait time to checkin",
 			args: args{
-				&domain.Checkin{
-					Id:           Checkin().Id,
-					Guest:        Checkin().Guest,
-					RoomId:       Checkin().RoomId,
-					CheckinDate:  time.Now().Add(domain.WaitTimeToCheckin - (1 * time.Minute)),
-					CheckoutDate: Checkin().CheckoutDate,
-				},
+				id:           checkinId,
+				guest:        guest,
+				roomId:       roomId,
+				checkinDate:  time.Now().Add(-1 * time.Minute),
+				checkoutDate: checkoutDate,
 			},
-
-			want: nil,
-			err:  fmt.Errorf("checkin must be made at least %.0f hour from now", domain.WaitTimeToCheckin.Hours()),
+			err: fmt.Errorf("checkin must be made at least %.0f hour from now", domain.WaitTimeToCheckin.Hours()),
 		},
 		{
 			name: "should return an error when checkout is made in less than minimum checkout wait time",
 			args: args{
-				&domain.Checkin{
-					Id:           Checkin().Id,
-					Guest:        Checkin().Guest,
-					RoomId:       Checkin().RoomId,
-					CheckinDate:  Checkin().CheckinDate,
-					CheckoutDate: time.Now().Add(domain.WaitTimeToCheckout - (1 * time.Minute)),
-				},
+				id:           checkinId,
+				guest:        guest,
+				roomId:       roomId,
+				checkinDate:  checkinDate,
+				checkoutDate: time.Now().Add(domain.WaitTimeToCheckout - (1 * time.Minute)),
 			},
-			want: nil,
 			err: fmt.Errorf(
 				"checkout must be made at least %.0f hour after checkin", domain.WaitTimeToCheckout.Hours(),
 			),
@@ -120,26 +106,29 @@ func (s *CheckinTestSuite) TestNewCheckin() {
 		{
 			name: "should return an error when checkin is made after checkout",
 			args: args{
-				&domain.Checkin{
-					Id:           Checkin().Id,
-					Guest:        Checkin().Guest,
-					RoomId:       Checkin().RoomId,
-					CheckinDate:  time.Now().Add(24 * time.Hour),
-					CheckoutDate: time.Now(),
-				},
+				id:           checkinId,
+				guest:        guest,
+				roomId:       roomId,
+				checkinDate:  checkoutDate.Add(1 * time.Minute),
+				checkoutDate: checkoutDate,
 			},
-			want: nil,
-			err:  fmt.Errorf("checkin cannot be made after checkout"),
+			err: fmt.Errorf("checkin cannot be made after checkout"),
 		},
 	}
 
 	for _, tt := range tests {
-		got, err := domain.NewCheckin(tt.args.Checkin)
+		_, err := domain.NewCheckin(
+			tt.args.id,
+			tt.args.guest,
+			tt.args.roomId,
+			tt.args.checkinDate,
+			tt.args.checkoutDate,
+		)
 		if tt.err != nil {
 			s.EqualError(err, tt.err.Error(), tt.name)
+		} else {
+			s.Nil(err, tt.name)
 		}
-
-		s.Equal(tt.want, got, tt.name)
 	}
 }
 

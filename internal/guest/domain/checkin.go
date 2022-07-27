@@ -15,38 +15,50 @@ const (
 
 // Checkin represents a reservation of a room for a guest.
 type Checkin struct {
-	Id           uint32
-	RoomId       uint32
-	Guest        *Guest
-	CheckinDate  time.Time
-	CheckoutDate time.Time
+	id           uint32
+	roomId       uint32
+	guest        *Guest
+	checkinDate  time.Time
+	checkoutDate time.Time
 }
 
 // NewCheckin creates a new checkin. It will return an error if does not pass the validation.
-func NewCheckin(checkin *Checkin) (*Checkin, error) {
-	if checkin.Id == 0 {
+func NewCheckin(
+	id uint32,
+	guest *Guest,
+	roomId uint32,
+	checkinDate time.Time,
+	checkoutDate time.Time,
+) (*Checkin, error) {
+	if id == 0 {
 		return nil, fmt.Errorf("checkin id must be greater than zero")
 	}
 
-	if checkin.RoomId == 0 {
+	if roomId == 0 {
 		return nil, fmt.Errorf("room id must be greater than zero")
 	}
 
-	if checkin.Guest == nil {
+	if guest == nil {
 		return nil, fmt.Errorf("guest must not be nil")
 	}
 
-	if checkin.CheckoutDate.Before(checkin.CheckinDate) {
+	if checkoutDate.Before(checkinDate) {
 		return nil, fmt.Errorf("checkin cannot be made after checkout")
 	}
 
-	if time.Until(checkin.CheckinDate) < WaitTimeToCheckin {
+	if time.Until(checkinDate) < WaitTimeToCheckin {
 		return nil, fmt.Errorf("checkin must be made at least %.0f hour from now", WaitTimeToCheckin.Hours())
 	}
 
-	if time.Until(checkin.CheckoutDate) < WaitTimeToCheckout {
+	if time.Until(checkoutDate) < WaitTimeToCheckout {
 		return nil, fmt.Errorf("checkout must be made at least %.0f hour after checkin", WaitTimeToCheckout.Hours())
 	}
 
-	return checkin, nil
+	return &Checkin{
+		id:           id,
+		roomId:       roomId,
+		guest:        guest,
+		checkinDate:  checkinDate,
+		checkoutDate: checkoutDate,
+	}, nil
 }

@@ -11,24 +11,32 @@ const (
 // have a limited amount of credits, which can be used to pay for rooms. Credits are earned when a guest asks
 // for a refund.
 type Guest struct {
-	Id      uint32
-	Credits float32
-	RoomIds []uint32
+	id      uint32
+	credits float32
+	roomIds []uint8
 }
 
 // NewGuest creates a new guest. It will return an error if does not pass the validation.
-func NewGuest(guest *Guest) (*Guest, error) {
-	if guest.Id == 0 {
+func NewGuest(
+	id uint32,
+	credits float32,
+	roomIds []uint8,
+) (*Guest, error) {
+	if id == 0 {
 		return nil, fmt.Errorf("guest id must be greater than zero")
 	}
 
-	if guest.Credits < 0 {
+	if credits < 0 {
 		return nil, fmt.Errorf("guest credit cannot be negative")
 	}
 
-	if len(guest.RoomIds) > MaxRooms {
+	if len(roomIds) > MaxRooms {
 		return nil, fmt.Errorf("guest cannot have more than %d rooms reserved at the same time", MaxRooms)
 	}
 
-	return guest, nil
+	return &Guest{
+		id:      id,
+		credits: credits,
+		roomIds: roomIds,
+	}, nil
 }

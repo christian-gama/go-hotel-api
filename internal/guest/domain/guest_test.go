@@ -12,78 +12,69 @@ type GuestTestSuite struct {
 	suite.Suite
 }
 
-func Guest() *domain.Guest {
-	return &domain.Guest{
-		Id:      1,
-		Credits: 1,
-		RoomIds: []uint32{1},
-	}
-}
+var (
+	guestId uint32  = 1
+	credits float32 = 0
+	roomIds []uint8 = []uint8{}
+)
 
 func (s *GuestTestSuite) TestNewGuest() {
 	type args struct {
-		*domain.Guest
+		id      uint32
+		credits float32
+		roomIds []uint8
 	}
 
 	tests := []struct {
 		name string
 		args args
-		want *domain.Guest
 		err  error
 	}{
 		{
 			name: "should create a new guest",
 			args: args{
-				Guest(),
+				id:      guestId,
+				credits: credits,
+				roomIds: roomIds,
 			},
-			want: Guest(),
-			err:  nil,
+			err: nil,
 		},
 		{
 			name: "should return an error when guest id is zero",
 			args: args{
-				&domain.Guest{
-					Id:      0,
-					Credits: Guest().Credits,
-					RoomIds: Guest().RoomIds,
-				},
+				id:      0,
+				credits: credits,
+				roomIds: roomIds,
 			},
-			want: nil,
-			err:  fmt.Errorf("guest id must be greater than zero"),
+			err: fmt.Errorf("guest id must be greater than zero"),
 		},
 		{
 			name: "should return an error when guest credit is negative",
 			args: args{
-				&domain.Guest{
-					Id:      Guest().Id,
-					Credits: -1,
-					RoomIds: Guest().RoomIds,
-				},
+				id:      guestId,
+				credits: -1,
+				roomIds: roomIds,
 			},
-			want: nil,
-			err:  fmt.Errorf("guest credit cannot be negative"),
+			err: fmt.Errorf("guest credit cannot be negative"),
 		},
 		{
 			name: "should return an error when guest room id length is greater than 12",
 			args: args{
-				&domain.Guest{
-					Id:      Guest().Id,
-					Credits: Guest().Credits,
-					RoomIds: append(Guest().RoomIds, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13),
-				},
+				id:      guestId,
+				credits: credits,
+				roomIds: make([]uint8, 13),
 			},
-			want: nil,
-			err:  fmt.Errorf("guest cannot have more than %d rooms reserved at the same time", domain.MaxRooms),
+			err: fmt.Errorf("guest cannot have more than %d rooms reserved at the same time", domain.MaxRooms),
 		},
 	}
 
 	for _, tt := range tests {
-		got, err := domain.NewGuest(tt.args.Guest)
+		_, err := domain.NewGuest(tt.args.id, tt.args.credits, tt.args.roomIds)
 		if tt.err != nil {
 			s.EqualError(err, tt.err.Error(), tt.name)
+		} else {
+			s.Nil(err, tt.name)
 		}
-
-		s.Equal(tt.want, got, tt.name)
 	}
 }
 
