@@ -24,5 +24,9 @@ func NewCheckin(checkin *Checkin) (*Checkin, error) {
 		return nil, fmt.Errorf("room id must be greater than zero")
 	}
 
+	if checkin.Guest == nil {
+		return nil, fmt.Errorf("guest must not be nil")
+	}
+
 	return checkin, nil
 }

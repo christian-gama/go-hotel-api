@@ -1,7 +1,9 @@
 package domain_test
 
 import (
+	"fmt"
 	"testing"
+	"time"
 
 	"github.com/christian-gama/go-booking-api/internal/guest/domain"
 	"github.com/stretchr/testify/suite"
@@ -11,11 +13,19 @@ type CheckinTestSuite struct {
 	suite.Suite
 }
 
+// checkinDate and checkouDate are assigned here to avoid imprecision when running each test.
+var (
+	checkinDate  = time.Now()
+	checkoutDate = time.Now().Add(24 * time.Hour)
+)
+
 func Checkin() *domain.Checkin {
 	return &domain.Checkin{
-		Id:     1,
-		Guest:  Guest(),
-		RoomId: 1,
+		Id:           1,
+		Guest:        Guest(),
+		RoomId:       1,
+		CheckinDate:  checkinDate,
+		CheckoutDate: checkoutDate,
 	}
 }
 
@@ -42,9 +52,11 @@ func (s *CheckinTestSuite) TestNewCheckin() {
 			name: "should return an error when checkin id is zero",
 			args: args{
 				&domain.Checkin{
-					Id:     0,
-					Guest:  Checkin().Guest,
-					RoomId: Checkin().RoomId,
+					Id:           0,
+					Guest:        Checkin().Guest,
+					RoomId:       Checkin().RoomId,
+					CheckinDate:  Checkin().CheckinDate,
+					CheckoutDate: Checkin().CheckoutDate,
 				},
 			},
 		},
@@ -52,11 +64,27 @@ func (s *CheckinTestSuite) TestNewCheckin() {
 			name: "should return an error when room id is zero",
 			args: args{
 				&domain.Checkin{
-					Id:     Checkin().Id,
-					Guest:  Checkin().Guest,
-					RoomId: 0,
+					Id:           Checkin().Id,
+					Guest:        Checkin().Guest,
+					RoomId:       0,
+					CheckinDate:  Checkin().CheckinDate,
+					CheckoutDate: Checkin().CheckoutDate,
 				},
 			},
+		},
+		{
+			name: "should return an error when guest is nil",
+			args: args{
+				&domain.Checkin{
+					Id:           Checkin().Id,
+					Guest:        nil,
+					RoomId:       Checkin().RoomId,
+					CheckinDate:  Checkin().CheckinDate,
+					CheckoutDate: Checkin().CheckoutDate,
+				},
+			},
+			want: nil,
+			err:  fmt.Errorf("guest must not be nil"),
 		},
 	}
 
