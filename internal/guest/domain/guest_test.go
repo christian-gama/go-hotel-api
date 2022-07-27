@@ -20,7 +20,7 @@ func Guest() *domain.Guest {
 	}
 }
 
-func (s *GuestTestSuite) TestGuest() {
+func (s *GuestTestSuite) TestNewGuest() {
 	type args struct {
 		*domain.Guest
 	}
@@ -81,9 +81,9 @@ func (s *GuestTestSuite) TestGuest() {
 		got, err := domain.NewGuest(tt.args.Guest)
 		if tt.err != nil {
 			s.EqualError(err, tt.err.Error())
-		} else {
-			s.Equal(tt.want, got)
 		}
+
+		s.Equal(tt.want, got)
 	}
 }
 
