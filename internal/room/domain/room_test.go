@@ -169,10 +169,10 @@ func (s *RoomTestSuite) TestNewRoom() {
 	for _, tt := range tests {
 		got, err := domain.NewRoom(tt.args.Room)
 		if tt.err != nil {
-			s.EqualError(err, tt.err.Error())
+			s.EqualError(err, tt.err.Error(), tt.name)
 		}
 
-		s.Equal(tt.want, got)
+		s.Equal(tt.want, got, tt.name)
 	}
 }
 

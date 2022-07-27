@@ -80,10 +80,10 @@ func (s *GuestTestSuite) TestNewGuest() {
 	for _, tt := range tests {
 		got, err := domain.NewGuest(tt.args.Guest)
 		if tt.err != nil {
-			s.EqualError(err, tt.err.Error())
+			s.EqualError(err, tt.err.Error(), tt.name)
 		}
 
-		s.Equal(tt.want, got)
+		s.Equal(tt.want, got, tt.name)
 	}
 }
 
