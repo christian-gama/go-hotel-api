@@ -20,5 +20,9 @@ func NewCheckin(checkin *Checkin) (*Checkin, error) {
 		return nil, fmt.Errorf("checkin id must be greater than zero")
 	}
 
+	if checkin.RoomId == 0 {
+		return nil, fmt.Errorf("room id must be greater than zero")
+	}
+
 	return checkin, nil
 }
