@@ -1,6 +1,7 @@
 package domain_test
 
 import (
+	"fmt"
 	"testing"
 
 	"github.com/christian-gama/go-booking-api/internal/guest/domain"
@@ -37,6 +38,18 @@ func (s *GuestTestSuite) TestGuest() {
 			},
 			want: Guest(),
 			err:  nil,
+		},
+		{
+			name: "should return an error when guest id is zero",
+			args: args{
+				&domain.Guest{
+					Id:      0,
+					Credits: Guest().Credits,
+					RoomIds: Guest().RoomIds,
+				},
+			},
+			want: nil,
+			err:  fmt.Errorf("guest id must be greater than zero"),
 		},
 	}
 
