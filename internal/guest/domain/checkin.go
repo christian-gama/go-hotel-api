@@ -5,6 +5,11 @@ import (
 	"time"
 )
 
+const (
+	// WaitTimeToCheckin is the time that a guest must checkin in advance.
+	WaitTimeToCheckin = 1 * time.Hour
+)
+
 // Checkin represents a reservation of a room for a guest.
 type Checkin struct {
 	Id           uint32
@@ -26,6 +31,10 @@ func NewCheckin(checkin *Checkin) (*Checkin, error) {
 
 	if checkin.Guest == nil {
 		return nil, fmt.Errorf("guest must not be nil")
+	}
+
+	if time.Until(checkin.CheckinDate) < WaitTimeToCheckin {
+		return nil, fmt.Errorf("checkin must be made at least %.0f hour from now", WaitTimeToCheckin.Hours())
 	}
 
 	return checkin, nil

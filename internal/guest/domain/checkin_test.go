@@ -15,7 +15,7 @@ type CheckinTestSuite struct {
 
 // checkinDate and checkouDate are assigned here to avoid imprecision when running each test.
 var (
-	checkinDate  = time.Now()
+	checkinDate  = time.Now().Add(2 * time.Hour)
 	checkoutDate = time.Now().Add(24 * time.Hour)
 )
 
@@ -85,6 +85,21 @@ func (s *CheckinTestSuite) TestNewCheckin() {
 			},
 			want: nil,
 			err:  fmt.Errorf("guest must not be nil"),
+		},
+		{
+			name: "should return an error when checkin is made in less than 1 hour",
+			args: args{
+				&domain.Checkin{
+					Id:           Checkin().Id,
+					Guest:        Checkin().Guest,
+					RoomId:       Checkin().RoomId,
+					CheckinDate:  time.Now().Add(-1 * time.Minute),
+					CheckoutDate: Checkin().CheckoutDate,
+				},
+			},
+
+			want: nil,
+			err:  fmt.Errorf("checkin must be made at least %.0f hour from now", domain.WaitTimeToCheckin.Hours()),
 		},
 	}
 
