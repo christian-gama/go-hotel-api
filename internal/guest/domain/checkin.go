@@ -8,6 +8,9 @@ import (
 const (
 	// WaitTimeToCheckin is the time that a guest must checkin in advance.
 	WaitTimeToCheckin = 1 * time.Hour
+
+	// WaitTimeToCheckout is the time that a guest must wait before checking out after checkin.
+	WaitTimeToCheckout = 3 * time.Hour
 )
 
 // Checkin represents a reservation of a room for a guest.
@@ -35,6 +38,10 @@ func NewCheckin(checkin *Checkin) (*Checkin, error) {
 
 	if time.Until(checkin.CheckinDate) < WaitTimeToCheckin {
 		return nil, fmt.Errorf("checkin must be made at least %.0f hour from now", WaitTimeToCheckin.Hours())
+	}
+
+	if time.Until(checkin.CheckoutDate) < WaitTimeToCheckout {
+		return nil, fmt.Errorf("checkout must be made at least %.0f hour after checkin", WaitTimeToCheckout.Hours())
 	}
 
 	return checkin, nil

@@ -15,8 +15,8 @@ type CheckinTestSuite struct {
 
 // checkinDate and checkouDate are assigned here to avoid imprecision when running each test.
 var (
-	checkinDate  = time.Now().Add(2 * time.Hour)
-	checkoutDate = time.Now().Add(24 * time.Hour)
+	checkinDate  = time.Now().Add(domain.WaitTimeToCheckin + (1 * time.Minute))
+	checkoutDate = time.Now().Add(domain.WaitTimeToCheckout + (1 * time.Minute))
 )
 
 func Checkin() *domain.Checkin {
@@ -87,13 +87,13 @@ func (s *CheckinTestSuite) TestNewCheckin() {
 			err:  fmt.Errorf("guest must not be nil"),
 		},
 		{
-			name: "should return an error when checkin is made in less than 1 hour",
+			name: "should return an error when checkin is made in less than the wait time to checkin",
 			args: args{
 				&domain.Checkin{
 					Id:           Checkin().Id,
 					Guest:        Checkin().Guest,
 					RoomId:       Checkin().RoomId,
-					CheckinDate:  time.Now().Add(-1 * time.Minute),
+					CheckinDate:  time.Now().Add(domain.WaitTimeToCheckin - (1 * time.Minute)),
 					CheckoutDate: Checkin().CheckoutDate,
 				},
 			},
@@ -101,18 +101,34 @@ func (s *CheckinTestSuite) TestNewCheckin() {
 			want: nil,
 			err:  fmt.Errorf("checkin must be made at least %.0f hour from now", domain.WaitTimeToCheckin.Hours()),
 		},
+		{
+			name: "should return an error when checkout is made in less than minimum checkout wait time",
+			args: args{
+				&domain.Checkin{
+					Id:           Checkin().Id,
+					Guest:        Checkin().Guest,
+					RoomId:       Checkin().RoomId,
+					CheckinDate:  Checkin().CheckinDate,
+					CheckoutDate: time.Now().Add(domain.WaitTimeToCheckout - (1 * time.Minute)),
+				},
+			},
+			want: nil,
+			err: fmt.Errorf(
+				"checkout must be made at least %.0f hour after checkin", domain.WaitTimeToCheckout.Hours(),
+			),
+		},
 	}
 
 	for _, tt := range tests {
 		got, err := domain.NewCheckin(tt.args.Checkin)
 		if tt.err != nil {
-			s.EqualError(err, tt.err.Error())
+			s.EqualError(err, tt.err.Error(), tt.name)
 		}
 
-		s.Equal(tt.want, got)
+		s.Equal(tt.want, got, tt.name)
 	}
 }
 
-func TestCheckinTestSUite(t *testing.T) {
+func TestCheckinTestSuite(t *testing.T) {
 	suite.Run(t, new(CheckinTestSuite))
 }
