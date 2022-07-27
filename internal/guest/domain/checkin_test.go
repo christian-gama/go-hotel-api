@@ -38,6 +38,16 @@ func (s *CheckinTestSuite) TestNewCheckin() {
 			want: Checkin(),
 			err:  nil,
 		},
+		{
+			name: "should return an error when checkin id is zero",
+			args: args{
+				&domain.Checkin{
+					Id:     0,
+					Guest:  Checkin().Guest,
+					RoomId: Checkin().RoomId,
+				},
+			},
+		},
 	}
 
 	for _, tt := range tests {

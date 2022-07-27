@@ -1,6 +1,9 @@
 package domain
 
-import "time"
+import (
+	"fmt"
+	"time"
+)
 
 // Checkin represents a reservation of a room for a guest.
 type Checkin struct {
@@ -13,5 +16,9 @@ type Checkin struct {
 
 // NewCheckin creates a new checkin. It will return an error if does not pass the validation.
 func NewCheckin(checkin *Checkin) (*Checkin, error) {
+	if checkin.Id == 0 {
+		return nil, fmt.Errorf("checkin id must be greater than zero")
+	}
+
 	return checkin, nil
 }
