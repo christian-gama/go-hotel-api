@@ -63,6 +63,18 @@ func (s *GuestTestSuite) TestGuest() {
 			want: nil,
 			err:  fmt.Errorf("guest credit cannot be negative"),
 		},
+		{
+			name: "should return an error when guest room id length is greater than 12",
+			args: args{
+				&domain.Guest{
+					Id:      Guest().Id,
+					Credits: Guest().Credits,
+					RoomIds: append(Guest().RoomIds, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13),
+				},
+			},
+			want: nil,
+			err:  fmt.Errorf("guest cannot have more than %d rooms reserved at the same time", domain.MaxRooms),
+		},
 	}
 
 	for _, tt := range tests {
