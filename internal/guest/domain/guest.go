@@ -13,5 +13,9 @@ func NewGuest(guest *Guest) (*Guest, error) {
 		return nil, fmt.Errorf("guest id must be greater than zero")
 	}
 
+	if guest.Credits < 0 {
+		return nil, fmt.Errorf("guest credit cannot be negative")
+	}
+
 	return guest, nil
 }

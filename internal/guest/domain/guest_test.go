@@ -51,6 +51,18 @@ func (s *GuestTestSuite) TestGuest() {
 			want: nil,
 			err:  fmt.Errorf("guest id must be greater than zero"),
 		},
+		{
+			name: "should return an error when guest credit is negative",
+			args: args{
+				&domain.Guest{
+					Id:      Guest().Id,
+					Credits: -1,
+					RoomIds: Guest().RoomIds,
+				},
+			},
+			want: nil,
+			err:  fmt.Errorf("guest credit cannot be negative"),
+		},
 	}
 
 	for _, tt := range tests {
