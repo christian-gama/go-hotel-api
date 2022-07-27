@@ -117,6 +117,20 @@ func (s *CheckinTestSuite) TestNewCheckin() {
 				"checkout must be made at least %.0f hour after checkin", domain.WaitTimeToCheckout.Hours(),
 			),
 		},
+		{
+			name: "should return an error when checkin is made after checkout",
+			args: args{
+				&domain.Checkin{
+					Id:           Checkin().Id,
+					Guest:        Checkin().Guest,
+					RoomId:       Checkin().RoomId,
+					CheckinDate:  time.Now().Add(24 * time.Hour),
+					CheckoutDate: time.Now(),
+				},
+			},
+			want: nil,
+			err:  fmt.Errorf("checkin cannot be made after checkout"),
+		},
 	}
 
 	for _, tt := range tests {

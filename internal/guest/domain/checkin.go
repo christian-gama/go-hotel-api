@@ -36,6 +36,10 @@ func NewCheckin(checkin *Checkin) (*Checkin, error) {
 		return nil, fmt.Errorf("guest must not be nil")
 	}
 
+	if checkin.CheckoutDate.Before(checkin.CheckinDate) {
+		return nil, fmt.Errorf("checkin cannot be made after checkout")
+	}
+
 	if time.Until(checkin.CheckinDate) < WaitTimeToCheckin {
 		return nil, fmt.Errorf("checkin must be made at least %.0f hour from now", WaitTimeToCheckin.Hours())
 	}
