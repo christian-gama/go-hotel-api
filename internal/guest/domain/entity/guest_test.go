@@ -1,17 +1,17 @@
-package domain_test
+package entity_test
 
 import (
 	"fmt"
 	"testing"
 
-	"github.com/christian-gama/go-booking-api/internal/guest/domain"
+	"github.com/christian-gama/go-booking-api/internal/guest/domain/entity"
 	"github.com/stretchr/testify/suite"
 )
 
 type GuestTestSuite struct {
 	suite.Suite
 
-	guest   *domain.Guest
+	guest   *entity.Guest
 	guestId uint32
 	credits float32
 	roomIds []uint8
@@ -22,7 +22,7 @@ func (s *GuestTestSuite) SetupTest() {
 	s.credits = 0.0
 	s.roomIds = []uint8{1, 2, 3}
 
-	guest, err := domain.NewGuest(s.guestId, s.credits, s.roomIds)
+	guest, err := entity.NewGuest(s.guestId, s.credits, s.roomIds)
 	if err != nil {
 		s.Fail(err.Error())
 	}
@@ -88,12 +88,12 @@ func (s *GuestTestSuite) TestNewGuest() {
 				credits: s.credits,
 				roomIds: make([]uint8, 13),
 			},
-			err: fmt.Errorf("guest cannot have more than %d rooms reserved at the same time", domain.MaxRooms),
+			err: fmt.Errorf("guest cannot have more than %d rooms reserved at the same time", entity.MaxRooms),
 		},
 	}
 
 	for _, tt := range tests {
-		_, err := domain.NewGuest(tt.args.id, tt.args.credits, tt.args.roomIds)
+		_, err := entity.NewGuest(tt.args.id, tt.args.credits, tt.args.roomIds)
 		if tt.err != nil {
 			s.EqualError(err, tt.err.Error(), tt.name)
 		} else {

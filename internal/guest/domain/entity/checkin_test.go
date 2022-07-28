@@ -1,20 +1,20 @@
-package domain_test
+package entity_test
 
 import (
 	"fmt"
 	"testing"
 	"time"
 
-	"github.com/christian-gama/go-booking-api/internal/guest/domain"
+	"github.com/christian-gama/go-booking-api/internal/guest/domain/entity"
 	"github.com/stretchr/testify/suite"
 )
 
 type CheckinTestSuite struct {
 	suite.Suite
 
-	checkin      *domain.Checkin
+	checkin      *entity.Checkin
 	checkinId    uint32
-	guest        *domain.Guest
+	guest        *entity.Guest
 	roomId       uint32
 	checkinDate  time.Time
 	checkoutDate time.Time
@@ -22,12 +22,12 @@ type CheckinTestSuite struct {
 
 func (s *CheckinTestSuite) SetupTest() {
 	s.checkinId = 1
-	s.guest, _ = domain.NewGuest(1, 0, make([]uint8, domain.MaxRooms))
+	s.guest, _ = entity.NewGuest(1, 0, make([]uint8, entity.MaxRooms))
 	s.roomId = 1
-	s.checkinDate = time.Now().Add(domain.WaitTimeToCheckin + (1 * time.Minute))
-	s.checkoutDate = time.Now().Add(domain.WaitTimeToCheckout + (1 * time.Minute))
+	s.checkinDate = time.Now().Add(entity.WaitTimeToCheckin + (1 * time.Minute))
+	s.checkoutDate = time.Now().Add(entity.WaitTimeToCheckout + (1 * time.Minute))
 
-	checkin, err := domain.NewCheckin(
+	checkin, err := entity.NewCheckin(
 		s.checkinId,
 		s.guest,
 		s.roomId,
@@ -64,7 +64,7 @@ func (s *CheckinTestSuite) TestCheckin_CheckoutDate() {
 func (s *CheckinTestSuite) TestNewCheckin() {
 	type args struct {
 		id           uint32
-		guest        *domain.Guest
+		guest        *entity.Guest
 		roomId       uint32
 		checkinDate  time.Time
 		checkoutDate time.Time
@@ -128,7 +128,7 @@ func (s *CheckinTestSuite) TestNewCheckin() {
 				checkinDate:  time.Now().Add(-1 * time.Minute),
 				checkoutDate: s.checkoutDate,
 			},
-			err: fmt.Errorf("checkin must be made at least %.0f hour from now", domain.WaitTimeToCheckin.Hours()),
+			err: fmt.Errorf("checkin must be made at least %.0f hour from now", entity.WaitTimeToCheckin.Hours()),
 		},
 		{
 			name: "should return an error when checkout is made in less than minimum checkout wait time",
@@ -137,10 +137,10 @@ func (s *CheckinTestSuite) TestNewCheckin() {
 				guest:        s.guest,
 				roomId:       s.roomId,
 				checkinDate:  s.checkinDate,
-				checkoutDate: time.Now().Add(domain.WaitTimeToCheckout - (1 * time.Minute)),
+				checkoutDate: time.Now().Add(entity.WaitTimeToCheckout - (1 * time.Minute)),
 			},
 			err: fmt.Errorf(
-				"checkout must be made at least %.0f hour after checkin", domain.WaitTimeToCheckout.Hours(),
+				"checkout must be made at least %.0f hour after checkin", entity.WaitTimeToCheckout.Hours(),
 			),
 		},
 		{
@@ -157,7 +157,7 @@ func (s *CheckinTestSuite) TestNewCheckin() {
 	}
 
 	for _, tt := range tests {
-		_, err := domain.NewCheckin(
+		_, err := entity.NewCheckin(
 			tt.args.id,
 			tt.args.guest,
 			tt.args.roomId,

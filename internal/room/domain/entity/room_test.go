@@ -1,4 +1,4 @@
-package domain_test
+package entity_test
 
 import (
 	"errors"
@@ -6,14 +6,14 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/christian-gama/go-booking-api/internal/room/domain"
+	"github.com/christian-gama/go-booking-api/internal/room/domain/entity"
 	"github.com/stretchr/testify/suite"
 )
 
 type RoomTestSuite struct {
 	suite.Suite
 
-	room        *domain.Room
+	room        *entity.Room
 	id          uint32
 	name        string
 	description string
@@ -25,12 +25,12 @@ type RoomTestSuite struct {
 func (s *RoomTestSuite) SetupTest() {
 	s.id = 1
 	s.name = "Any name"
-	s.description = strings.Repeat("a", domain.MaxRoomDescriptionLen)
-	s.bedCount = domain.MinRoomBedCount
-	s.price = domain.MinRoomPrice
+	s.description = strings.Repeat("a", entity.MaxRoomDescriptionLen)
+	s.bedCount = entity.MinRoomBedCount
+	s.price = entity.MinRoomPrice
 	s.isAvailable = false
 
-	room, err := domain.NewRoom(s.id, s.name, s.description, s.bedCount, s.price, s.isAvailable)
+	room, err := entity.NewRoom(s.id, s.name, s.description, s.bedCount, s.price, s.isAvailable)
 	if err != nil {
 		s.Fail(err.Error())
 	}
@@ -120,11 +120,11 @@ func (s *RoomTestSuite) TestNewRoom() {
 				id:          s.id,
 				name:        s.name,
 				description: s.description,
-				bedCount:    domain.MinRoomBedCount - 1,
+				bedCount:    entity.MinRoomBedCount - 1,
 				price:       s.price,
 				isAvailable: s.isAvailable,
 			},
-			err: fmt.Errorf("room bed count must have at least %d bed", domain.MinRoomBedCount),
+			err: fmt.Errorf("room bed count must have at least %d bed", entity.MinRoomBedCount),
 		},
 		{
 			name: "should return an error if bed count is greater than maximum",
@@ -132,11 +132,11 @@ func (s *RoomTestSuite) TestNewRoom() {
 				id:          s.id,
 				name:        s.name,
 				description: s.description,
-				bedCount:    domain.MaxRoomBedCount + 1,
+				bedCount:    entity.MaxRoomBedCount + 1,
 				price:       s.price,
 				isAvailable: s.isAvailable,
 			},
-			err: fmt.Errorf("room bed count must have less than %d beds", domain.MaxRoomBedCount),
+			err: fmt.Errorf("room bed count must have less than %d beds", entity.MaxRoomBedCount),
 		},
 		{
 			name: "should return an error if price is less than minimum",
@@ -145,10 +145,10 @@ func (s *RoomTestSuite) TestNewRoom() {
 				name:        s.name,
 				description: s.description,
 				bedCount:    s.bedCount,
-				price:       domain.MinRoomPrice - 1,
+				price:       entity.MinRoomPrice - 1,
 				isAvailable: s.isAvailable,
 			},
-			err: fmt.Errorf("room price must be greater equal than $ %.2f", domain.MinRoomPrice),
+			err: fmt.Errorf("room price must be greater equal than $ %.2f", entity.MinRoomPrice),
 		},
 		{
 			name: "should return an error if price is greater than the maximum",
@@ -157,39 +157,39 @@ func (s *RoomTestSuite) TestNewRoom() {
 				name:        s.name,
 				description: s.description,
 				bedCount:    s.bedCount,
-				price:       domain.MaxRoomPrice + 1,
+				price:       entity.MaxRoomPrice + 1,
 				isAvailable: s.isAvailable,
 			},
-			err: fmt.Errorf("room price must be less equal than $ %.2f", domain.MaxRoomPrice),
+			err: fmt.Errorf("room price must be less equal than $ %.2f", entity.MaxRoomPrice),
 		},
 		{
 			name: "should return an error if description is greater than maximum characters length",
 			args: args{
 				id:          s.id,
 				name:        s.name,
-				description: strings.Repeat("a", domain.MaxRoomDescriptionLen+1),
+				description: strings.Repeat("a", entity.MaxRoomDescriptionLen+1),
 				bedCount:    s.bedCount,
 				price:       s.price,
 				isAvailable: s.isAvailable,
 			},
-			err: fmt.Errorf("room description must be less equal than %d characters", domain.MaxRoomDescriptionLen),
+			err: fmt.Errorf("room description must be less equal than %d characters", entity.MaxRoomDescriptionLen),
 		},
 		{
 			name: "should return an error if description is less than minimum characters length",
 			args: args{
 				id:          s.id,
 				name:        s.name,
-				description: strings.Repeat("a", domain.MinRoomDescriptionLen-1),
+				description: strings.Repeat("a", entity.MinRoomDescriptionLen-1),
 				bedCount:    s.bedCount,
 				price:       s.price,
 				isAvailable: s.isAvailable,
 			},
-			err: fmt.Errorf("room description must be greater equal than %d characters", domain.MinRoomDescriptionLen),
+			err: fmt.Errorf("room description must be greater equal than %d characters", entity.MinRoomDescriptionLen),
 		},
 	}
 
 	for _, tt := range tests {
-		_, err := domain.NewRoom(tt.args.id, tt.args.name, tt.args.description, tt.args.bedCount, tt.args.price, false)
+		_, err := entity.NewRoom(tt.args.id, tt.args.name, tt.args.description, tt.args.bedCount, tt.args.price, false)
 		if tt.err != nil {
 			s.EqualError(err, tt.err.Error(), tt.name)
 		} else {
