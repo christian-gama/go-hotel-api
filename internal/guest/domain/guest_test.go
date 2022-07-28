@@ -11,6 +11,7 @@ import (
 type GuestTestSuite struct {
 	suite.Suite
 
+	guest   *domain.Guest
 	guestId uint32
 	credits float32
 	roomIds []uint8
@@ -20,6 +21,25 @@ func (s *GuestTestSuite) SetupTest() {
 	s.guestId = 1
 	s.credits = 0.0
 	s.roomIds = []uint8{1, 2, 3}
+
+	guest, err := domain.NewGuest(s.guestId, s.credits, s.roomIds)
+	if err != nil {
+		s.Fail(err.Error())
+	}
+
+	s.guest = guest
+}
+
+func (s *GuestTestSuite) TestGuest_Id() {
+	s.Equal(s.guestId, s.guest.Id())
+}
+
+func (s *GuestTestSuite) TestGuest_Credits() {
+	s.Equal(s.credits, s.guest.Credits())
+}
+
+func (s *GuestTestSuite) TestGuest_RoomIds() {
+	s.Equal(s.roomIds, s.guest.RoomIds())
 }
 
 func (s *GuestTestSuite) TestNewGuest() {

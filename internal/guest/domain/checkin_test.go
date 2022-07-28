@@ -12,6 +12,7 @@ import (
 type CheckinTestSuite struct {
 	suite.Suite
 
+	checkin      *domain.Checkin
 	checkinId    uint32
 	guest        *domain.Guest
 	roomId       uint32
@@ -25,6 +26,39 @@ func (s *CheckinTestSuite) SetupTest() {
 	s.roomId = 1
 	s.checkinDate = time.Now().Add(domain.WaitTimeToCheckin + (1 * time.Minute))
 	s.checkoutDate = time.Now().Add(domain.WaitTimeToCheckout + (1 * time.Minute))
+
+	checkin, err := domain.NewCheckin(
+		s.checkinId,
+		s.guest,
+		s.roomId,
+		s.checkinDate,
+		s.checkoutDate,
+	)
+	if err != nil {
+		s.Fail(err.Error())
+	}
+
+	s.checkin = checkin
+}
+
+func (s *CheckinTestSuite) TestCheckin_Id() {
+	s.Equal(s.checkinId, s.checkin.Id())
+}
+
+func (s *CheckinTestSuite) TestCheckin_Guest() {
+	s.Equal(s.guest, s.checkin.Guest())
+}
+
+func (s *CheckinTestSuite) TestCheckin_RoomId() {
+	s.Equal(s.roomId, s.checkin.RoomId())
+}
+
+func (s *CheckinTestSuite) TestCheckin_CheckinDate() {
+	s.Equal(s.checkinDate, s.checkin.CheckinDate())
+}
+
+func (s *CheckinTestSuite) TestCheckin_CheckoutDate() {
+	s.Equal(s.checkoutDate, s.checkin.CheckoutDate())
 }
 
 func (s *CheckinTestSuite) TestNewCheckin() {
