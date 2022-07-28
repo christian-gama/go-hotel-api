@@ -10,13 +10,17 @@ import (
 
 type GuestTestSuite struct {
 	suite.Suite
+
+	guestId uint32
+	credits float32
+	roomIds []uint8
 }
 
-var (
-	guestId uint32  = 1
-	credits float32 = 0
-	roomIds []uint8 = []uint8{}
-)
+func (s *GuestTestSuite) SetupTest() {
+	s.guestId = 1
+	s.credits = 0.0
+	s.roomIds = []uint8{1, 2, 3}
+}
 
 func (s *GuestTestSuite) TestNewGuest() {
 	type args struct {
@@ -33,9 +37,9 @@ func (s *GuestTestSuite) TestNewGuest() {
 		{
 			name: "should create a new guest",
 			args: args{
-				id:      guestId,
-				credits: credits,
-				roomIds: roomIds,
+				id:      s.guestId,
+				credits: s.credits,
+				roomIds: s.roomIds,
 			},
 			err: nil,
 		},
@@ -43,25 +47,25 @@ func (s *GuestTestSuite) TestNewGuest() {
 			name: "should return an error when guest id is zero",
 			args: args{
 				id:      0,
-				credits: credits,
-				roomIds: roomIds,
+				credits: s.credits,
+				roomIds: s.roomIds,
 			},
 			err: fmt.Errorf("guest id must be greater than zero"),
 		},
 		{
 			name: "should return an error when guest credit is negative",
 			args: args{
-				id:      guestId,
+				id:      s.guestId,
 				credits: -1,
-				roomIds: roomIds,
+				roomIds: s.roomIds,
 			},
 			err: fmt.Errorf("guest credit cannot be negative"),
 		},
 		{
 			name: "should return an error when guest room id length is greater than 12",
 			args: args{
-				id:      guestId,
-				credits: credits,
+				id:      s.guestId,
+				credits: s.credits,
 				roomIds: make([]uint8, 13),
 			},
 			err: fmt.Errorf("guest cannot have more than %d rooms reserved at the same time", domain.MaxRooms),

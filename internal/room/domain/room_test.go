@@ -13,20 +13,24 @@ import (
 type RoomTestSuite struct {
 	suite.Suite
 
-	room *domain.Room
+	room        *domain.Room
+	id          uint32
+	name        string
+	description string
+	bedCount    uint8
+	price       float32
+	isAvailable bool
 }
 
-var (
-	id          uint32  = 1
-	name        string  = "Any name"
-	description string  = strings.Repeat("a", domain.MaxRoomDescriptionLen)
-	bedCount    uint8   = domain.MinRoomBedCount
-	price       float32 = domain.MinRoomPrice
-	isAvailable bool    = false
-)
-
 func (s *RoomTestSuite) SetupTest() {
-	room, err := domain.NewRoom(id, name, description, bedCount, price, isAvailable)
+	s.id = 1
+	s.name = "Any name"
+	s.description = strings.Repeat("a", domain.MaxRoomDescriptionLen)
+	s.bedCount = domain.MinRoomBedCount
+	s.price = domain.MinRoomPrice
+	s.isAvailable = false
+
+	room, err := domain.NewRoom(s.id, s.name, s.description, s.bedCount, s.price, s.isAvailable)
 	if err != nil {
 		s.Fail(err.Error())
 	}
@@ -35,23 +39,23 @@ func (s *RoomTestSuite) SetupTest() {
 }
 
 func (s *RoomTestSuite) TestRoom_Id() {
-	s.Equal(id, s.room.Id(), "should get the room id")
+	s.Equal(s.id, s.room.Id(), "should get the room id")
 }
 
 func (s *RoomTestSuite) TestRoom_Name() {
-	s.Equal(name, s.room.Name(), "should get the room name")
+	s.Equal(s.name, s.room.Name(), "should get the room name")
 }
 
 func (s *RoomTestSuite) TestRoom_Description() {
-	s.Equal(description, s.room.Description(), "should get the room description")
+	s.Equal(s.description, s.room.Description(), "should get the room description")
 }
 
 func (s *RoomTestSuite) TestRoom_BedCount() {
-	s.Equal(bedCount, s.room.BedCount(), "should get the room bed count")
+	s.Equal(s.bedCount, s.room.BedCount(), "should get the room bed count")
 }
 
 func (s *RoomTestSuite) TestRoom_Price() {
-	s.Equal(price, s.room.Price(), "should get the room price")
+	s.Equal(s.price, s.room.Price(), "should get the room price")
 }
 
 func (s *RoomTestSuite) TestRoom_IsAvailable() {
@@ -76,12 +80,12 @@ func (s *RoomTestSuite) TestNewRoom() {
 		{
 			name: "should create a new room",
 			args: args{
-				id:          id,
-				name:        name,
-				description: description,
-				bedCount:    bedCount,
-				price:       price,
-				isAvailable: isAvailable,
+				id:          s.id,
+				name:        s.name,
+				description: s.description,
+				bedCount:    s.bedCount,
+				price:       s.price,
+				isAvailable: s.isAvailable,
 			},
 
 			err: nil,
@@ -90,95 +94,95 @@ func (s *RoomTestSuite) TestNewRoom() {
 			name: "should return an error if id is zero",
 			args: args{
 				id:          0,
-				name:        name,
-				description: description,
-				bedCount:    bedCount,
-				price:       price,
-				isAvailable: isAvailable,
+				name:        s.name,
+				description: s.description,
+				bedCount:    s.bedCount,
+				price:       s.price,
+				isAvailable: s.isAvailable,
 			},
 			err: errors.New("room id must be greater than zero"),
 		},
 		{
 			name: "should return an error if name is empty",
 			args: args{
-				id:          id,
+				id:          s.id,
 				name:        "",
-				description: description,
-				bedCount:    bedCount,
-				price:       price,
-				isAvailable: isAvailable,
+				description: s.description,
+				bedCount:    s.bedCount,
+				price:       s.price,
+				isAvailable: s.isAvailable,
 			},
 			err: errors.New("room name cannot be empty"),
 		},
 		{
 			name: "should return an error if bed count is less than minimum",
 			args: args{
-				id:          id,
-				name:        name,
-				description: description,
+				id:          s.id,
+				name:        s.name,
+				description: s.description,
 				bedCount:    domain.MinRoomBedCount - 1,
-				price:       price,
-				isAvailable: isAvailable,
+				price:       s.price,
+				isAvailable: s.isAvailable,
 			},
 			err: fmt.Errorf("room bed count must have at least %d bed", domain.MinRoomBedCount),
 		},
 		{
 			name: "should return an error if bed count is greater than maximum",
 			args: args{
-				id:          id,
-				name:        name,
-				description: description,
+				id:          s.id,
+				name:        s.name,
+				description: s.description,
 				bedCount:    domain.MaxRoomBedCount + 1,
-				price:       price,
-				isAvailable: isAvailable,
+				price:       s.price,
+				isAvailable: s.isAvailable,
 			},
 			err: fmt.Errorf("room bed count must have less than %d beds", domain.MaxRoomBedCount),
 		},
 		{
 			name: "should return an error if price is less than minimum",
 			args: args{
-				id:          id,
-				name:        name,
-				description: description,
-				bedCount:    bedCount,
+				id:          s.id,
+				name:        s.name,
+				description: s.description,
+				bedCount:    s.bedCount,
 				price:       domain.MinRoomPrice - 1,
-				isAvailable: isAvailable,
+				isAvailable: s.isAvailable,
 			},
 			err: fmt.Errorf("room price must be greater equal than $ %.2f", domain.MinRoomPrice),
 		},
 		{
 			name: "should return an error if price is greater than the maximum",
 			args: args{
-				id:          id,
-				name:        name,
-				description: description,
-				bedCount:    bedCount,
+				id:          s.id,
+				name:        s.name,
+				description: s.description,
+				bedCount:    s.bedCount,
 				price:       domain.MaxRoomPrice + 1,
-				isAvailable: isAvailable,
+				isAvailable: s.isAvailable,
 			},
 			err: fmt.Errorf("room price must be less equal than $ %.2f", domain.MaxRoomPrice),
 		},
 		{
 			name: "should return an error if description is greater than maximum characters length",
 			args: args{
-				id:          id,
-				name:        name,
+				id:          s.id,
+				name:        s.name,
 				description: strings.Repeat("a", domain.MaxRoomDescriptionLen+1),
-				bedCount:    bedCount,
-				price:       domain.MaxRoomPrice + 1,
-				isAvailable: isAvailable,
+				bedCount:    s.bedCount,
+				price:       s.price,
+				isAvailable: s.isAvailable,
 			},
 			err: fmt.Errorf("room description must be less equal than %d characters", domain.MaxRoomDescriptionLen),
 		},
 		{
 			name: "should return an error if description is less than minimum characters length",
 			args: args{
-				id:          id,
-				name:        name,
+				id:          s.id,
+				name:        s.name,
 				description: strings.Repeat("a", domain.MinRoomDescriptionLen-1),
-				bedCount:    bedCount,
-				price:       domain.MaxRoomPrice + 1,
-				isAvailable: isAvailable,
+				bedCount:    s.bedCount,
+				price:       s.price,
+				isAvailable: s.isAvailable,
 			},
 			err: fmt.Errorf("room description must be greater equal than %d characters", domain.MinRoomDescriptionLen),
 		},
