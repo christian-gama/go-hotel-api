@@ -12,6 +12,8 @@ import (
 
 type RoomTestSuite struct {
 	suite.Suite
+
+	room *domain.Room
 }
 
 var (
@@ -20,7 +22,41 @@ var (
 	description string  = strings.Repeat("a", domain.MaxRoomDescriptionLen)
 	bedCount    uint8   = domain.MinRoomBedCount
 	price       float32 = domain.MinRoomPrice
+	isAvailable bool    = false
 )
+
+func (s *RoomTestSuite) SetupTest() {
+	room, err := domain.NewRoom(id, name, description, bedCount, price, isAvailable)
+	if err != nil {
+		s.Fail(err.Error())
+	}
+
+	s.room = room
+}
+
+func (s *RoomTestSuite) TestRoom_Id() {
+	s.Equal(id, s.room.Id(), "should get the room id")
+}
+
+func (s *RoomTestSuite) TestRoom_Name() {
+	s.Equal(name, s.room.Name(), "should get the room name")
+}
+
+func (s *RoomTestSuite) TestRoom_Description() {
+	s.Equal(description, s.room.Description(), "should get the room description")
+}
+
+func (s *RoomTestSuite) TestRoom_BedCount() {
+	s.Equal(bedCount, s.room.BedCount(), "should get the room bed count")
+}
+
+func (s *RoomTestSuite) TestRoom_Price() {
+	s.Equal(price, s.room.Price(), "should get the room price")
+}
+
+func (s *RoomTestSuite) TestRoom_IsAvailable() {
+	s.False(s.room.IsAvailable(), "should get the room status availability")
+}
 
 func (s *RoomTestSuite) TestNewRoom() {
 	type args struct {
@@ -29,6 +65,7 @@ func (s *RoomTestSuite) TestNewRoom() {
 		description string
 		bedCount    uint8
 		price       float32
+		isAvailable bool
 	}
 
 	tests := []struct {
@@ -44,6 +81,7 @@ func (s *RoomTestSuite) TestNewRoom() {
 				description: description,
 				bedCount:    bedCount,
 				price:       price,
+				isAvailable: isAvailable,
 			},
 
 			err: nil,
@@ -56,6 +94,7 @@ func (s *RoomTestSuite) TestNewRoom() {
 				description: description,
 				bedCount:    bedCount,
 				price:       price,
+				isAvailable: isAvailable,
 			},
 			err: errors.New("room id must be greater than zero"),
 		},
@@ -67,6 +106,7 @@ func (s *RoomTestSuite) TestNewRoom() {
 				description: description,
 				bedCount:    bedCount,
 				price:       price,
+				isAvailable: isAvailable,
 			},
 			err: errors.New("room name cannot be empty"),
 		},
@@ -78,6 +118,7 @@ func (s *RoomTestSuite) TestNewRoom() {
 				description: description,
 				bedCount:    domain.MinRoomBedCount - 1,
 				price:       price,
+				isAvailable: isAvailable,
 			},
 			err: fmt.Errorf("room bed count must have at least %d bed", domain.MinRoomBedCount),
 		},
@@ -89,6 +130,7 @@ func (s *RoomTestSuite) TestNewRoom() {
 				description: description,
 				bedCount:    domain.MaxRoomBedCount + 1,
 				price:       price,
+				isAvailable: isAvailable,
 			},
 			err: fmt.Errorf("room bed count must have less than %d beds", domain.MaxRoomBedCount),
 		},
@@ -100,6 +142,7 @@ func (s *RoomTestSuite) TestNewRoom() {
 				description: description,
 				bedCount:    bedCount,
 				price:       domain.MinRoomPrice - 1,
+				isAvailable: isAvailable,
 			},
 			err: fmt.Errorf("room price must be greater equal than $ %.2f", domain.MinRoomPrice),
 		},
@@ -111,6 +154,7 @@ func (s *RoomTestSuite) TestNewRoom() {
 				description: description,
 				bedCount:    bedCount,
 				price:       domain.MaxRoomPrice + 1,
+				isAvailable: isAvailable,
 			},
 			err: fmt.Errorf("room price must be less equal than $ %.2f", domain.MaxRoomPrice),
 		},
@@ -122,6 +166,7 @@ func (s *RoomTestSuite) TestNewRoom() {
 				description: strings.Repeat("a", domain.MaxRoomDescriptionLen+1),
 				bedCount:    bedCount,
 				price:       domain.MaxRoomPrice + 1,
+				isAvailable: isAvailable,
 			},
 			err: fmt.Errorf("room description must be less equal than %d characters", domain.MaxRoomDescriptionLen),
 		},
@@ -133,13 +178,14 @@ func (s *RoomTestSuite) TestNewRoom() {
 				description: strings.Repeat("a", domain.MinRoomDescriptionLen-1),
 				bedCount:    bedCount,
 				price:       domain.MaxRoomPrice + 1,
+				isAvailable: isAvailable,
 			},
 			err: fmt.Errorf("room description must be greater equal than %d characters", domain.MinRoomDescriptionLen),
 		},
 	}
 
 	for _, tt := range tests {
-		_, err := domain.NewRoom(tt.args.id, tt.args.name, tt.args.description, tt.args.bedCount, tt.args.price)
+		_, err := domain.NewRoom(tt.args.id, tt.args.name, tt.args.description, tt.args.bedCount, tt.args.price, false)
 		if tt.err != nil {
 			s.EqualError(err, tt.err.Error(), tt.name)
 		} else {

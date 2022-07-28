@@ -16,6 +16,21 @@ type Guest struct {
 	roomIds []uint8
 }
 
+// Id returns the guest id.
+func (g *Guest) Id() uint32 {
+	return g.id
+}
+
+// Credits returns the guest credits. It will never return a negative value.
+func (g *Guest) Credits() float32 {
+	return g.credits
+}
+
+// Checkin adds a room id to the guest's room ids. It will return an error if does not pass the validation.
+func (g *Guest) RoomIds() []uint8 {
+	return g.roomIds
+}
+
 // NewGuest creates a new guest. It will return an error if does not pass the validation.
 func NewGuest(
 	id uint32,

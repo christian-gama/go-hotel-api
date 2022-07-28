@@ -31,7 +31,37 @@ type Room struct {
 	description string
 	bedCount    uint8
 	price       float32
-	isBusy      bool
+	isAvailable bool
+}
+
+// Id returns the room id.
+func (r *Room) Id() uint32 {
+	return r.id
+}
+
+// Name returns the room name.
+func (r *Room) Name() string {
+	return r.name
+}
+
+// Description returns the room description.
+func (r *Room) Description() string {
+	return r.description
+}
+
+// BedCount returns the number of beds in the room.
+func (r *Room) BedCount() uint8 {
+	return r.bedCount
+}
+
+// Price returns the room price.
+func (r *Room) Price() float32 {
+	return r.price
+}
+
+// IsAvailable returns the room busy status.
+func (r *Room) IsAvailable() bool {
+	return r.isAvailable
 }
 
 // NewRoom creates a new room. It will return an error if does not pass the validation.
@@ -41,6 +71,7 @@ func NewRoom(
 	description string,
 	bedCount uint8,
 	price float32,
+	isAvailable bool,
 ) (*Room, error) {
 	if id == 0 {
 		return nil, fmt.Errorf("room id must be greater than zero")
@@ -75,11 +106,11 @@ func NewRoom(
 	}
 
 	return &Room{
-		id:          id,
-		name:        name,
-		description: description,
-		bedCount:    bedCount,
-		price:       price,
-		isBusy:      false,
+		id,
+		name,
+		description,
+		bedCount,
+		price,
+		isAvailable,
 	}, nil
 }

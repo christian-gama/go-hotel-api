@@ -22,6 +22,31 @@ type Checkin struct {
 	checkoutDate time.Time
 }
 
+// Id returns the checkin id.
+func (c *Checkin) Id() uint32 {
+	return c.id
+}
+
+// RoomId returns the room id that the guest is checking in to.
+func (c *Checkin) RoomId() uint32 {
+	return c.roomId
+}
+
+// Guest returns the guest that is checking in.
+func (c *Checkin) Guest() *Guest {
+	return c.guest
+}
+
+// CheckinDate returns the checkin date.
+func (c *Checkin) CheckinDate() time.Time {
+	return c.checkinDate
+}
+
+// CheckoutDate returns the checkout date.
+func (c *Checkin) CheckoutDate() time.Time {
+	return c.checkoutDate
+}
+
 // NewCheckin creates a new checkin. It will return an error if does not pass the validation.
 func NewCheckin(
 	id uint32,
