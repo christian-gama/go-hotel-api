@@ -21,8 +21,8 @@ type Guest struct {
 	roomIds []uint8
 }
 
-// Uuid returns the guest uuid.
-func (g *Guest) Uuid() string {
+// UUID returns the guest uuid.
+func (g *Guest) UUID() string {
 	return g.uuid
 }
 

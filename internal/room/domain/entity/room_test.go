@@ -39,7 +39,7 @@ func (s *RoomTestSuite) SetupTest() {
 }
 
 func (s *RoomTestSuite) TestRoom_Uuid() {
-	s.Equal(s.uuid, s.room.Uuid(), "should get the room uuid")
+	s.Equal(s.uuid, s.room.UUID(), "should get the room uuid")
 }
 
 func (s *RoomTestSuite) TestRoom_Name() {

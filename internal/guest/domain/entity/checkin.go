@@ -26,8 +26,8 @@ type Checkin struct {
 	checkoutDate time.Time
 }
 
-// Uuid returns the checkin id.
-func (c *Checkin) Uuid() string {
+// UUID returns the checkin id.
+func (c *Checkin) UUID() string {
 	return c.uuid
 }
 

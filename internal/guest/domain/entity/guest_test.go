@@ -32,7 +32,7 @@ func (s *GuestTestSuite) SetupTest() {
 }
 
 func (s *GuestTestSuite) TestGuest_Uuid() {
-	s.Equal(s.uuid, s.guest.Uuid())
+	s.Equal(s.uuid, s.guest.UUID())
 }
 
 func (s *GuestTestSuite) TestGuest_Credits() {

@@ -43,7 +43,7 @@ func (s *CheckinTestSuite) SetupTest() {
 }
 
 func (s *CheckinTestSuite) TestCheckin_Uuid() {
-	s.Equal(s.uuid, s.checkin.Uuid())
+	s.Equal(s.uuid, s.checkin.UUID())
 }
 
 func (s *CheckinTestSuite) TestCheckin_Guest() {

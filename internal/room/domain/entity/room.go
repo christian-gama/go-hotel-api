@@ -37,8 +37,8 @@ type Room struct {
 	isAvailable bool
 }
 
-// Uuid returns the room id.
-func (r *Room) Uuid() string {
+// UUID returns the room id.
+func (r *Room) UUID() string {
 	return r.uuid
 }
 
