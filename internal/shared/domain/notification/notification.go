@@ -22,10 +22,6 @@ func (n *Notification) AddErrorf(message string, v ...any) {
 	)
 }
 
-func (n *Notification) ClearErrors() {
-	n.errors = nil
-}
-
 func (n *Notification) HasErrors() bool {
 	return len(n.errors) > 0
 }
