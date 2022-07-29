@@ -14,7 +14,7 @@ type CheckinTestSuite struct {
 	suite.Suite
 
 	checkin      *entity.Checkin
-	checkinId    uint32
+	uuid         string
 	guest        *entity.Guest
 	roomId       uint32
 	checkinDate  time.Time
@@ -22,14 +22,14 @@ type CheckinTestSuite struct {
 }
 
 func (s *CheckinTestSuite) SetupTest() {
-	s.checkinId = 1
-	s.guest, _ = entity.NewGuest(1, 0, make([]uint8, entity.MaxRooms))
+	s.uuid = "12345678-1234-1234-1234-123456789012"
+	s.guest, _ = entity.NewGuest("12345678-1234-1234-123456789012", 0, make([]uint8, entity.MaxRooms))
 	s.roomId = 1
 	s.checkinDate = time.Now().Add(entity.WaitTimeToCheckin + (1 * time.Minute))
 	s.checkoutDate = time.Now().Add(entity.WaitTimeToCheckout + (1 * time.Minute))
 
 	checkin, err := entity.NewCheckin(
-		s.checkinId,
+		s.uuid,
 		s.guest,
 		s.roomId,
 		s.checkinDate,
@@ -42,8 +42,8 @@ func (s *CheckinTestSuite) SetupTest() {
 	s.checkin = checkin
 }
 
-func (s *CheckinTestSuite) TestCheckin_Id() {
-	s.Equal(s.checkinId, s.checkin.Id())
+func (s *CheckinTestSuite) TestCheckin_Uuid() {
+	s.Equal(s.uuid, s.checkin.Uuid())
 }
 
 func (s *CheckinTestSuite) TestCheckin_Guest() {
@@ -66,7 +66,7 @@ func (s *CheckinTestSuite) TestNewCheckin() {
 	const context = "checkin"
 
 	type args struct {
-		id           uint32
+		uuid         string
 		guest        *entity.Guest
 		roomId       uint32
 		checkinDate  time.Time
@@ -81,7 +81,7 @@ func (s *CheckinTestSuite) TestNewCheckin() {
 		{
 			name: "should create a new checkin",
 			args: args{
-				id:           s.checkinId,
+				uuid:         s.uuid,
 				guest:        s.guest,
 				roomId:       s.roomId,
 				checkinDate:  s.checkinDate,
@@ -90,20 +90,20 @@ func (s *CheckinTestSuite) TestNewCheckin() {
 			err: nil,
 		},
 		{
-			name: "should return an error when checkin id is zero",
+			name: "should return an error when checkin id empty",
 			args: args{
-				id:           0,
+				uuid:         "",
 				guest:        s.guest,
 				roomId:       s.roomId,
 				checkinDate:  s.checkinDate,
 				checkoutDate: s.checkoutDate,
 			},
-			err: fmt.Errorf("%s: %s", context, errors.NonZero("id")),
+			err: fmt.Errorf("%s: %s", context, errors.NonEmpty("uuid")),
 		},
 		{
 			name: "should return an error when room id is zero",
 			args: args{
-				id:           s.checkinId,
+				uuid:         s.uuid,
 				guest:        s.guest,
 				roomId:       0,
 				checkinDate:  s.checkinDate,
@@ -114,7 +114,7 @@ func (s *CheckinTestSuite) TestNewCheckin() {
 		{
 			name: "should return an error when guest is nil",
 			args: args{
-				id:           s.checkinId,
+				uuid:         s.uuid,
 				guest:        nil,
 				roomId:       s.roomId,
 				checkinDate:  s.checkinDate,
@@ -125,7 +125,7 @@ func (s *CheckinTestSuite) TestNewCheckin() {
 		{
 			name: "should return an error when checkout is made in less than minimum checkout wait time",
 			args: args{
-				id:           s.checkinId,
+				uuid:         s.uuid,
 				guest:        s.guest,
 				roomId:       s.roomId,
 				checkinDate:  s.checkinDate,
@@ -139,7 +139,7 @@ func (s *CheckinTestSuite) TestNewCheckin() {
 		{
 			name: "should return an error when checkin is made after checkout",
 			args: args{
-				id:           s.checkinId,
+				uuid:         s.uuid,
 				guest:        s.guest,
 				roomId:       s.roomId,
 				checkinDate:  s.checkoutDate.Add(1 * time.Minute),
@@ -151,7 +151,7 @@ func (s *CheckinTestSuite) TestNewCheckin() {
 
 	for _, tt := range tests {
 		_, err := entity.NewCheckin(
-			tt.args.id,
+			tt.args.uuid,
 			tt.args.guest,
 			tt.args.roomId,
 			tt.args.checkinDate,

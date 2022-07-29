@@ -29,7 +29,7 @@ const (
 type Room struct {
 	notification *notification.Notification
 
-	id          uint32
+	uuid        string
 	name        string
 	description string
 	bedCount    uint8
@@ -37,9 +37,9 @@ type Room struct {
 	isAvailable bool
 }
 
-// Id returns the room id.
-func (r *Room) Id() uint32 {
-	return r.id
+// Uuid returns the room id.
+func (r *Room) Uuid() string {
+	return r.uuid
 }
 
 // Name returns the room name.
@@ -70,8 +70,8 @@ func (r *Room) IsAvailable() bool {
 // validate ensure the entity is valid. It will add an error to notification each time
 // it fails a validation. It will return nil if the entity is valid.
 func (r *Room) validate() error {
-	if r.id == 0 {
-		r.notification.AddError(errors.NonZero("id"))
+	if r.uuid == "" {
+		r.notification.AddError(errors.NonEmpty("uuid"))
 	}
 
 	if r.name == "" {
@@ -111,7 +111,7 @@ func (r *Room) validate() error {
 
 // NewRoom creates a new room. It will return an error if does not pass the validation.
 func NewRoom(
-	id uint32,
+	uuid string,
 	name string,
 	description string,
 	bedCount uint8,
@@ -120,13 +120,13 @@ func NewRoom(
 ) (*Room, error) {
 	n := notification.New("room")
 	room := &Room{
-		n,
-		id,
-		name,
-		description,
-		bedCount,
-		price,
-		isAvailable,
+		uuid:         uuid,
+		notification: n,
+		name:         name,
+		description:  description,
+		bedCount:     bedCount,
+		price:        price,
+		isAvailable:  isAvailable,
 	}
 
 	if err := room.validate(); err != nil {

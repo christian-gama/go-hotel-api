@@ -19,16 +19,16 @@ const (
 type Checkin struct {
 	notification *notification.Notification
 
-	id           uint32
+	uuid         string
 	roomId       uint32
 	guest        *Guest
 	checkinDate  time.Time
 	checkoutDate time.Time
 }
 
-// Id returns the checkin id.
-func (c *Checkin) Id() uint32 {
-	return c.id
+// Uuid returns the checkin id.
+func (c *Checkin) Uuid() string {
+	return c.uuid
 }
 
 // RoomId returns the room id that the guest is checking in to.
@@ -54,8 +54,8 @@ func (c *Checkin) CheckoutDate() time.Time {
 // validate ensure the entity is valid. It will add an error to notification each time
 // it fails a validation. It will return nil if the entity is valid.
 func (c *Checkin) validate() error {
-	if c.id == 0 {
-		c.notification.AddError(errors.NonZero("id"))
+	if c.uuid == "" {
+		c.notification.AddError(errors.NonEmpty("uuid"))
 	}
 
 	if c.roomId == 0 {
@@ -83,7 +83,7 @@ func (c *Checkin) validate() error {
 
 // NewCheckin creates a new checkin. It will return an error if does not pass the validation.
 func NewCheckin(
-	id uint32,
+	uuid string,
 	guest *Guest,
 	roomId uint32,
 	checkinDate time.Time,
@@ -93,7 +93,7 @@ func NewCheckin(
 
 	checkin := &Checkin{
 		n,
-		id,
+		uuid,
 		roomId,
 		guest,
 		checkinDate,

@@ -16,14 +16,14 @@ const (
 type Guest struct {
 	notification *notification.Notification
 
-	id      uint32
+	uuid    string
 	credits float32
 	roomIds []uint8
 }
 
-// Id returns the guest id.
-func (g *Guest) Id() uint32 {
-	return g.id
+// Uuid returns the guest uuid.
+func (g *Guest) Uuid() string {
+	return g.uuid
 }
 
 // Credits returns the guest credits. It will never return a negative value.
@@ -39,8 +39,8 @@ func (g *Guest) RoomIds() []uint8 {
 // validate ensure the entity is valid. It will add an error to notification each time
 // it fails a validation. It will return nil if the entity is valid.
 func (g *Guest) validate() error {
-	if g.id == 0 {
-		g.notification.AddError(errors.NonZero("id"))
+	if g.uuid == "" {
+		g.notification.AddError(errors.NonEmpty("uuid"))
 	}
 
 	if g.credits < 0 {
@@ -60,14 +60,14 @@ func (g *Guest) validate() error {
 
 // NewGuest creates a new guest. It will return an error if does not pass the validation.
 func NewGuest(
-	id uint32,
+	uuid string,
 	credits float32,
 	roomIds []uint8,
 ) (*Guest, error) {
 	n := notification.New("guest")
 	guest := &Guest{
 		n,
-		id,
+		uuid,
 		credits,
 		roomIds,
 	}

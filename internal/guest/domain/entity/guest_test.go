@@ -13,17 +13,17 @@ type GuestTestSuite struct {
 	suite.Suite
 
 	guest   *entity.Guest
-	guestId uint32
+	uuid    string
 	credits float32
 	roomIds []uint8
 }
 
 func (s *GuestTestSuite) SetupTest() {
-	s.guestId = 1
+	s.uuid = "12345678-1234-1234-1234-123456789012"
 	s.credits = 0.0
 	s.roomIds = []uint8{1, 2, 3}
 
-	guest, err := entity.NewGuest(s.guestId, s.credits, s.roomIds)
+	guest, err := entity.NewGuest(s.uuid, s.credits, s.roomIds)
 	if err != nil {
 		s.Fail(err.Error())
 	}
@@ -31,8 +31,8 @@ func (s *GuestTestSuite) SetupTest() {
 	s.guest = guest
 }
 
-func (s *GuestTestSuite) TestGuest_Id() {
-	s.Equal(s.guestId, s.guest.Id())
+func (s *GuestTestSuite) TestGuest_Uuid() {
+	s.Equal(s.uuid, s.guest.Uuid())
 }
 
 func (s *GuestTestSuite) TestGuest_Credits() {
@@ -47,7 +47,7 @@ func (s *GuestTestSuite) TestNewGuest() {
 	const context = "guest"
 
 	type args struct {
-		id      uint32
+		uuid    string
 		credits float32
 		roomIds []uint8
 	}
@@ -60,25 +60,25 @@ func (s *GuestTestSuite) TestNewGuest() {
 		{
 			name: "should create a new guest",
 			args: args{
-				id:      s.guestId,
+				uuid:    s.uuid,
 				credits: s.credits,
 				roomIds: s.roomIds,
 			},
 			err: nil,
 		},
 		{
-			name: "should return an error when guest id is zero",
+			name: "should return an error when guest uuid is empty",
 			args: args{
-				id:      0,
+				uuid:    "",
 				credits: s.credits,
 				roomIds: s.roomIds,
 			},
-			err: fmt.Errorf("%s: %s", context, errors.NonZero("id")),
+			err: fmt.Errorf("%s: %s", context, errors.NonEmpty("uuid")),
 		},
 		{
 			name: "should return an error when guest credit is negative",
 			args: args{
-				id:      s.guestId,
+				uuid:    s.uuid,
 				credits: -1,
 				roomIds: s.roomIds,
 			},
@@ -87,7 +87,7 @@ func (s *GuestTestSuite) TestNewGuest() {
 		{
 			name: "should return an error when guest room id length is greater than max allowed rooms",
 			args: args{
-				id:      s.guestId,
+				uuid:    s.uuid,
 				credits: s.credits,
 				roomIds: make([]uint8, entity.MaxRooms+1),
 			},
@@ -96,7 +96,7 @@ func (s *GuestTestSuite) TestNewGuest() {
 	}
 
 	for _, tt := range tests {
-		_, err := entity.NewGuest(tt.args.id, tt.args.credits, tt.args.roomIds)
+		_, err := entity.NewGuest(tt.args.uuid, tt.args.credits, tt.args.roomIds)
 		if tt.err != nil {
 			s.EqualError(err, tt.err.Error(), tt.name)
 		} else {

@@ -14,7 +14,7 @@ type RoomTestSuite struct {
 	suite.Suite
 
 	room        *entity.Room
-	id          uint32
+	uuid        string
 	name        string
 	description string
 	bedCount    uint8
@@ -23,14 +23,14 @@ type RoomTestSuite struct {
 }
 
 func (s *RoomTestSuite) SetupTest() {
-	s.id = 1
+	s.uuid = "12345678-1234-1234-1234-123456789012"
 	s.name = "Any name"
 	s.description = strings.Repeat("a", entity.MaxRoomDescriptionLen)
 	s.bedCount = entity.MinRoomBedCount
 	s.price = entity.MinRoomPrice
 	s.isAvailable = false
 
-	room, err := entity.NewRoom(s.id, s.name, s.description, s.bedCount, s.price, s.isAvailable)
+	room, err := entity.NewRoom(s.uuid, s.name, s.description, s.bedCount, s.price, s.isAvailable)
 	if err != nil {
 		s.Fail(err.Error())
 	}
@@ -38,8 +38,8 @@ func (s *RoomTestSuite) SetupTest() {
 	s.room = room
 }
 
-func (s *RoomTestSuite) TestRoom_Id() {
-	s.Equal(s.id, s.room.Id(), "should get the room id")
+func (s *RoomTestSuite) TestRoom_Uuid() {
+	s.Equal(s.uuid, s.room.Uuid(), "should get the room uuid")
 }
 
 func (s *RoomTestSuite) TestRoom_Name() {
@@ -66,7 +66,7 @@ func (s *RoomTestSuite) TestNewRoom() {
 	const context = "room"
 
 	type args struct {
-		id          uint32
+		uuid        string
 		name        string
 		description string
 		bedCount    uint8
@@ -82,7 +82,7 @@ func (s *RoomTestSuite) TestNewRoom() {
 		{
 			name: "should create a new room",
 			args: args{
-				id:          s.id,
+				uuid:        s.uuid,
 				name:        s.name,
 				description: s.description,
 				bedCount:    s.bedCount,
@@ -93,21 +93,21 @@ func (s *RoomTestSuite) TestNewRoom() {
 			err: nil,
 		},
 		{
-			name: "should return an error if id is zero",
+			name: "should return an error if uuid is empty",
 			args: args{
-				id:          0,
+				uuid:        "",
 				name:        s.name,
 				description: s.description,
 				bedCount:    s.bedCount,
 				price:       s.price,
 				isAvailable: s.isAvailable,
 			},
-			err: fmt.Errorf("%s: id must be greater than zero", context),
+			err: fmt.Errorf("%s: %s", context, errors.NonEmpty("uuid")),
 		},
 		{
 			name: "should return an error if name is empty",
 			args: args{
-				id:          s.id,
+				uuid:        s.uuid,
 				name:        "",
 				description: s.description,
 				bedCount:    s.bedCount,
@@ -119,7 +119,7 @@ func (s *RoomTestSuite) TestNewRoom() {
 		{
 			name: "should return an error if description is greater than maximum characters length",
 			args: args{
-				id:          s.id,
+				uuid:        s.uuid,
 				name:        s.name,
 				description: strings.Repeat("a", entity.MaxRoomDescriptionLen+1),
 				bedCount:    s.bedCount,
@@ -133,7 +133,7 @@ func (s *RoomTestSuite) TestNewRoom() {
 		{
 			name: "should return an error if description is less than minimum characters length",
 			args: args{
-				id:          s.id,
+				uuid:        s.uuid,
 				name:        s.name,
 				description: strings.Repeat("a", entity.MinRoomDescriptionLen-1),
 				bedCount:    s.bedCount,
@@ -147,7 +147,7 @@ func (s *RoomTestSuite) TestNewRoom() {
 		{
 			name: "should return an error if bed count is less than minimum",
 			args: args{
-				id:          s.id,
+				uuid:        s.uuid,
 				name:        s.name,
 				description: s.description,
 				bedCount:    entity.MinRoomBedCount - 1,
@@ -161,7 +161,7 @@ func (s *RoomTestSuite) TestNewRoom() {
 		{
 			name: "should return an error if bed count is greater than maximum",
 			args: args{
-				id:          s.id,
+				uuid:        s.uuid,
 				name:        s.name,
 				description: s.description,
 				bedCount:    entity.MaxRoomBedCount + 1,
@@ -175,7 +175,7 @@ func (s *RoomTestSuite) TestNewRoom() {
 		{
 			name: "should return an error if price is less than minimum",
 			args: args{
-				id:          s.id,
+				uuid:        s.uuid,
 				name:        s.name,
 				description: s.description,
 				bedCount:    s.bedCount,
@@ -189,7 +189,7 @@ func (s *RoomTestSuite) TestNewRoom() {
 		{
 			name: "should return an error if price is greater than the maximum",
 			args: args{
-				id:          s.id,
+				uuid:        s.uuid,
 				name:        s.name,
 				description: s.description,
 				bedCount:    s.bedCount,
@@ -203,7 +203,14 @@ func (s *RoomTestSuite) TestNewRoom() {
 	}
 
 	for _, tt := range tests {
-		_, err := entity.NewRoom(tt.args.id, tt.args.name, tt.args.description, tt.args.bedCount, tt.args.price, false)
+		_, err := entity.NewRoom(
+			tt.args.uuid,
+			tt.args.name,
+			tt.args.description,
+			tt.args.bedCount,
+			tt.args.price,
+			false,
+		)
 		if tt.err != nil {
 			s.EqualError(err, tt.err.Error(), tt.name)
 		} else {
