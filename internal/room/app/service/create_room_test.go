@@ -16,7 +16,7 @@ import (
 type CreateRoomServiceTestSuite struct {
 	suite.Suite
 
-	createRoom *service.CreateRoom
+	createRoom service.CreateRoomService
 	repo       *mocks.Room
 	uuid       *mocks.UUID
 }
