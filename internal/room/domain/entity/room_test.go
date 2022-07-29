@@ -203,19 +203,21 @@ func (s *RoomTestSuite) TestNewRoom() {
 	}
 
 	for _, tt := range tests {
-		_, err := entity.NewRoom(
-			tt.args.uuid,
-			tt.args.name,
-			tt.args.description,
-			tt.args.bedCount,
-			tt.args.price,
-			false,
-		)
-		if tt.err != nil {
-			s.EqualError(err, tt.err.Error(), tt.name)
-		} else {
-			s.NoError(err, tt.name)
-		}
+		s.Run(tt.name, func() {
+			_, err := entity.NewRoom(
+				tt.args.uuid,
+				tt.args.name,
+				tt.args.description,
+				tt.args.bedCount,
+				tt.args.price,
+				false,
+			)
+			if tt.err != nil {
+				s.EqualError(err, tt.err.Error())
+			} else {
+				s.NoError(err)
+			}
+		})
 	}
 }
 

@@ -96,12 +96,14 @@ func (s *GuestTestSuite) TestNewGuest() {
 	}
 
 	for _, tt := range tests {
-		_, err := entity.NewGuest(tt.args.uuid, tt.args.credits, tt.args.roomIds)
-		if tt.err != nil {
-			s.EqualError(err, tt.err.Error(), tt.name)
-		} else {
-			s.Nil(err, tt.name)
-		}
+		s.Run(tt.name, func() {
+			_, err := entity.NewGuest(tt.args.uuid, tt.args.credits, tt.args.roomIds)
+			if tt.err != nil {
+				s.EqualError(err, tt.err.Error())
+			} else {
+				s.Nil(err)
+			}
+		})
 	}
 }
 
