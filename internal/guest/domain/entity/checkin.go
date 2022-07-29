@@ -1,8 +1,10 @@
 package entity
 
 import (
-	"fmt"
 	"time"
+
+	"github.com/christian-gama/go-booking-api/internal/shared/domain/errors"
+	"github.com/christian-gama/go-booking-api/internal/shared/domain/notification"
 )
 
 const (
@@ -15,6 +17,8 @@ const (
 
 // Checkin represents a reservation of a room for a guest.
 type Checkin struct {
+	notification *notification.Notification
+
 	id           uint32
 	roomId       uint32
 	guest        *Guest
@@ -47,6 +51,36 @@ func (c *Checkin) CheckoutDate() time.Time {
 	return c.checkoutDate
 }
 
+// validate ensure the entity is valid. It will add an error to notification each time
+// it fails a validation. It will return nil if the entity is valid.
+func (c *Checkin) validate() error {
+	if c.id == 0 {
+		c.notification.AddError(errors.NonZero("id"))
+	}
+
+	if c.roomId == 0 {
+		c.notification.AddError(errors.NonZero("room id"))
+	}
+
+	if c.guest == nil {
+		c.notification.AddError(errors.NonNil("guest"))
+	}
+
+	if c.checkoutDate.Before(c.checkinDate) {
+		c.notification.AddError(errors.NonDateBefore("checkout date", "checkin date"))
+	}
+
+	if time.Until(c.checkoutDate) < WaitTimeToCheckout {
+		c.notification.AddError(errors.MustBeMadeAfter("checkout", WaitTimeToCheckout.Hours(), "hours", "checkin"))
+	}
+
+	if c.notification.HasErrors() {
+		return c.notification.Error()
+	}
+
+	return nil
+}
+
 // NewCheckin creates a new checkin. It will return an error if does not pass the validation.
 func NewCheckin(
 	id uint32,
@@ -55,35 +89,20 @@ func NewCheckin(
 	checkinDate time.Time,
 	checkoutDate time.Time,
 ) (*Checkin, error) {
-	if id == 0 {
-		return nil, fmt.Errorf("checkin id must be greater than zero")
+	n := notification.New("checkin")
+
+	checkin := &Checkin{
+		n,
+		id,
+		roomId,
+		guest,
+		checkinDate,
+		checkoutDate,
 	}
 
-	if roomId == 0 {
-		return nil, fmt.Errorf("room id must be greater than zero")
+	if err := checkin.validate(); err != nil {
+		return nil, err
 	}
 
-	if guest == nil {
-		return nil, fmt.Errorf("guest must not be nil")
-	}
-
-	if checkoutDate.Before(checkinDate) {
-		return nil, fmt.Errorf("checkin cannot be made after checkout")
-	}
-
-	if time.Until(checkinDate) < WaitTimeToCheckin {
-		return nil, fmt.Errorf("checkin must be made at least %.0f hour from now", WaitTimeToCheckin.Hours())
-	}
-
-	if time.Until(checkoutDate) < WaitTimeToCheckout {
-		return nil, fmt.Errorf("checkout must be made at least %.0f hour after checkin", WaitTimeToCheckout.Hours())
-	}
-
-	return &Checkin{
-		id:           id,
-		roomId:       roomId,
-		guest:        guest,
-		checkinDate:  checkinDate,
-		checkoutDate: checkoutDate,
-	}, nil
+	return checkin, nil
 }

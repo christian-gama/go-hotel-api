@@ -1,7 +1,8 @@
 package entity
 
 import (
-	"fmt"
+	"github.com/christian-gama/go-booking-api/internal/shared/domain/errors"
+	"github.com/christian-gama/go-booking-api/internal/shared/domain/notification"
 )
 
 const (
@@ -26,6 +27,8 @@ const (
 
 // Room represents a room in the hotel.
 type Room struct {
+	notification *notification.Notification
+
 	id          uint32
 	name        string
 	description string
@@ -64,6 +67,48 @@ func (r *Room) IsAvailable() bool {
 	return r.isAvailable
 }
 
+// validate ensure the entity is valid. It will add an error to notification each time
+// it fails a validation. It will return nil if the entity is valid.
+func (r *Room) validate() error {
+	if r.id == 0 {
+		r.notification.AddError(errors.NonZero("id"))
+	}
+
+	if r.name == "" {
+		r.notification.AddError(errors.NonEmpty("name"))
+	}
+
+	if len(r.description) > MaxRoomDescriptionLen {
+		r.notification.AddError(errors.MaxLength("description", MaxRoomDescriptionLen))
+	}
+
+	if len(r.description) < MinRoomDescriptionLen {
+		r.notification.AddError(errors.MinLength("description", MinRoomDescriptionLen))
+	}
+
+	if r.bedCount < MinRoomBedCount {
+		r.notification.AddError(errors.Min("bed count", MinRoomBedCount))
+	}
+
+	if r.bedCount > MaxRoomBedCount {
+		r.notification.AddError(errors.Max("bed count", MaxRoomBedCount))
+	}
+
+	if r.price < MinRoomPrice {
+		r.notification.AddError(errors.Min("price", MinRoomPrice))
+	}
+
+	if r.price > MaxRoomPrice {
+		r.notification.AddError(errors.Max("price", MaxRoomPrice))
+	}
+
+	if r.notification.HasErrors() {
+		return r.notification.Error()
+	}
+
+	return nil
+}
+
 // NewRoom creates a new room. It will return an error if does not pass the validation.
 func NewRoom(
 	id uint32,
@@ -73,44 +118,20 @@ func NewRoom(
 	price float32,
 	isAvailable bool,
 ) (*Room, error) {
-	if id == 0 {
-		return nil, fmt.Errorf("room id must be greater than zero")
-	}
-
-	if name == "" {
-		return nil, fmt.Errorf("room name cannot be empty")
-	}
-
-	if len(description) > MaxRoomDescriptionLen {
-		return nil, fmt.Errorf("room description must be less equal than %d characters", MaxRoomDescriptionLen)
-	}
-
-	if len(description) < MinRoomDescriptionLen {
-		return nil, fmt.Errorf("room description must be greater equal than %d characters", MinRoomDescriptionLen)
-	}
-
-	if bedCount < MinRoomBedCount {
-		return nil, fmt.Errorf("room bed count must have at least %d bed", MinRoomBedCount)
-	}
-
-	if bedCount > MaxRoomBedCount {
-		return nil, fmt.Errorf("room bed count must have less than %d beds", MaxRoomBedCount)
-	}
-
-	if price < MinRoomPrice {
-		return nil, fmt.Errorf("room price must be greater equal than $ %.2f", MinRoomPrice)
-	}
-
-	if price > MaxRoomPrice {
-		return nil, fmt.Errorf("room price must be less equal than $ %.2f", MaxRoomPrice)
-	}
-
-	return &Room{
+	n := notification.New("room")
+	room := &Room{
+		n,
 		id,
 		name,
 		description,
 		bedCount,
 		price,
 		isAvailable,
-	}, nil
+	}
+
+	if err := room.validate(); err != nil {
+		return nil, err
+	}
+
+	return room, nil
 }

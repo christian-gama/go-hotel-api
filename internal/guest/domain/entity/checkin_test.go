@@ -6,6 +6,7 @@ import (
 	"time"
 
 	"github.com/christian-gama/go-booking-api/internal/guest/domain/entity"
+	"github.com/christian-gama/go-booking-api/internal/shared/domain/errors"
 	"github.com/stretchr/testify/suite"
 )
 
@@ -62,6 +63,8 @@ func (s *CheckinTestSuite) TestCheckin_CheckoutDate() {
 }
 
 func (s *CheckinTestSuite) TestNewCheckin() {
+	const context = "checkin"
+
 	type args struct {
 		id           uint32
 		guest        *entity.Guest
@@ -95,7 +98,7 @@ func (s *CheckinTestSuite) TestNewCheckin() {
 				checkinDate:  s.checkinDate,
 				checkoutDate: s.checkoutDate,
 			},
-			err: fmt.Errorf("checkin id must be greater than zero"),
+			err: fmt.Errorf("%s: %s", context, errors.NonZero("id")),
 		},
 		{
 			name: "should return an error when room id is zero",
@@ -106,7 +109,7 @@ func (s *CheckinTestSuite) TestNewCheckin() {
 				checkinDate:  s.checkinDate,
 				checkoutDate: s.checkoutDate,
 			},
-			err: fmt.Errorf("room id must be greater than zero"),
+			err: fmt.Errorf("%s: %s", context, errors.NonZero("room id")),
 		},
 		{
 			name: "should return an error when guest is nil",
@@ -117,18 +120,7 @@ func (s *CheckinTestSuite) TestNewCheckin() {
 				checkinDate:  s.checkinDate,
 				checkoutDate: s.checkoutDate,
 			},
-			err: fmt.Errorf("guest must not be nil"),
-		},
-		{
-			name: "should return an error when checkin is made in less than the wait time to checkin",
-			args: args{
-				id:           s.checkinId,
-				guest:        s.guest,
-				roomId:       s.roomId,
-				checkinDate:  time.Now().Add(-1 * time.Minute),
-				checkoutDate: s.checkoutDate,
-			},
-			err: fmt.Errorf("checkin must be made at least %.0f hour from now", entity.WaitTimeToCheckin.Hours()),
+			err: fmt.Errorf("%s: %s", context, errors.NonNil("guest")),
 		},
 		{
 			name: "should return an error when checkout is made in less than minimum checkout wait time",
@@ -140,7 +132,8 @@ func (s *CheckinTestSuite) TestNewCheckin() {
 				checkoutDate: time.Now().Add(entity.WaitTimeToCheckout - (1 * time.Minute)),
 			},
 			err: fmt.Errorf(
-				"checkout must be made at least %.0f hour after checkin", entity.WaitTimeToCheckout.Hours(),
+				"%s: %s",
+				context, errors.MustBeMadeAfter("checkout", entity.WaitTimeToCheckout.Hours(), "hours", "checkin"),
 			),
 		},
 		{
@@ -152,7 +145,7 @@ func (s *CheckinTestSuite) TestNewCheckin() {
 				checkinDate:  s.checkoutDate.Add(1 * time.Minute),
 				checkoutDate: s.checkoutDate,
 			},
-			err: fmt.Errorf("checkin cannot be made after checkout"),
+			err: fmt.Errorf("%s: %s", context, errors.NonDateBefore("checkout date", "checkin date")),
 		},
 	}
 

@@ -20,12 +20,11 @@ type Notification struct {
 	errors  []*ErrorProps
 }
 
-// AddErrorf adds an error to the notification and formats the message with the given arguments.
-// Is equivalent to call AddError with the result of fmt.Sprintf.
-func (n *Notification) AddErrorf(message string, v ...any) {
+// AddError fadds an error to the notification.
+func (n *Notification) AddError(err error) {
 	n.errors = append(
 		n.errors,
-		&ErrorProps{Message: fmt.Sprintf(message, v...), Context: n.context},
+		&ErrorProps{Message: err.Error(), Context: n.context},
 	)
 }
 
@@ -37,6 +36,18 @@ func (n *Notification) HasErrors() bool {
 // Errors returns a slice of the errors of the notification.
 func (n *Notification) Errors() []*ErrorProps {
 	return n.errors
+}
+
+// Error returns the error message of the notification. It will concatenate all the error messages
+// with a comma and add the context to the message. For example, if the notification has two errors,
+// the message will be `context:message1,context:message2`.
+func (n *Notification) Error() error {
+	var message string
+	for _, e := range n.errors {
+		message += fmt.Sprintf("%s: %s,", e.Context, e.Message)
+	}
+
+	return fmt.Errorf(strings.Trim(message, ","))
 }
 
 // New creates a new notification with the given context.

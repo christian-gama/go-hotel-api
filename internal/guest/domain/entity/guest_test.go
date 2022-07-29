@@ -5,6 +5,7 @@ import (
 	"testing"
 
 	"github.com/christian-gama/go-booking-api/internal/guest/domain/entity"
+	"github.com/christian-gama/go-booking-api/internal/shared/domain/errors"
 	"github.com/stretchr/testify/suite"
 )
 
@@ -43,6 +44,8 @@ func (s *GuestTestSuite) TestGuest_RoomIds() {
 }
 
 func (s *GuestTestSuite) TestNewGuest() {
+	const context = "guest"
+
 	type args struct {
 		id      uint32
 		credits float32
@@ -70,7 +73,7 @@ func (s *GuestTestSuite) TestNewGuest() {
 				credits: s.credits,
 				roomIds: s.roomIds,
 			},
-			err: fmt.Errorf("guest id must be greater than zero"),
+			err: fmt.Errorf("%s: %s", context, errors.NonZero("id")),
 		},
 		{
 			name: "should return an error when guest credit is negative",
@@ -79,16 +82,16 @@ func (s *GuestTestSuite) TestNewGuest() {
 				credits: -1,
 				roomIds: s.roomIds,
 			},
-			err: fmt.Errorf("guest credit cannot be negative"),
+			err: fmt.Errorf("%s: %s", context, errors.NonNegative("credits")),
 		},
 		{
-			name: "should return an error when guest room id length is greater than 12",
+			name: "should return an error when guest room id length is greater than max allowed rooms",
 			args: args{
 				id:      s.guestId,
 				credits: s.credits,
-				roomIds: make([]uint8, 13),
+				roomIds: make([]uint8, entity.MaxRooms+1),
 			},
-			err: fmt.Errorf("guest cannot have more than %d rooms reserved at the same time", entity.MaxRooms),
+			err: fmt.Errorf("%s: %s", context, errors.MaxLength("rooms", entity.MaxRooms)),
 		},
 	}
 

@@ -1,12 +1,12 @@
 package entity_test
 
 import (
-	"errors"
 	"fmt"
 	"strings"
 	"testing"
 
 	"github.com/christian-gama/go-booking-api/internal/room/domain/entity"
+	"github.com/christian-gama/go-booking-api/internal/shared/domain/errors"
 	"github.com/stretchr/testify/suite"
 )
 
@@ -63,6 +63,8 @@ func (s *RoomTestSuite) TestRoom_IsAvailable() {
 }
 
 func (s *RoomTestSuite) TestNewRoom() {
+	const context = "room"
+
 	type args struct {
 		id          uint32
 		name        string
@@ -100,7 +102,7 @@ func (s *RoomTestSuite) TestNewRoom() {
 				price:       s.price,
 				isAvailable: s.isAvailable,
 			},
-			err: errors.New("room id must be greater than zero"),
+			err: fmt.Errorf("%s: id must be greater than zero", context),
 		},
 		{
 			name: "should return an error if name is empty",
@@ -112,55 +114,7 @@ func (s *RoomTestSuite) TestNewRoom() {
 				price:       s.price,
 				isAvailable: s.isAvailable,
 			},
-			err: errors.New("room name cannot be empty"),
-		},
-		{
-			name: "should return an error if bed count is less than minimum",
-			args: args{
-				id:          s.id,
-				name:        s.name,
-				description: s.description,
-				bedCount:    entity.MinRoomBedCount - 1,
-				price:       s.price,
-				isAvailable: s.isAvailable,
-			},
-			err: fmt.Errorf("room bed count must have at least %d bed", entity.MinRoomBedCount),
-		},
-		{
-			name: "should return an error if bed count is greater than maximum",
-			args: args{
-				id:          s.id,
-				name:        s.name,
-				description: s.description,
-				bedCount:    entity.MaxRoomBedCount + 1,
-				price:       s.price,
-				isAvailable: s.isAvailable,
-			},
-			err: fmt.Errorf("room bed count must have less than %d beds", entity.MaxRoomBedCount),
-		},
-		{
-			name: "should return an error if price is less than minimum",
-			args: args{
-				id:          s.id,
-				name:        s.name,
-				description: s.description,
-				bedCount:    s.bedCount,
-				price:       entity.MinRoomPrice - 1,
-				isAvailable: s.isAvailable,
-			},
-			err: fmt.Errorf("room price must be greater equal than $ %.2f", entity.MinRoomPrice),
-		},
-		{
-			name: "should return an error if price is greater than the maximum",
-			args: args{
-				id:          s.id,
-				name:        s.name,
-				description: s.description,
-				bedCount:    s.bedCount,
-				price:       entity.MaxRoomPrice + 1,
-				isAvailable: s.isAvailable,
-			},
-			err: fmt.Errorf("room price must be less equal than $ %.2f", entity.MaxRoomPrice),
+			err: fmt.Errorf("%s: %s", context, errors.NonEmpty("name")),
 		},
 		{
 			name: "should return an error if description is greater than maximum characters length",
@@ -172,7 +126,9 @@ func (s *RoomTestSuite) TestNewRoom() {
 				price:       s.price,
 				isAvailable: s.isAvailable,
 			},
-			err: fmt.Errorf("room description must be less equal than %d characters", entity.MaxRoomDescriptionLen),
+			err: fmt.Errorf(
+				"%s: %s", context, errors.MaxLength("description", entity.MaxRoomDescriptionLen),
+			),
 		},
 		{
 			name: "should return an error if description is less than minimum characters length",
@@ -184,7 +140,65 @@ func (s *RoomTestSuite) TestNewRoom() {
 				price:       s.price,
 				isAvailable: s.isAvailable,
 			},
-			err: fmt.Errorf("room description must be greater equal than %d characters", entity.MinRoomDescriptionLen),
+			err: fmt.Errorf(
+				"%s: %s", context, errors.MinLength("description", entity.MinRoomDescriptionLen),
+			),
+		},
+		{
+			name: "should return an error if bed count is less than minimum",
+			args: args{
+				id:          s.id,
+				name:        s.name,
+				description: s.description,
+				bedCount:    entity.MinRoomBedCount - 1,
+				price:       s.price,
+				isAvailable: s.isAvailable,
+			},
+			err: fmt.Errorf(
+				"%s: %s", context, errors.Min("bed count", entity.MinRoomBedCount),
+			),
+		},
+		{
+			name: "should return an error if bed count is greater than maximum",
+			args: args{
+				id:          s.id,
+				name:        s.name,
+				description: s.description,
+				bedCount:    entity.MaxRoomBedCount + 1,
+				price:       s.price,
+				isAvailable: s.isAvailable,
+			},
+			err: fmt.Errorf(
+				"%s: %s", context, errors.Max("bed count", entity.MaxRoomBedCount),
+			),
+		},
+		{
+			name: "should return an error if price is less than minimum",
+			args: args{
+				id:          s.id,
+				name:        s.name,
+				description: s.description,
+				bedCount:    s.bedCount,
+				price:       entity.MinRoomPrice - 1,
+				isAvailable: s.isAvailable,
+			},
+			err: fmt.Errorf(
+				"%s: %s", context, errors.Min("price", entity.MinRoomPrice),
+			),
+		},
+		{
+			name: "should return an error if price is greater than the maximum",
+			args: args{
+				id:          s.id,
+				name:        s.name,
+				description: s.description,
+				bedCount:    s.bedCount,
+				price:       entity.MaxRoomPrice + 1,
+				isAvailable: s.isAvailable,
+			},
+			err: fmt.Errorf(
+				"%s: %s", context, errors.Max("price", entity.MaxRoomPrice),
+			),
 		},
 	}
 
