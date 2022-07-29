@@ -5,8 +5,8 @@ import (
 	"strings"
 )
 
-// ErrorProps represents the error properties of a notification.
-type ErrorProps struct {
+// Error represents the error properties of a notification.
+type Error struct {
 	// Message is the error message.
 	Message string
 
@@ -17,14 +17,14 @@ type ErrorProps struct {
 // Notification represents the notification of a domain, which is a collection of errors.
 type Notification struct {
 	context string
-	errors  []*ErrorProps
+	errors  []*Error
 }
 
 // AddError fadds an error to the notification.
 func (n *Notification) AddError(err error) {
 	n.errors = append(
 		n.errors,
-		&ErrorProps{Message: err.Error(), Context: n.context},
+		&Error{Message: err.Error(), Context: n.context},
 	)
 }
 
@@ -34,7 +34,7 @@ func (n *Notification) HasErrors() bool {
 }
 
 // Errors returns a slice of the errors of the notification.
-func (n *Notification) Errors() []*ErrorProps {
+func (n *Notification) Errors() []*Error {
 	return n.errors
 }
 

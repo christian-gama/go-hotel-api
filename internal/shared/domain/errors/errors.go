@@ -2,6 +2,7 @@ package errors
 
 import "fmt"
 
+// numbers represents a generic number type.
 type numbers interface {
 	int | float64 | float32 | uint | uint8 | uint16 | uint32 | uint64
 }

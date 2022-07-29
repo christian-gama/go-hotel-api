@@ -31,7 +31,7 @@ func (s *NotificationTestSuite) TestNotification_HasErrors() {
 
 func (s *NotificationTestSuite) TestNotification_Error() {
 	type args struct {
-		errors []*notification.ErrorProps
+		errors []*notification.Error
 	}
 
 	tests := []struct {
@@ -42,7 +42,7 @@ func (s *NotificationTestSuite) TestNotification_Error() {
 		{
 			name: "should return the error message",
 			args: args{
-				errors: []*notification.ErrorProps{
+				errors: []*notification.Error{
 					{
 						Message: "message",
 						Context: "context",
@@ -54,7 +54,7 @@ func (s *NotificationTestSuite) TestNotification_Error() {
 		{
 			name: "should return the error message",
 			args: args{
-				errors: []*notification.ErrorProps{
+				errors: []*notification.Error{
 					{
 						Message: "message",
 						Context: "context",

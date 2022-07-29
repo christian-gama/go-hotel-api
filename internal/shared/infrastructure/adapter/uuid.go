@@ -7,10 +7,12 @@ import (
 
 type uuidImpl struct{}
 
+// Generate generates a new UUID string.
 func (u *uuidImpl) Generate() string {
 	return guuid.New().String()
 }
 
-func NewUuid() uuid.UUID {
+// NewUUID returns a new UUID adapter.
+func NewUUID() uuid.UUID {
 	return &uuidImpl{}
 }

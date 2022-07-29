@@ -15,7 +15,7 @@ type UuidTestSuite struct {
 }
 
 func (s *UuidTestSuite) SetupTest() {
-	s.uuid = adapter.NewUuid()
+	s.uuid = adapter.NewUUID()
 }
 
 func (s *UuidTestSuite) TestUuid_Generate() {

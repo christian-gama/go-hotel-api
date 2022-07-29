@@ -1,7 +1,6 @@
 package service_test
 
 import (
-	"errors"
 	"fmt"
 	"testing"
 
@@ -84,12 +83,14 @@ func (s *CreateRoomServiceTestSuite) TestCreateRoom_Handle() {
 				input: input,
 			},
 			wantErr: &exception.Error{
-				Name:    "BadRequest",
-				Message: "any error",
+				Name:    "any name",
+				Message: "any message",
 			},
 			mock: func() (*mock.Call, *mock.Call) {
 				mockGenerate := s.uuid.On("Generate").Return("uuid")
-				mockSaveRoom := s.repository.On("SaveRoom", mock.Anything).Return(nil, errors.New("any error"))
+				mockSaveRoom := s.repository.On("SaveRoom", mock.Anything).Return(
+					nil, &exception.Error{Message: "any message", Name: "any name"},
+				)
 				return mockGenerate, mockSaveRoom
 			},
 		},
