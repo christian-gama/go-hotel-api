@@ -3,8 +3,8 @@ package uuid_test
 import (
 	"testing"
 
-	"github.com/christian-gama/go-booking-api/internal/shared/application/uuid"
-	uuidImpl "github.com/christian-gama/go-booking-api/internal/shared/infrastructure/uuid"
+	"github.com/christian-gama/go-booking-api/internal/shared/app/uuid"
+	uuidImpl "github.com/christian-gama/go-booking-api/internal/shared/infra/uuid"
 	"github.com/stretchr/testify/suite"
 )
 

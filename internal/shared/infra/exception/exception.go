@@ -1,6 +1,6 @@
 package exception
 
-import "github.com/christian-gama/go-booking-api/internal/shared/application/exception"
+import "github.com/christian-gama/go-booking-api/internal/shared/app/exception"
 
 type exceptionImpl struct{}
 

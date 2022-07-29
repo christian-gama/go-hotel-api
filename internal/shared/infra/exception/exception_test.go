@@ -3,8 +3,8 @@ package exception_test
 import (
 	"testing"
 
-	"github.com/christian-gama/go-booking-api/internal/shared/application/exception"
-	exceptionImpl "github.com/christian-gama/go-booking-api/internal/shared/infrastructure/exception"
+	"github.com/christian-gama/go-booking-api/internal/shared/app/exception"
+	exceptionImpl "github.com/christian-gama/go-booking-api/internal/shared/infra/exception"
 	"github.com/stretchr/testify/suite"
 )
 

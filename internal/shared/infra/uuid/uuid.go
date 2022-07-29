@@ -1,7 +1,7 @@
 package uuid
 
 import (
-	"github.com/christian-gama/go-booking-api/internal/shared/application/uuid"
+	"github.com/christian-gama/go-booking-api/internal/shared/app/uuid"
 	guuid "github.com/google/uuid"
 )
 

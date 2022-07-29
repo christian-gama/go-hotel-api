@@ -4,7 +4,7 @@ package mocks
 
 import (
 	entity "github.com/christian-gama/go-booking-api/internal/room/domain/entity"
-	exception "github.com/christian-gama/go-booking-api/internal/shared/application/exception"
+	exception "github.com/christian-gama/go-booking-api/internal/shared/app/exception"
 
 	mock "github.com/stretchr/testify/mock"
 )

@@ -3,7 +3,7 @@
 package mocks
 
 import (
-	exception "github.com/christian-gama/go-booking-api/internal/shared/application/exception"
+	exception "github.com/christian-gama/go-booking-api/internal/shared/app/exception"
 	mock "github.com/stretchr/testify/mock"
 )
 
