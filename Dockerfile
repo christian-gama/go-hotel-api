@@ -32,5 +32,4 @@ FROM base AS gobooking
 ARG WORKDIR
 WORKDIR ${WORKDIR} 
 COPY ./go.mod ./go.mod ./
-COPY ./vendor ./vendor
 COPY . ./
