@@ -1,4 +1,4 @@
-package adapter
+package uuid
 
 import (
 	"github.com/christian-gama/go-booking-api/internal/shared/application/uuid"

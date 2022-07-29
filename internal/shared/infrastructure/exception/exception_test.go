@@ -1,10 +1,10 @@
-package adapter_test
+package exception_test
 
 import (
 	"testing"
 
 	"github.com/christian-gama/go-booking-api/internal/shared/application/exception"
-	"github.com/christian-gama/go-booking-api/internal/shared/infrastructure/adapter"
+	exceptionImpl "github.com/christian-gama/go-booking-api/internal/shared/infrastructure/exception"
 	"github.com/stretchr/testify/suite"
 )
 
@@ -15,7 +15,7 @@ type ExceptionTestSuite struct {
 }
 
 func (s *ExceptionTestSuite) SetupTest() {
-	s.exception = adapter.NewException()
+	s.exception = exceptionImpl.NewException()
 }
 
 func (s *ExceptionTestSuite) TestException() {

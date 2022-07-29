@@ -1,10 +1,10 @@
-package adapter_test
+package uuid_test
 
 import (
 	"testing"
 
 	"github.com/christian-gama/go-booking-api/internal/shared/application/uuid"
-	"github.com/christian-gama/go-booking-api/internal/shared/infrastructure/adapter"
+	uuidImpl "github.com/christian-gama/go-booking-api/internal/shared/infrastructure/uuid"
 	"github.com/stretchr/testify/suite"
 )
 
@@ -15,7 +15,7 @@ type UuidTestSuite struct {
 }
 
 func (s *UuidTestSuite) SetupTest() {
-	s.uuid = adapter.NewUUID()
+	s.uuid = uuidImpl.NewUUID()
 }
 
 func (s *UuidTestSuite) TestUuid_Generate() {

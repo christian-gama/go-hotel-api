@@ -7,7 +7,7 @@ import (
 	"github.com/christian-gama/go-booking-api/internal/room/application/service"
 	"github.com/christian-gama/go-booking-api/internal/room/domain/entity"
 	"github.com/christian-gama/go-booking-api/internal/shared/application/exception"
-	"github.com/christian-gama/go-booking-api/internal/shared/infrastructure/adapter"
+	exceptionImpl "github.com/christian-gama/go-booking-api/internal/shared/infrastructure/exception"
 	"github.com/christian-gama/go-booking-api/mocks"
 	"github.com/stretchr/testify/mock"
 	"github.com/stretchr/testify/suite"
@@ -25,7 +25,7 @@ func (s *CreateRoomServiceTestSuite) SetupTest() {
 	fmt.Println("SetupTest")
 	s.repository = mocks.NewRoom(s.T())
 	s.uuid = mocks.NewUUID(s.T())
-	s.createRoom = service.NewCreateRoom(s.repository, adapter.NewException(), s.uuid)
+	s.createRoom = service.NewCreateRoom(s.repository, exceptionImpl.NewException(), s.uuid)
 }
 
 func (s *CreateRoomServiceTestSuite) TestNewCreateRoom() {
