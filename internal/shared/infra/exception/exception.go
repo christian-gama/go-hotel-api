@@ -12,7 +12,7 @@ func (e *exceptionImpl) BadRequest(message string) *exception.Error {
 	}
 }
 
-// NewException returns a new exception adapter.
+// NewException returns a new exception.
 func NewException() exception.Exception {
 	return &exceptionImpl{}
 }

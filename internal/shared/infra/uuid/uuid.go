@@ -12,7 +12,7 @@ func (u *uuidImpl) Generate() string {
 	return guuid.New().String()
 }
 
-// NewUUID returns a new UUID adapter.
+// NewUUID returns a new UUID.
 func NewUUID() uuid.UUID {
 	return &uuidImpl{}
 }
