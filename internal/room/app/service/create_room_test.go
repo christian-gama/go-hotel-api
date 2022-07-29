@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"testing"
 
+	"github.com/christian-gama/go-booking-api/internal/room/app/dto"
 	"github.com/christian-gama/go-booking-api/internal/room/app/service"
 	"github.com/christian-gama/go-booking-api/internal/room/domain/entity"
 	"github.com/christian-gama/go-booking-api/internal/shared/app/exception"
@@ -33,7 +34,7 @@ func (s *CreateRoomServiceTestSuite) TestNewCreateRoom() {
 }
 
 func (s *CreateRoomServiceTestSuite) TestCreateRoom_Handle() {
-	input := &service.CreateRoomInput{
+	input := &dto.CreateRoom{
 		Name:        "name",
 		Description: "description",
 		BedCount:    1,
@@ -41,7 +42,7 @@ func (s *CreateRoomServiceTestSuite) TestCreateRoom_Handle() {
 	}
 
 	type args struct {
-		input *service.CreateRoomInput
+		input *dto.CreateRoom
 	}
 
 	tests := []struct {

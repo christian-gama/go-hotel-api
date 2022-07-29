@@ -2,12 +2,14 @@ package configger
 
 import "time"
 
+// App is the application configuration.
 type App interface {
 	Env() string
 	Host() string
 	Port() int
 }
 
+// Db is the database configuration.
 type Db interface {
 	Name() string
 	User() string

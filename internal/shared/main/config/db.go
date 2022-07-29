@@ -7,25 +7,30 @@ import (
 	"github.com/christian-gama/go-booking-api/internal/shared/infra/configger"
 )
 
-type Db struct{}
+type db struct{}
 
-func (d *Db) Name() string {
+// Name returns the name of the database.
+func (d *db) Name() string {
 	return getEnv("DB_NAME")
 }
 
-func (d *Db) User() string {
+// User returns the username of the database.
+func (d *db) User() string {
 	return getEnv("DB_USER")
 }
 
-func (d *Db) Password() string {
+// Password returns the password of the database.
+func (d *db) Password() string {
 	return getEnv("DB_PASSWORD")
 }
 
-func (d *Db) Host() string {
+// Host returns the hostname of the database.
+func (d *db) Host() string {
 	return getEnv("DB_HOST")
 }
 
-func (d *Db) Port() int {
+// Port returns the port of the database.
+func (d *db) Port() int {
 	i, err := strconv.Atoi(getEnv("DB_PORT"))
 	if err != nil {
 		panic(err)
@@ -33,15 +38,18 @@ func (d *Db) Port() int {
 	return i
 }
 
-func (d *Db) SslMode() string {
+// SslMode returns the ssl mode of the database.
+func (d *db) SslMode() string {
 	return getEnv("DB_SSL_MODE")
 }
 
-func (d *Db) Sgbd() string {
+// Sgbd returns which sgbd is being used.
+func (d *db) Sgbd() string {
 	return getEnv("DB_SGDB")
 }
 
-func (d *Db) MaxConnections() int {
+// MaxConnections returns the maximum number of connections to the database.
+func (d *db) MaxConnections() int {
 	i, err := strconv.Atoi(getEnv("DB_MAX_CONNECTIONS"))
 	if err != nil {
 		panic(err)
@@ -49,7 +57,8 @@ func (d *Db) MaxConnections() int {
 	return i
 }
 
-func (d *Db) MaxIdleConnections() int {
+// MaxIdleConnections returns the maximum number of idle connections to the database.
+func (d *db) MaxIdleConnections() int {
 	i, err := strconv.Atoi(getEnv("DB_MAX_IDLE_CONNECTIONS"))
 	if err != nil {
 		panic(err)
@@ -57,7 +66,8 @@ func (d *Db) MaxIdleConnections() int {
 	return i
 }
 
-func (d *Db) MaxLifeTimeMin() time.Duration {
+// MaxLifeTimeMin returns the maximum lifetime of a connection in minutes to the database.
+func (d *db) MaxLifeTimeMin() time.Duration {
 	i, err := strconv.Atoi(getEnv("DB_MAX_LIFETIME_MIN"))
 	if err != nil {
 		panic(err)
@@ -65,7 +75,8 @@ func (d *Db) MaxLifeTimeMin() time.Duration {
 	return time.Duration(i) * time.Minute
 }
 
-func (d *Db) TimeoutSec() time.Duration {
+// TimeoutSec returns the timeout in seconds of the database.
+func (d *db) TimeoutSec() time.Duration {
 	i, err := strconv.Atoi(getEnv("DB_GET_TIMEOUT_SEC"))
 	if err != nil {
 		panic(err)
@@ -73,6 +84,7 @@ func (d *Db) TimeoutSec() time.Duration {
 	return time.Duration(i) * time.Second
 }
 
+// NewDb returns the database configuration.
 func NewDb() configger.Db {
-	return &Db{}
+	return &db{}
 }

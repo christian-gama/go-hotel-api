@@ -1,23 +1,19 @@
 package service
 
 import (
+	"github.com/christian-gama/go-booking-api/internal/room/app/dto"
 	"github.com/christian-gama/go-booking-api/internal/room/app/repo"
 	"github.com/christian-gama/go-booking-api/internal/room/domain/entity"
 	"github.com/christian-gama/go-booking-api/internal/shared/app/exception"
 	"github.com/christian-gama/go-booking-api/internal/shared/app/uuid"
 )
 
+// CreatRoomService is the interface that defines the CreateRoomService.
 type CreateRoomService interface {
-	Handle(input *CreateRoomInput) (*entity.Room, *exception.Error)
+	Handle(input *dto.CreateRoom) (*entity.Room, *exception.Error)
 }
 
-type CreateRoomInput struct {
-	Name        string
-	Description string
-	BedCount    uint8
-	Price       float32
-}
-
+// createRoom is a concrete implementation of the CreateRoomService.
 type createRoom struct {
 	repo      repo.Room
 	exception exception.Exception
@@ -26,7 +22,7 @@ type createRoom struct {
 
 // Handle receives an input and creates a room. It will return an error if something
 // goes wrong with room creation or if the room repo return an error.
-func (c *createRoom) Handle(input *CreateRoomInput) (*entity.Room, *exception.Error) {
+func (c *createRoom) Handle(input *dto.CreateRoom) (*entity.Room, *exception.Error) {
 	uuid := c.uuid.Generate()
 	room, err := entity.NewRoom(uuid, input.Name, input.Description, input.BedCount, input.Price, false)
 	if err != nil {
@@ -41,6 +37,7 @@ func (c *createRoom) Handle(input *CreateRoomInput) (*entity.Room, *exception.Er
 	return room, nil
 }
 
+// NewCreateRoom creates a new CreateRoomService.
 func NewCreateRoom(repo repo.Room, exception exception.Exception, uuid uuid.UUID) CreateRoomService {
 	return &createRoom{
 		repo,

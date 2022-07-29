@@ -15,6 +15,7 @@ type sql struct {
 	dsn        string
 }
 
+// open opens a connection to the database. It will return an error if fails to connect.
 func (s *sql) open() error {
 	s.setDsn()
 
@@ -32,12 +33,14 @@ func (s *sql) open() error {
 	return nil
 }
 
+// setup sets up the database configuration, such as max connections, idle connections, etc.
 func (s *sql) setup() {
 	s.db.SetMaxIdleConns(s.dbConfigger.MaxIdleConnections())
 	s.db.SetMaxOpenConns(s.dbConfigger.MaxConnections())
 	s.db.SetConnMaxLifetime(s.dbConfigger.MaxLifeTimeMin())
 }
 
+// setDsn sets the data source name.
 func (s *sql) setDsn() {
 	s.dsn = fmt.Sprintf(`
 	host=%s
@@ -55,6 +58,7 @@ func (s *sql) setDsn() {
 	)
 }
 
+// NewSQL returns a new sql connection.
 func NewSQL(driverName string, dbConfigger configger.Db) (*_sql.DB, error) {
 	sql := &sql{
 		dbConfigger: dbConfigger,
