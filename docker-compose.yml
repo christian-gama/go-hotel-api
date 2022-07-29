@@ -32,6 +32,7 @@ services:
     links:
       - ${DB_HOST}
     volumes:
+      - ./cmd:/go/src/github.com/christian-gama/go-booking-api/cmd
       - ./db:/go/src/github.com/christian-gama/go-booking-api/db
       - ./internal:/go/src/github.com/christian-gama/go-booking-api/internal
       - ./.env.dev:/go/src/github.com/christian-gama/go-booking-api/.env.dev

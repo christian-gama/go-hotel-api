@@ -66,7 +66,7 @@ clear:
 
 
 docker: cmd-exists-docker
-	@docker-compose --env-file "$(ENV_FILE)" run --name $(APP_NAME) --rm -e ENV_FILE=$(ENV_FILE) api $(ENTRY_POINT)
+	@docker-compose --env-file "$(ENV_FILE)" run --name $(APP_NAME) -p $(APP_PORT):$(APP_PORT) --rm -e ENV_FILE=$(ENV_FILE) api $(ENTRY_POINT)
 
 
 docker_dev: cmd-exists-docker
