@@ -70,9 +70,11 @@ func (s *NotificationTestSuite) TestNotification_Error() {
 	}
 
 	for _, tt := range tests {
-		s.notification.AddError(fmt.Errorf("message"))
-		got := s.notification.Error()
-		s.Equal(tt.want, got, tt.name)
+		s.Run(tt.name, func() {
+			s.notification.AddError(fmt.Errorf("message"))
+			got := s.notification.Error()
+			s.Equal(tt.want, got)
+		})
 	}
 }
 
