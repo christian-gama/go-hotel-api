@@ -1,4 +1,11 @@
 #!/usr/bin/env node
+/*
+* @description pre-commit hook will run before the commit happens. If something goes wrong,
+* it will exit the process with a non-zero code and the commit will be aborted.
+*
+* @author Christian Gama e Silva
+*/
+
 const run = require("./core/run");
 
 (async () => {

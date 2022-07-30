@@ -1,3 +1,10 @@
+/*
+* @description Core module for git hooks. It will run the hook and measure the time it took.
+* It will also display a log with the current status of the hook.
+*
+* @author Christian Gama e Silva
+*/
+
 const util = require("util");
 const childProcess = require("child_process");
 const exec = util.promisify(childProcess.exec);

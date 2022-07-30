@@ -1,3 +1,9 @@
+/*
+* @description Logs to display the current status of the hook.
+*
+* @author Christian Gama e Silva
+*/
+
 const e = "\x1b[31m"; // error
 const s = "\x1b[32m"; // success
 const d = "\x1b[0m"; // default

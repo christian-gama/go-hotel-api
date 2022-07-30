@@ -1,4 +1,11 @@
 #!/usr/bin/env node
+/*
+* @description pre-push hook will run before the push happens. If something goes wrong,
+* it will exit the process with a non-zero code and the push will be aborted.
+*
+* @author Christian Gama e Silva
+*/
+
 const run = require("./core/run");
 
 (async () => {

@@ -1,4 +1,11 @@
 #!/usr/bin/env node
+/*
+* @description commit-msg hook will check the content of the commit message. It contains
+* a list of rules that will be checked. 
+*
+* @author Christian Gama e Silva
+*/
+
 const fs = require("fs");
 const log = require("./core/log");
 
