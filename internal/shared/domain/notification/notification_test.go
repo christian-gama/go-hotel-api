@@ -1,10 +1,9 @@
 package notification_test
 
 import (
-	"errors"
-	"fmt"
 	"testing"
 
+	"github.com/christian-gama/go-booking-api/internal/shared/domain/error"
 	"github.com/christian-gama/go-booking-api/internal/shared/domain/notification"
 	"github.com/stretchr/testify/suite"
 )
@@ -20,62 +19,35 @@ func (s *NotificationTestSuite) SetupTest() {
 }
 
 func (s *NotificationTestSuite) TestNotification_AddError() {
-	s.notification.AddError(fmt.Errorf("message"))
-	s.Equal("message", s.notification.Errors()[0].Message, "should get the error message")
+	s.notification.AddError(&notification.Error{
+		Code:    error.InvalidArgument,
+		Message: "message",
+		Param:   "param",
+	})
+
+	s.Equal(1, len(s.notification.Errors()))
 }
 
 func (s *NotificationTestSuite) TestNotification_HasErrors() {
-	s.notification.AddError(fmt.Errorf("message"))
+	s.notification.AddError(&notification.Error{
+		Code:    error.InvalidArgument,
+		Message: "message",
+		Param:   "param",
+	})
+
 	s.True(s.notification.HasErrors(), "should have errors")
 }
 
-func (s *NotificationTestSuite) TestNotification_Error() {
-	type args struct {
-		errors []*notification.Error
-	}
+func (s *NotificationTestSuite) TestNotification_Errors() {
+	s.notification.AddError(&notification.Error{
+		Code:    error.InvalidArgument,
+		Message: "message",
+		Param:   "param",
+	})
 
-	tests := []struct {
-		name string
-		args args
-		want error
-	}{
-		{
-			name: "should return the error message",
-			args: args{
-				errors: []*notification.Error{
-					{
-						Message: "message",
-						Context: "context",
-					},
-				},
-			},
-			want: errors.New("context: message"),
-		},
-		{
-			name: "should return the error message",
-			args: args{
-				errors: []*notification.Error{
-					{
-						Message: "message",
-						Context: "context",
-					},
-					{
-						Message: "message",
-						Context: "context",
-					},
-				},
-			},
-			want: errors.New("context: message,context: message"),
-		},
-	}
-
-	for _, tt := range tests {
-		s.Run(tt.name, func() {
-			s.notification.AddError(fmt.Errorf("message"))
-			got := s.notification.Error()
-			s.Equal(tt.want, got)
-		})
-	}
+	s.Equal(error.InvalidArgument, s.notification.Errors()[0].Code)
+	s.Equal("message", s.notification.Errors()[0].Message)
+	s.Equal("param", s.notification.Errors()[0].Param)
 }
 
 func TestNotifificationTestSuite(t *testing.T) {

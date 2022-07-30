@@ -1,5 +1,6 @@
 package dto
 
+// CreateRoom reprensents the input of the CreateRoomService.
 type CreateRoom struct {
 	Name        string  `json:"name"`
 	Description string  `json:"description"`

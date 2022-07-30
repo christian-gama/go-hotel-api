@@ -1,7 +1,9 @@
 package entity
 
 import (
-	"github.com/christian-gama/go-booking-api/internal/shared/domain/errors"
+	"fmt"
+
+	"github.com/christian-gama/go-booking-api/internal/shared/domain/error"
 	"github.com/christian-gama/go-booking-api/internal/shared/domain/notification"
 )
 
@@ -38,21 +40,39 @@ func (g *Guest) RoomIds() []uint8 {
 
 // validate ensure the entity is valid. It will add an error to notification each time
 // it fails a validation. It will return nil if the entity is valid.
-func (g *Guest) validate() error {
+func (g *Guest) validate() []*error.Error {
 	if g.uuid == "" {
-		g.notification.AddError(errors.NonEmpty("uuid"))
+		g.notification.AddError(
+			&notification.Error{
+				Code:    error.InvalidArgument,
+				Message: "uuid cannot be empty",
+				Param:   "uuid",
+			},
+		)
 	}
 
 	if g.credits < 0 {
-		g.notification.AddError(errors.NonNegative("credits"))
+		g.notification.AddError(
+			&notification.Error{
+				Code:    error.InvalidArgument,
+				Message: "credits cannot be negative",
+				Param:   "credits",
+			},
+		)
 	}
 
 	if len(g.roomIds) > MaxRooms {
-		g.notification.AddError(errors.MaxLength("rooms", MaxRooms))
+		g.notification.AddError(
+			&notification.Error{
+				Code:    error.InvalidArgument,
+				Message: fmt.Sprintf("guest cannot have more than %d rooms", MaxRooms),
+				Param:   "roomIds",
+			},
+		)
 	}
 
 	if g.notification.HasErrors() {
-		return g.notification.Error()
+		return g.notification.Errors()
 	}
 
 	return nil
@@ -63,7 +83,7 @@ func NewGuest(
 	uuid string,
 	credits float32,
 	roomIds []uint8,
-) (*Guest, error) {
+) (*Guest, []*error.Error) {
 	n := notification.New("guest")
 	guest := &Guest{
 		n,

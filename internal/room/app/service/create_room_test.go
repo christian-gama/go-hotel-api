@@ -7,8 +7,7 @@ import (
 	"github.com/christian-gama/go-booking-api/internal/room/app/dto"
 	"github.com/christian-gama/go-booking-api/internal/room/app/service"
 	"github.com/christian-gama/go-booking-api/internal/room/domain/entity"
-	"github.com/christian-gama/go-booking-api/internal/shared/app/exception"
-	exceptionImpl "github.com/christian-gama/go-booking-api/internal/shared/infra/exception"
+	"github.com/christian-gama/go-booking-api/internal/shared/domain/error"
 	"github.com/christian-gama/go-booking-api/mocks"
 	"github.com/stretchr/testify/mock"
 	"github.com/stretchr/testify/suite"
@@ -26,7 +25,7 @@ func (s *CreateRoomServiceTestSuite) SetupTest() {
 	fmt.Println("SetupTest")
 	s.repo = mocks.NewRoom(s.T())
 	s.uuid = mocks.NewUUID(s.T())
-	s.createRoom = service.NewCreateRoom(s.repo, exceptionImpl.NewException(), s.uuid)
+	s.createRoom = service.NewCreateRoom(s.repo, s.uuid)
 }
 
 func (s *CreateRoomServiceTestSuite) TestNewCreateRoom() {
@@ -48,7 +47,7 @@ func (s *CreateRoomServiceTestSuite) TestCreateRoom_Handle() {
 	tests := []struct {
 		name    string
 		args    args
-		wantErr *exception.Error
+		wantErr *error.Error
 		mock    func() (*mock.Call, *mock.Call)
 	}{
 		{
@@ -68,9 +67,11 @@ func (s *CreateRoomServiceTestSuite) TestCreateRoom_Handle() {
 			args: args{
 				input: input,
 			},
-			wantErr: &exception.Error{
-				Name:    "BadRequest",
-				Message: "room: uuid cannot be empty",
+			wantErr: &error.Error{
+				Code:    error.InvalidArgument,
+				Message: "uuid cannot be empty",
+				Context: "room",
+				Param:   "uuid",
 			},
 			mock: func() (*mock.Call, *mock.Call) {
 				mockGenerate := s.uuid.On("Generate").Return("")
@@ -83,15 +84,24 @@ func (s *CreateRoomServiceTestSuite) TestCreateRoom_Handle() {
 			args: args{
 				input: input,
 			},
-			wantErr: &exception.Error{
-				Name:    "any name",
+			wantErr: &error.Error{
+				Code:    error.InvalidArgument,
 				Message: "any message",
+				Context: "repository",
+				Param:   "any param",
 			},
 			mock: func() (*mock.Call, *mock.Call) {
 				mockGenerate := s.uuid.On("Generate").Return("uuid")
 				mockSaveRoom := s.repo.On("SaveRoom", mock.Anything).Return(
-					nil, &exception.Error{Message: "any message", Name: "any name"},
+					nil,
+					[]*error.Error{{
+						Message: "any message",
+						Param:   "any param",
+						Context: "repository",
+						Code:    error.InvalidArgument,
+					}},
 				)
+
 				return mockGenerate, mockSaveRoom
 			},
 		},
@@ -105,7 +115,19 @@ func (s *CreateRoomServiceTestSuite) TestCreateRoom_Handle() {
 
 			_, err := s.createRoom.Handle(tt.args.input)
 
-			s.Equal(tt.wantErr, err)
+			if tt.wantErr != nil {
+				s.Equal(
+					[]*error.Error{{
+						Code:    tt.wantErr.Code,
+						Context: tt.wantErr.Context,
+						Message: tt.wantErr.Message,
+						Param:   tt.wantErr.Param,
+					}},
+					err,
+				)
+			} else {
+				s.Nil(err)
+			}
 		})
 	}
 }

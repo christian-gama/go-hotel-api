@@ -6,7 +6,8 @@ import (
 	"testing"
 
 	"github.com/christian-gama/go-booking-api/internal/room/domain/entity"
-	"github.com/christian-gama/go-booking-api/internal/shared/domain/errors"
+	"github.com/christian-gama/go-booking-api/internal/shared/domain/error"
+	"github.com/christian-gama/go-booking-api/internal/shared/domain/notification"
 	"github.com/stretchr/testify/suite"
 )
 
@@ -32,7 +33,7 @@ func (s *RoomTestSuite) SetupTest() {
 
 	room, err := entity.NewRoom(s.uuid, s.name, s.description, s.bedCount, s.price, s.isAvailable)
 	if err != nil {
-		s.Fail(err.Error())
+		s.Fail("could not create a new room in the test suite")
 	}
 
 	s.room = room
@@ -63,8 +64,6 @@ func (s *RoomTestSuite) TestRoom_IsAvailable() {
 }
 
 func (s *RoomTestSuite) TestNewRoom() {
-	const context = "room"
-
 	type args struct {
 		uuid        string
 		name        string
@@ -77,7 +76,7 @@ func (s *RoomTestSuite) TestNewRoom() {
 	tests := []struct {
 		name string
 		args args
-		err  error
+		err  *notification.Error
 	}{
 		{
 			name: "should create a new room",
@@ -102,7 +101,11 @@ func (s *RoomTestSuite) TestNewRoom() {
 				price:       s.price,
 				isAvailable: s.isAvailable,
 			},
-			err: fmt.Errorf("%s: %s", context, errors.NonEmpty("uuid")),
+			err: &notification.Error{
+				Code:    error.InvalidArgument,
+				Message: "uuid cannot be empty",
+				Param:   "uuid",
+			},
 		},
 		{
 			name: "should return an error if name is empty",
@@ -114,7 +117,11 @@ func (s *RoomTestSuite) TestNewRoom() {
 				price:       s.price,
 				isAvailable: s.isAvailable,
 			},
-			err: fmt.Errorf("%s: %s", context, errors.NonEmpty("name")),
+			err: &notification.Error{
+				Code:    error.InvalidArgument,
+				Message: "name cannot be empty",
+				Param:   "name",
+			},
 		},
 		{
 			name: "should return an error if description is greater than maximum characters length",
@@ -126,9 +133,11 @@ func (s *RoomTestSuite) TestNewRoom() {
 				price:       s.price,
 				isAvailable: s.isAvailable,
 			},
-			err: fmt.Errorf(
-				"%s: %s", context, errors.MaxLength("description", entity.MaxRoomDescriptionLen),
-			),
+			err: &notification.Error{
+				Code:    error.InvalidArgument,
+				Message: fmt.Sprintf("description cannot be longer than %d characters", entity.MaxRoomDescriptionLen),
+				Param:   "description",
+			},
 		},
 		{
 			name: "should return an error if description is less than minimum characters length",
@@ -140,9 +149,11 @@ func (s *RoomTestSuite) TestNewRoom() {
 				price:       s.price,
 				isAvailable: s.isAvailable,
 			},
-			err: fmt.Errorf(
-				"%s: %s", context, errors.MinLength("description", entity.MinRoomDescriptionLen),
-			),
+			err: &notification.Error{
+				Code:    error.InvalidArgument,
+				Message: fmt.Sprintf("description cannot be shorter than %d characters", entity.MinRoomDescriptionLen),
+				Param:   "description",
+			},
 		},
 		{
 			name: "should return an error if bed count is less than minimum",
@@ -154,9 +165,11 @@ func (s *RoomTestSuite) TestNewRoom() {
 				price:       s.price,
 				isAvailable: s.isAvailable,
 			},
-			err: fmt.Errorf(
-				"%s: %s", context, errors.Min("bed count", entity.MinRoomBedCount),
-			),
+			err: &notification.Error{
+				Code:    error.InvalidArgument,
+				Message: fmt.Sprintf("bed count cannot be less than %d", entity.MinRoomBedCount),
+				Param:   "bedCount",
+			},
 		},
 		{
 			name: "should return an error if bed count is greater than maximum",
@@ -168,9 +181,11 @@ func (s *RoomTestSuite) TestNewRoom() {
 				price:       s.price,
 				isAvailable: s.isAvailable,
 			},
-			err: fmt.Errorf(
-				"%s: %s", context, errors.Max("bed count", entity.MaxRoomBedCount),
-			),
+			err: &notification.Error{
+				Code:    error.InvalidArgument,
+				Message: fmt.Sprintf("bed count cannot be greater than %d", entity.MaxRoomBedCount),
+				Param:   "bedCount",
+			},
 		},
 		{
 			name: "should return an error if price is less than minimum",
@@ -182,9 +197,11 @@ func (s *RoomTestSuite) TestNewRoom() {
 				price:       entity.MinRoomPrice - 1,
 				isAvailable: s.isAvailable,
 			},
-			err: fmt.Errorf(
-				"%s: %s", context, errors.Min("price", entity.MinRoomPrice),
-			),
+			err: &notification.Error{
+				Code:    error.InvalidArgument,
+				Message: fmt.Sprintf("price cannot be less than %.2f", entity.MinRoomPrice),
+				Param:   "price",
+			},
 		},
 		{
 			name: "should return an error if price is greater than the maximum",
@@ -196,9 +213,11 @@ func (s *RoomTestSuite) TestNewRoom() {
 				price:       entity.MaxRoomPrice + 1,
 				isAvailable: s.isAvailable,
 			},
-			err: fmt.Errorf(
-				"%s: %s", context, errors.Max("price", entity.MaxRoomPrice),
-			),
+			err: &notification.Error{
+				Code:    error.InvalidArgument,
+				Message: fmt.Sprintf("price cannot be greater than %.2f", entity.MaxRoomPrice),
+				Param:   "price",
+			},
 		},
 	}
 
@@ -213,9 +232,16 @@ func (s *RoomTestSuite) TestNewRoom() {
 				false,
 			)
 			if tt.err != nil {
-				s.EqualError(err, tt.err.Error())
+				s.Equal(
+					[]*error.Error{{
+						Code:    tt.err.Code,
+						Message: tt.err.Message,
+						Param:   tt.err.Param,
+						Context: "room",
+					}},
+					err)
 			} else {
-				s.NoError(err)
+				s.Nil(err)
 			}
 		})
 	}

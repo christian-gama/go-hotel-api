@@ -1,7 +1,9 @@
 package entity
 
 import (
-	"github.com/christian-gama/go-booking-api/internal/shared/domain/errors"
+	"fmt"
+
+	"github.com/christian-gama/go-booking-api/internal/shared/domain/error"
 	"github.com/christian-gama/go-booking-api/internal/shared/domain/notification"
 )
 
@@ -69,41 +71,89 @@ func (r *Room) IsAvailable() bool {
 
 // validate ensure the entity is valid. It will add an error to notification each time
 // it fails a validation. It will return nil if the entity is valid.
-func (r *Room) validate() error {
+func (r *Room) validate() []*error.Error {
 	if r.uuid == "" {
-		r.notification.AddError(errors.NonEmpty("uuid"))
+		r.notification.AddError(
+			&notification.Error{
+				Code:    error.InvalidArgument,
+				Message: "uuid cannot be empty",
+				Param:   "uuid",
+			},
+		)
 	}
 
 	if r.name == "" {
-		r.notification.AddError(errors.NonEmpty("name"))
+		r.notification.AddError(
+			&notification.Error{
+				Code:    error.InvalidArgument,
+				Message: "name cannot be empty",
+				Param:   "name",
+			},
+		)
 	}
 
 	if len(r.description) > MaxRoomDescriptionLen {
-		r.notification.AddError(errors.MaxLength("description", MaxRoomDescriptionLen))
+		r.notification.AddError(
+			&notification.Error{
+				Code:    error.InvalidArgument,
+				Message: fmt.Sprintf("description cannot be longer than %d characters", MaxRoomDescriptionLen),
+				Param:   "description",
+			},
+		)
 	}
 
 	if len(r.description) < MinRoomDescriptionLen {
-		r.notification.AddError(errors.MinLength("description", MinRoomDescriptionLen))
+		r.notification.AddError(
+			&notification.Error{
+				Code:    error.InvalidArgument,
+				Message: fmt.Sprintf("description cannot be shorter than %d characters", MinRoomDescriptionLen),
+				Param:   "description",
+			},
+		)
 	}
 
 	if r.bedCount < MinRoomBedCount {
-		r.notification.AddError(errors.Min("bed count", MinRoomBedCount))
+		r.notification.AddError(
+			&notification.Error{
+				Code:    error.InvalidArgument,
+				Message: fmt.Sprintf("bed count cannot be less than %d", MinRoomBedCount),
+				Param:   "bedCount",
+			},
+		)
 	}
 
 	if r.bedCount > MaxRoomBedCount {
-		r.notification.AddError(errors.Max("bed count", MaxRoomBedCount))
+		r.notification.AddError(
+			&notification.Error{
+				Code:    error.InvalidArgument,
+				Message: fmt.Sprintf("bed count cannot be greater than %d", MaxRoomBedCount),
+				Param:   "bedCount",
+			},
+		)
 	}
 
 	if r.price < MinRoomPrice {
-		r.notification.AddError(errors.Min("price", MinRoomPrice))
+		r.notification.AddError(
+			&notification.Error{
+				Code:    error.InvalidArgument,
+				Message: fmt.Sprintf("price cannot be less than %.2f", MinRoomPrice),
+				Param:   "price",
+			},
+		)
 	}
 
 	if r.price > MaxRoomPrice {
-		r.notification.AddError(errors.Max("price", MaxRoomPrice))
+		r.notification.AddError(
+			&notification.Error{
+				Code:    error.InvalidArgument,
+				Message: fmt.Sprintf("price cannot be greater than %.2f", MaxRoomPrice),
+				Param:   "price",
+			},
+		)
 	}
 
 	if r.notification.HasErrors() {
-		return r.notification.Error()
+		return r.notification.Errors()
 	}
 
 	return nil
@@ -117,7 +167,7 @@ func NewRoom(
 	bedCount uint8,
 	price float32,
 	isAvailable bool,
-) (*Room, error) {
+) (*Room, []*error.Error) {
 	n := notification.New("room")
 	room := &Room{
 		uuid:         uuid,

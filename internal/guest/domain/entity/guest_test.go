@@ -5,7 +5,8 @@ import (
 	"testing"
 
 	"github.com/christian-gama/go-booking-api/internal/guest/domain/entity"
-	"github.com/christian-gama/go-booking-api/internal/shared/domain/errors"
+	"github.com/christian-gama/go-booking-api/internal/shared/domain/error"
+	"github.com/christian-gama/go-booking-api/internal/shared/domain/notification"
 	"github.com/stretchr/testify/suite"
 )
 
@@ -25,7 +26,7 @@ func (s *GuestTestSuite) SetupTest() {
 
 	guest, err := entity.NewGuest(s.uuid, s.credits, s.roomIds)
 	if err != nil {
-		s.Fail(err.Error())
+		s.Fail("could not create guest in test suite")
 	}
 
 	s.guest = guest
@@ -44,8 +45,6 @@ func (s *GuestTestSuite) TestGuest_RoomIds() {
 }
 
 func (s *GuestTestSuite) TestNewGuest() {
-	const context = "guest"
-
 	type args struct {
 		uuid    string
 		credits float32
@@ -55,7 +54,7 @@ func (s *GuestTestSuite) TestNewGuest() {
 	tests := []struct {
 		name string
 		args args
-		err  error
+		err  *notification.Error
 	}{
 		{
 			name: "should create a new guest",
@@ -73,7 +72,11 @@ func (s *GuestTestSuite) TestNewGuest() {
 				credits: s.credits,
 				roomIds: s.roomIds,
 			},
-			err: fmt.Errorf("%s: %s", context, errors.NonEmpty("uuid")),
+			err: &notification.Error{
+				Code:    error.InvalidArgument,
+				Message: "uuid cannot be empty",
+				Param:   "uuid",
+			},
 		},
 		{
 			name: "should return an error when guest credit is negative",
@@ -82,7 +85,11 @@ func (s *GuestTestSuite) TestNewGuest() {
 				credits: -1,
 				roomIds: s.roomIds,
 			},
-			err: fmt.Errorf("%s: %s", context, errors.NonNegative("credits")),
+			err: &notification.Error{
+				Code:    error.InvalidArgument,
+				Message: "credits cannot be negative",
+				Param:   "credits",
+			},
 		},
 		{
 			name: "should return an error when guest room id length is greater than max allowed rooms",
@@ -91,7 +98,11 @@ func (s *GuestTestSuite) TestNewGuest() {
 				credits: s.credits,
 				roomIds: make([]uint8, entity.MaxRooms+1),
 			},
-			err: fmt.Errorf("%s: %s", context, errors.MaxLength("rooms", entity.MaxRooms)),
+			err: &notification.Error{
+				Code:    error.InvalidArgument,
+				Message: fmt.Sprintf("guest cannot have more than %d rooms", entity.MaxRooms),
+				Param:   "roomIds",
+			},
 		},
 	}
 
@@ -99,7 +110,15 @@ func (s *GuestTestSuite) TestNewGuest() {
 		s.Run(tt.name, func() {
 			_, err := entity.NewGuest(tt.args.uuid, tt.args.credits, tt.args.roomIds)
 			if tt.err != nil {
-				s.EqualError(err, tt.err.Error())
+				s.Equal(
+					[]*error.Error{{
+						Code:    tt.err.Code,
+						Message: tt.err.Message,
+						Param:   tt.err.Param,
+						Context: "guest",
+					}},
+					err,
+				)
 			} else {
 				s.Nil(err)
 			}

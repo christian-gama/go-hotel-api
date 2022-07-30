@@ -1,9 +1,10 @@
 package entity
 
 import (
+	"fmt"
 	"time"
 
-	"github.com/christian-gama/go-booking-api/internal/shared/domain/errors"
+	"github.com/christian-gama/go-booking-api/internal/shared/domain/error"
 	"github.com/christian-gama/go-booking-api/internal/shared/domain/notification"
 )
 
@@ -53,29 +54,63 @@ func (c *Checkin) CheckoutDate() time.Time {
 
 // validate ensure the entity is valid. It will add an error to notification each time
 // it fails a validation. It will return nil if the entity is valid.
-func (c *Checkin) validate() error {
+func (c *Checkin) validate() []*error.Error {
 	if c.uuid == "" {
-		c.notification.AddError(errors.NonEmpty("uuid"))
+		c.notification.AddError(
+			&notification.Error{
+				Code:    error.InvalidArgument,
+				Message: "uuid cannot be empty",
+				Param:   "uuid",
+			},
+		)
 	}
 
 	if c.roomId == 0 {
-		c.notification.AddError(errors.NonZero("room id"))
+		c.notification.AddError(
+			&notification.Error{
+				Code:    error.InvalidArgument,
+				Message: "roomId cannot be zero",
+				Param:   "roomId",
+			},
+		)
 	}
 
 	if c.guest == nil {
-		c.notification.AddError(errors.NonNil("guest"))
+		c.notification.AddError(
+			&notification.Error{
+				Code:    error.InvalidArgument,
+				Message: "guest cannot be nil",
+				Param:   "guest",
+			},
+		)
 	}
 
 	if c.checkoutDate.Before(c.checkinDate) {
-		c.notification.AddError(errors.NonDateBefore("checkout date", "checkin date"))
+		c.notification.AddError(
+			&notification.Error{
+				Code:    error.Conflict,
+				Message: "checkin date cannot be after checkout date",
+				Param:   "checkinDate",
+			},
+		)
 	}
 
 	if time.Until(c.checkoutDate) < WaitTimeToCheckout {
-		c.notification.AddError(errors.MustBeMadeAfter("checkout", WaitTimeToCheckout.Hours(), "hours", "checkin"))
+		fmtTime := time.Time{}.Add(WaitTimeToCheckout).Format("15h04min")
+
+		c.notification.AddError(
+			&notification.Error{
+				Code: error.ConditionNotMet,
+				Message: fmt.Sprintf(
+					"to make checkout is necessary to wait %s after checkin", fmtTime,
+				),
+				Param: "checkoutDate",
+			},
+		)
 	}
 
 	if c.notification.HasErrors() {
-		return c.notification.Error()
+		return c.notification.Errors()
 	}
 
 	return nil
@@ -88,7 +123,7 @@ func NewCheckin(
 	roomId uint32,
 	checkinDate time.Time,
 	checkoutDate time.Time,
-) (*Checkin, error) {
+) (*Checkin, []*error.Error) {
 	n := notification.New("checkin")
 
 	checkin := &Checkin{

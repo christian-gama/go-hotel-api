@@ -6,7 +6,8 @@ import (
 	"time"
 
 	"github.com/christian-gama/go-booking-api/internal/guest/domain/entity"
-	"github.com/christian-gama/go-booking-api/internal/shared/domain/errors"
+	"github.com/christian-gama/go-booking-api/internal/shared/domain/error"
+	"github.com/christian-gama/go-booking-api/internal/shared/domain/notification"
 	"github.com/stretchr/testify/suite"
 )
 
@@ -36,7 +37,7 @@ func (s *CheckinTestSuite) SetupTest() {
 		s.checkoutDate,
 	)
 	if err != nil {
-		s.Fail(err.Error())
+		s.Fail("could not create checkin in test suite")
 	}
 
 	s.checkin = checkin
@@ -63,8 +64,6 @@ func (s *CheckinTestSuite) TestCheckin_CheckoutDate() {
 }
 
 func (s *CheckinTestSuite) TestNewCheckin() {
-	const context = "checkin"
-
 	type args struct {
 		uuid         string
 		guest        *entity.Guest
@@ -76,7 +75,7 @@ func (s *CheckinTestSuite) TestNewCheckin() {
 	tests := []struct {
 		name string
 		args args
-		err  error
+		err  *notification.Error
 	}{
 		{
 			name: "should create a new checkin",
@@ -90,7 +89,7 @@ func (s *CheckinTestSuite) TestNewCheckin() {
 			err: nil,
 		},
 		{
-			name: "should return an error when checkin id empty",
+			name: "should return an error when checkin uuid is empty",
 			args: args{
 				uuid:         "",
 				guest:        s.guest,
@@ -98,10 +97,14 @@ func (s *CheckinTestSuite) TestNewCheckin() {
 				checkinDate:  s.checkinDate,
 				checkoutDate: s.checkoutDate,
 			},
-			err: fmt.Errorf("%s: %s", context, errors.NonEmpty("uuid")),
+			err: &notification.Error{
+				Code:    error.InvalidArgument,
+				Message: "uuid cannot be empty",
+				Param:   "uuid",
+			},
 		},
 		{
-			name: "should return an error when room id is zero",
+			name: "should return an error when roomId is zero",
 			args: args{
 				uuid:         s.uuid,
 				guest:        s.guest,
@@ -109,7 +112,11 @@ func (s *CheckinTestSuite) TestNewCheckin() {
 				checkinDate:  s.checkinDate,
 				checkoutDate: s.checkoutDate,
 			},
-			err: fmt.Errorf("%s: %s", context, errors.NonZero("room id")),
+			err: &notification.Error{
+				Code:    error.InvalidArgument,
+				Message: "roomId cannot be zero",
+				Param:   "roomId",
+			},
 		},
 		{
 			name: "should return an error when guest is nil",
@@ -120,10 +127,14 @@ func (s *CheckinTestSuite) TestNewCheckin() {
 				checkinDate:  s.checkinDate,
 				checkoutDate: s.checkoutDate,
 			},
-			err: fmt.Errorf("%s: %s", context, errors.NonNil("guest")),
+			err: &notification.Error{
+				Code:    error.InvalidArgument,
+				Message: "guest cannot be nil",
+				Param:   "guest",
+			},
 		},
 		{
-			name: "should return an error when checkout is made in less than minimum checkout wait time",
+			name: "should return an error when checkout date does not wait the minimum time to checkout",
 			args: args{
 				uuid:         s.uuid,
 				guest:        s.guest,
@@ -131,10 +142,14 @@ func (s *CheckinTestSuite) TestNewCheckin() {
 				checkinDate:  s.checkinDate,
 				checkoutDate: time.Now().Add(entity.WaitTimeToCheckout - (1 * time.Minute)),
 			},
-			err: fmt.Errorf(
-				"%s: %s",
-				context, errors.MustBeMadeAfter("checkout", entity.WaitTimeToCheckout.Hours(), "hours", "checkin"),
-			),
+			err: &notification.Error{
+				Code: error.ConditionNotMet,
+				Message: fmt.Sprintf(
+					"to make checkout is necessary to wait %s after checkin",
+					time.Time{}.Add(entity.WaitTimeToCheckout).Format("15h04min"),
+				),
+				Param: "checkoutDate",
+			},
 		},
 		{
 			name: "should return an error when checkin is made after checkout",
@@ -145,7 +160,11 @@ func (s *CheckinTestSuite) TestNewCheckin() {
 				checkinDate:  s.checkoutDate.Add(1 * time.Minute),
 				checkoutDate: s.checkoutDate,
 			},
-			err: fmt.Errorf("%s: %s", context, errors.NonDateBefore("checkout date", "checkin date")),
+			err: &notification.Error{
+				Code:    error.Conflict,
+				Message: "checkin date cannot be after checkout date",
+				Param:   "checkinDate",
+			},
 		},
 	}
 
@@ -159,7 +178,15 @@ func (s *CheckinTestSuite) TestNewCheckin() {
 				tt.args.checkoutDate,
 			)
 			if tt.err != nil {
-				s.EqualError(err, tt.err.Error())
+				s.Equal(
+					[]*error.Error{{
+						Code:    tt.err.Code,
+						Message: tt.err.Message,
+						Param:   tt.err.Param,
+						Context: "checkin",
+					}},
+					err,
+				)
 			} else {
 				s.Nil(err)
 			}
