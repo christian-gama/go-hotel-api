@@ -34,11 +34,6 @@ unexpected behaviors. You wont worry about setting database, docker will do it f
 
 https://docs.docker.com/engine/install/
 
-#### golangci-lint
-This project follow strict lint rules. To achieve this, I am using golangci-lint. Make sure you have installed it.
-
-https://golangci-lint.run/
-
 #### node.js
 This project uses git hooks and I'm using node.js to run them. Make sure you have installed it, otherwhise hooks wont work. Version 14 or higher is recommended, but other versions should work.
 

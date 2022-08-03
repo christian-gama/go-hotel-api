@@ -29,10 +29,6 @@ linters-settings:
         arguments:
           - ["call-chain", "loop"] 
 
-      - name: errorf
-        severity: warning
-        disabled: false
-
       - name: line-length-limit
         severity: warning
         disabled: false

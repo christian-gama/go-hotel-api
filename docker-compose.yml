@@ -13,7 +13,9 @@ services:
     volumes:
       - ./.generated/db_data:/${DB_PGDATA}
     ports:
-      - "18500:5432"
+      - "${DB_EXPOSED_PORT}:${DB_PORT}"
+    expose:
+      - ${DB_EXPOSED_PORT}
   
   api:
     container_name: go_booking_api
@@ -33,7 +35,7 @@ services:
       - ${DB_HOST}
     volumes:
       - ./cmd:/go/src/github.com/christian-gama/go-booking-api/cmd
-      - ./db:/go/src/github.com/christian-gama/go-booking-api/db
+      - ./migrations:/go/src/github.com/christian-gama/go-booking-api/migrations
       - ./internal:/go/src/github.com/christian-gama/go-booking-api/internal
       - ./.env.dev:/go/src/github.com/christian-gama/go-booking-api/.env.dev
       - ./.env.prod:/go/src/github.com/christian-gama/go-booking-api/.env.prod
@@ -58,4 +60,4 @@ services:
     tmpfs:
       - /var/lib/postgresql/data
     ports:
-      - "18501:5432"
+      - "18501:${DB_PORT}"

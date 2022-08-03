@@ -29,7 +29,6 @@ test_integration: cmd-exists-go
 test: cmd-exists-go
 	@TEST_MODE=unit go test $(TEST_FLAGS) ./...
 
-
 cover: cmd-exists-go
 	@if [ ! -d "$(COVERAGE_DIR)" ]; then \
 		mkdir -p $(COVERAGE_DIR); \
@@ -41,32 +40,28 @@ cover-html: cmd-exists-go
 	go tool cover -html=$(COVERAGE_DIR)/coverage.out -o $(COVERAGE_DIR)/coverage.html
 
 
-lint: cmd-exists-golangci-lint
-	golangci-lint run --config .golangci.yml 
+lint: cmd-exists-docker
+	docker run --rm -v $(PWD):/app -w /app golangci/golangci-lint:v1.47.3 golangci-lint run --config .golangci.yml     
 
 
-migrate-create-%: cmd-exists-migrate
+migrate-%: cmd-exists-docker
 	@if [ -z "$(*)" ]; then \
-		echo "Error: SEQ must be specified. migrate-create-SEQ"; \
+		echo "Error: expected [up|down|force]"; \
 		exit 1; \
-	fi; \
-	migrate create -ext $(MIG_EXT) -dir $(MIG_DIR) -seq -digits 4 $(*)
+	fi;
+	@ENV_FILE=.env.dev MIGRATION=$(*) make migrate
 
 
-migrate-%: cmd-exists-migrate
-	@if [ -z "$(*)" ]; then \
-		echo "Error: expected [up|down|drop|force]"; \
-		exit 1; \
-	fi
-	migrate -source file://$(MIG_DIR) -database $(DB_SGBD)://$(DB_USER):$(DB_PASSWORD)@$(DB_HOST):$(DB_PORT)/$(DB_NAME)?sslmode=$(DB_SSL_MODE) $(*) $(VERSION)
-
+migrate: cmd-exists-docker
+	@docker run -v $(PWD)/$(MIG_DIR):/migrations --network host migrate/migrate -path=/migrations/ -database $(DB_SGBD)://$(DB_USER):$(DB_PASSWORD)@localhost:$(DB_EXPOSED_PORT)/$(DB_NAME)?sslmode=$(DB_SSL_MODE) $(MIGRATION) $(VERSION)
+	
 
 clear:
 	@rm -rf $(GENERATED_DIR)
 
 
 docker: cmd-exists-docker
-	@docker-compose --env-file "$(ENV_FILE)" run --name $(APP_NAME) -p $(APP_PORT):$(APP_PORT) --rm -e ENV_FILE=$(ENV_FILE) api $(ENTRY_POINT)
+	@docker compose --env-file "$(ENV_FILE)" run --name $(APP_NAME) -p $(APP_PORT):$(APP_PORT) --rm -e ENV_FILE=$(ENV_FILE) api $(ENTRY_POINT)
 
 
 docker_dev: cmd-exists-docker
@@ -94,7 +89,7 @@ docker_cover_html: cmd-exists-docker
 
 
 docker_down: cmd-exists-docker
-	@docker-compose --env-file ".env.dev" down 
+	@docker compose --env-file ".env.dev" down 
 
 
 docker_kill: cmd-exists-docker
@@ -102,7 +97,7 @@ docker_kill: cmd-exists-docker
 
 
 docker_rebuild:
-	@docker-compose --env-file ".env.dev" build
+	@docker compose --env-file ".env.dev" build
 
 
 cmd-exists-%:
