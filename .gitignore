@@ -10,4 +10,7 @@
 todo.md
 
 # Generated
-/.generated/*
+/.generated
+
+# Cache
+/.cache

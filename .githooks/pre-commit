@@ -10,5 +10,5 @@ const run = require("./core/run");
 
 (async () => {
   await run("lint", "make lint");
-  await run("test", "make test");
+  await run("test", "make docker_test");
 })();

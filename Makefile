@@ -1,4 +1,6 @@
-GENERATED_DIR ?=./.generated
+PWD = $(shell pwd)
+GENERATED_DIR ?= $(PWD)/.generated
+CACHE_DIR ?= $(PWD)/.cache
 COVERAGE_DIR ?= $(GENERATED_DIR)/coverage
 BUILD_DIR ?= $(GENERATED_DIR)/build
 APP_NAME ?= go_booking
@@ -17,7 +19,7 @@ run: cmd-exists-go
 
 
 build: cmd-exists-go
-	CGO_ENABLED=0 go build -o $(BUILD_DIR)/$(APP_NAME) ./cmd/api/*.go
+	@CGO_ENABLED=0 go build -o $(BUILD_DIR)/$(APP_NAME) ./cmd/api/*.go
 	@chmod +x $(BUILD_DIR)/$(APP_NAME)
 	@echo "Build was generated at $(BUILD_DIR)/$(APP_NAME)"
 
@@ -37,11 +39,11 @@ cover: cmd-exists-go
 
 
 cover-html: cmd-exists-go
-	go tool cover -html=$(COVERAGE_DIR)/coverage.out -o $(COVERAGE_DIR)/coverage.html
+	@go tool cover -html=$(COVERAGE_DIR)/coverage.out -o $(COVERAGE_DIR)/coverage.html
 
 
 lint: cmd-exists-docker
-	docker run --rm -v $(PWD):/app -w /app golangci/golangci-lint:v1.47.3 golangci-lint run --config .golangci.yml     
+	@sh -c "./scripts/linter.sh"
 
 
 migrate-%: cmd-exists-docker
@@ -53,15 +55,29 @@ migrate-%: cmd-exists-docker
 
 
 migrate: cmd-exists-docker
-	@docker run -v $(PWD)/$(MIG_DIR):/migrations --network host migrate/migrate -path=/migrations/ -database $(DB_SGBD)://$(DB_USER):$(DB_PASSWORD)@localhost:$(DB_EXPOSED_PORT)/$(DB_NAME)?sslmode=$(DB_SSL_MODE) $(MIGRATION) $(VERSION)
+	@mkdir -p $(PWD)/$(MIG_DIR)
+	@docker run \
+		-v $(PWD)/$(MIG_DIR):/migrations \
+		--rm \
+		--network host \
+		migrate/migrate \
+		-path=/migrations/ \
+		-database $(DB_SGBD)://$(DB_USER):$(DB_PASSWORD)@localhost:$(DB_EXPOSED_PORT)/$(DB_NAME)?sslmode=$(DB_SSL_MODE) $(MIGRATION) $(VERSION)
 	
 
 clear:
 	@rm -rf $(GENERATED_DIR)
+	@rm -rf $(CACHE_DIR)
 
 
 docker: cmd-exists-docker
-	@docker compose --env-file "$(ENV_FILE)" run --name $(APP_NAME) -p $(APP_PORT):$(APP_PORT) --rm -e ENV_FILE=$(ENV_FILE) api $(ENTRY_POINT)
+	@docker compose --env-file "$(ENV_FILE)" run \
+		--name $(APP_NAME) \
+		-p $(APP_PORT):$(APP_PORT) \
+		--rm \
+		-e ENV_FILE=$(ENV_FILE) \
+		api \
+		$(ENTRY_POINT)
 
 
 docker_dev: cmd-exists-docker

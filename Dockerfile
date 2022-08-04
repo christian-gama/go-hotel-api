@@ -1,14 +1,12 @@
 FROM ubuntu:20.04 AS base
+RUN apt-get update
+RUN apt-get install -y \
+    curl \
+    lsb-release \
+    build-essential
+
 ARG GOVERSION=1.18.4
 ARG GOARCH=amd64
-
-# Install build essentials
-RUN apt-get update && apt-get install -y \
-    build-essential \
-    bash \
-    curl \
-    git \
-    lsb-release
 
 # Install Go
 RUN curl -O -L "https://golang.org/dl/go${GOVERSION}.linux-${GOARCH}.tar.gz" && \
