@@ -6,6 +6,12 @@ import (
 	"github.com/christian-gama/go-booking-api/internal/shared/infra/configger"
 )
 
+const (
+	env     = "ENV"
+	appHost = "APP_HOST"
+	appPort = "APP_PORT"
+)
+
 type app struct{}
 
 // Env returns the environment name (dev, prod, test).
