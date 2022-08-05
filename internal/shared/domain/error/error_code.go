@@ -10,8 +10,11 @@ const (
 	// NotFound is the error code when a resource is not found.
 	NotFound ErrorCode = "NOT_FOUND"
 
-	// Internal is the error code when an internal error is found.
+	// InternalError is the error code when an internal error is found.
 	InternalError ErrorCode = "INTERNAL_ERROR"
+
+	// DatabaseError is the error code when a database error is found.
+	DatabaseError ErrorCode = "DATABASE_ERROR"
 
 	// InvalidArgument is the error code when some argument is invalid.
 	InvalidArgument ErrorCode = "INVALID_ARGUMENT"
