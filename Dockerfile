@@ -5,7 +5,7 @@ RUN apt-get install -y \
     lsb-release \
     build-essential
 
-ARG GOVERSION=1.18.4
+ARG GOVERSION=1.19
 ARG GOARCH=amd64
 
 # Install Go
