@@ -21,6 +21,7 @@ const tags = [
   "docs",
   "style",
   "refactor",
+  "revert",
   "perf",
   "test",
   "chore",

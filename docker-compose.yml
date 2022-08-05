@@ -31,7 +31,6 @@ services:
     links:
       - ${DB_HOST}
     volumes:
-      - ./.generated/.cache/go/pkg:/go/pkg
       - ./.generated/.cache/go:/root/.cache
       - ./cmd:/go/src/github.com/christian-gama/go-booking-api/cmd
       - ./migrations:/go/src/github.com/christian-gama/go-booking-api/migrations
@@ -43,6 +42,7 @@ services:
       - ./go.mod:/go/src/github.com/christian-gama/go-booking-api/go.mod
       - ./go.sum:/go/src/github.com/christian-gama/go-booking-api/go.sum
       - ./Makefile:/go/src/github.com/christian-gama/go-booking-api/Makefile
+      - ./vendor:/go/src/github.com/christian-gama/go-booking-api/vendor
       - ./.generated/coverage:/go/src/github.com/christian-gama/go-booking-api/.generated/coverage
       - ./.generated/build:/go/src/github.com/christian-gama/go-booking-api/.generated/build
       - ./mocks:/go/src/github.com/christian-gama/go-booking-api/mocks
