@@ -7,7 +7,7 @@ docker run \
   --rm -t \
   --user "$(id -u):$(id -g)" \
   -v "$CACHE_DIR:/.cache" \
-  -v "$(go env GOPATH)/pkg:/go/pkg" \
+  -v "$PWD/.generated/.cache/go/pkg:/go/pkg" \
   -v "$PWD:/app" \
   --workdir /app \
   golangci/golangci-lint:v1.47.3 \

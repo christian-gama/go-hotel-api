@@ -31,11 +31,11 @@ services:
     links:
       - ${DB_HOST}
     volumes:
+      - ./.generated/.cache/go/pkg:/go/pkg
       - ./.generated/.cache/go:/root/.cache
       - ./cmd:/go/src/github.com/christian-gama/go-booking-api/cmd
       - ./migrations:/go/src/github.com/christian-gama/go-booking-api/migrations
       - ./internal:/go/src/github.com/christian-gama/go-booking-api/internal
-      - ./vendor:/go/src/github.com/christian-gama/go-booking-api/vendor
       - ./.env.dev:/go/src/github.com/christian-gama/go-booking-api/.env.dev
       - ./.env.prod:/go/src/github.com/christian-gama/go-booking-api/.env.prod
       - ./.env.test:/go/src/github.com/christian-gama/go-booking-api/.env.test
