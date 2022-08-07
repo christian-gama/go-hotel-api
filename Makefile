@@ -25,11 +25,12 @@ build: cmd-exists-go
 
 
 test_integration: cmd-exists-go
-	@TEST_MODE=integration go test -p 1 $(TEST_FLAGS) ./...
+	@TEST_MODE=unit gotestsum --format pkgname -- $(TEST_FLAGS) -p 1 ./...
 
 
-test: cmd-exists-go
-	@TEST_MODE=unit go test $(TEST_FLAGS) ./...
+test: cmd-exists-go cmd-exists-gotestsum
+	@TEST_MODE=unit gotestsum --format pkgname -- $(TEST_FLAGS) ./...
+
 
 cover: cmd-exists-go
 	@if [ ! -d "$(COVERAGE_DIR)" ]; then \
@@ -64,6 +65,9 @@ migrate: cmd-exists-docker
 		-path=/migrations/ \
 		-database $(DB_SGBD)://$(DB_USER):$(DB_PASSWORD)@localhost:$(DB_EXPOSED_PORT)/$(DB_NAME)?sslmode=$(DB_SSL_MODE) $(MIGRATION) $(VERSION)
 	
+mock: cmd-exists-docker
+	docker run -v "$(PWD)":/src -w /src vektra/mockery --all --exported --dir ./internal
+
 
 clear:
 	@rm -rf $(GENERATED_DIR)

@@ -1,4 +1,4 @@
-package error
+package errorutil
 
 // Error is a struct that represents an error.
 type Error struct {

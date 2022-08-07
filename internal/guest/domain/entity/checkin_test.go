@@ -6,7 +6,7 @@ import (
 	"time"
 
 	"github.com/christian-gama/go-booking-api/internal/guest/domain/entity"
-	"github.com/christian-gama/go-booking-api/internal/shared/domain/error"
+	"github.com/christian-gama/go-booking-api/internal/shared/domain/errorutil"
 	"github.com/christian-gama/go-booking-api/internal/shared/domain/notification"
 	"github.com/stretchr/testify/suite"
 )
@@ -98,7 +98,7 @@ func (s *CheckinTestSuite) TestNewCheckin() {
 				checkoutDate: s.checkoutDate,
 			},
 			err: &notification.Error{
-				Code:    error.InvalidArgument,
+				Code:    errorutil.InvalidArgument,
 				Message: "uuid cannot be empty",
 				Param:   "uuid",
 			},
@@ -113,7 +113,7 @@ func (s *CheckinTestSuite) TestNewCheckin() {
 				checkoutDate: s.checkoutDate,
 			},
 			err: &notification.Error{
-				Code:    error.InvalidArgument,
+				Code:    errorutil.InvalidArgument,
 				Message: "roomId cannot be zero",
 				Param:   "roomId",
 			},
@@ -128,7 +128,7 @@ func (s *CheckinTestSuite) TestNewCheckin() {
 				checkoutDate: s.checkoutDate,
 			},
 			err: &notification.Error{
-				Code:    error.InvalidArgument,
+				Code:    errorutil.InvalidArgument,
 				Message: "guest cannot be nil",
 				Param:   "guest",
 			},
@@ -143,7 +143,7 @@ func (s *CheckinTestSuite) TestNewCheckin() {
 				checkoutDate: time.Now().Add(entity.WaitTimeToCheckout - (1 * time.Minute)),
 			},
 			err: &notification.Error{
-				Code: error.ConditionNotMet,
+				Code: errorutil.ConditionNotMet,
 				Message: fmt.Sprintf(
 					"to make checkout is necessary to wait %s after checkin",
 					time.Time{}.Add(entity.WaitTimeToCheckout).Format("15h04min"),
@@ -161,7 +161,7 @@ func (s *CheckinTestSuite) TestNewCheckin() {
 				checkoutDate: s.checkoutDate,
 			},
 			err: &notification.Error{
-				Code:    error.Conflict,
+				Code:    errorutil.Conflict,
 				Message: "checkin date cannot be after checkout date",
 				Param:   "checkinDate",
 			},
@@ -179,7 +179,7 @@ func (s *CheckinTestSuite) TestNewCheckin() {
 			)
 			if tt.err != nil {
 				s.Equal(
-					[]*error.Error{{
+					[]*errorutil.Error{{
 						Code:    tt.err.Code,
 						Message: tt.err.Message,
 						Param:   tt.err.Param,

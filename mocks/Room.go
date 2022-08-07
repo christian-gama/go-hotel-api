@@ -4,7 +4,7 @@ package mocks
 
 import (
 	entity "github.com/christian-gama/go-booking-api/internal/room/domain/entity"
-	error "github.com/christian-gama/go-booking-api/internal/shared/domain/error"
+	errorutil "github.com/christian-gama/go-booking-api/internal/shared/domain/errorutil"
 
 	mock "github.com/stretchr/testify/mock"
 )
@@ -15,7 +15,7 @@ type Room struct {
 }
 
 // SaveRoom provides a mock function with given fields: room
-func (_m *Room) SaveRoom(room *entity.Room) (*entity.Room, []*error.Error) {
+func (_m *Room) SaveRoom(room *entity.Room) (*entity.Room, []*errorutil.Error) {
 	ret := _m.Called(room)
 
 	var r0 *entity.Room
@@ -27,12 +27,12 @@ func (_m *Room) SaveRoom(room *entity.Room) (*entity.Room, []*error.Error) {
 		}
 	}
 
-	var r1 []*error.Error
-	if rf, ok := ret.Get(1).(func(*entity.Room) []*error.Error); ok {
+	var r1 []*errorutil.Error
+	if rf, ok := ret.Get(1).(func(*entity.Room) []*errorutil.Error); ok {
 		r1 = rf(room)
 	} else {
 		if ret.Get(1) != nil {
-			r1 = ret.Get(1).([]*error.Error)
+			r1 = ret.Get(1).([]*errorutil.Error)
 		}
 	}
 

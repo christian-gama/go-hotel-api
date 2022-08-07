@@ -5,7 +5,7 @@ import (
 	"testing"
 
 	"github.com/christian-gama/go-booking-api/internal/guest/domain/entity"
-	"github.com/christian-gama/go-booking-api/internal/shared/domain/error"
+	"github.com/christian-gama/go-booking-api/internal/shared/domain/errorutil"
 	"github.com/christian-gama/go-booking-api/internal/shared/domain/notification"
 	"github.com/stretchr/testify/suite"
 )
@@ -73,7 +73,7 @@ func (s *GuestTestSuite) TestNewGuest() {
 				roomIds: s.roomIds,
 			},
 			err: &notification.Error{
-				Code:    error.InvalidArgument,
+				Code:    errorutil.InvalidArgument,
 				Message: "uuid cannot be empty",
 				Param:   "uuid",
 			},
@@ -86,7 +86,7 @@ func (s *GuestTestSuite) TestNewGuest() {
 				roomIds: s.roomIds,
 			},
 			err: &notification.Error{
-				Code:    error.InvalidArgument,
+				Code:    errorutil.InvalidArgument,
 				Message: "credits cannot be negative",
 				Param:   "credits",
 			},
@@ -99,7 +99,7 @@ func (s *GuestTestSuite) TestNewGuest() {
 				roomIds: make([]uint8, entity.MaxRooms+1),
 			},
 			err: &notification.Error{
-				Code:    error.InvalidArgument,
+				Code:    errorutil.InvalidArgument,
 				Message: fmt.Sprintf("guest cannot have more than %d rooms", entity.MaxRooms),
 				Param:   "roomIds",
 			},
@@ -111,7 +111,7 @@ func (s *GuestTestSuite) TestNewGuest() {
 			_, err := entity.NewGuest(tt.args.uuid, tt.args.credits, tt.args.roomIds)
 			if tt.err != nil {
 				s.Equal(
-					[]*error.Error{{
+					[]*errorutil.Error{{
 						Code:    tt.err.Code,
 						Message: tt.err.Message,
 						Param:   tt.err.Param,

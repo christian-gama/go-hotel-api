@@ -20,6 +20,10 @@ RUN curl -O -L "https://golang.org/dl/go${GOVERSION}.linux-${GOARCH}.tar.gz" && 
 ENV PATH $PATH:/usr/local/go/bin
 ENV GOPATH $HOME/go
 
+RUN curl -sSL "https://github.com/gotestyourself/gotestsum/releases/download/v1.8.1/gotestsum_1.8.1_linux_amd64.tar.gz" \
+    | tar -xz -C /usr/local/go/bin gotestsum 
+
+
 FROM base AS gobooking
 ARG WORKDIR
 WORKDIR ${WORKDIR} 

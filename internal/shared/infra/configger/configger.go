@@ -20,6 +20,12 @@ type Db interface {
 	Sgbd() string
 	MaxConnections() int
 	MaxIdleConnections() int
-	MaxLifeTimeMin() time.Duration
-	TimeoutSec() time.Duration
+	MaxLifeTime() time.Duration
+	Timeout() time.Duration
+}
+
+// Mig is the migration configuration.
+type Mig interface {
+	Dir() string
+	Ext() string
 }

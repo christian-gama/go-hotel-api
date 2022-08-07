@@ -7,7 +7,7 @@ import (
 	"github.com/christian-gama/go-booking-api/internal/room/app/dto"
 	"github.com/christian-gama/go-booking-api/internal/room/app/service"
 	"github.com/christian-gama/go-booking-api/internal/room/domain/entity"
-	"github.com/christian-gama/go-booking-api/internal/shared/domain/error"
+	"github.com/christian-gama/go-booking-api/internal/shared/domain/errorutil"
 	"github.com/christian-gama/go-booking-api/mocks"
 	"github.com/stretchr/testify/mock"
 	"github.com/stretchr/testify/suite"
@@ -45,17 +45,17 @@ func (s *CreateRoomServiceTestSuite) TestCreateRoom_Handle() {
 	}
 
 	tests := []struct {
-		name    string
-		args    args
-		wantErr *error.Error
-		mock    func() (*mock.Call, *mock.Call)
+		name string
+		args args
+		err  *errorutil.Error
+		mock func() (*mock.Call, *mock.Call)
 	}{
 		{
 			name: "should create a room without errors",
 			args: args{
 				input: input,
 			},
-			wantErr: nil,
+			err: nil,
 			mock: func() (*mock.Call, *mock.Call) {
 				mockGenerate := s.uuid.On("Generate").Return("uuid")
 				mockSaveRoom := s.repo.On("SaveRoom", mock.Anything).Return(&entity.Room{}, nil)
@@ -67,8 +67,8 @@ func (s *CreateRoomServiceTestSuite) TestCreateRoom_Handle() {
 			args: args{
 				input: input,
 			},
-			wantErr: &error.Error{
-				Code:    error.InvalidArgument,
+			err: &errorutil.Error{
+				Code:    errorutil.InvalidArgument,
 				Message: "uuid cannot be empty",
 				Context: "room",
 				Param:   "uuid",
@@ -84,8 +84,8 @@ func (s *CreateRoomServiceTestSuite) TestCreateRoom_Handle() {
 			args: args{
 				input: input,
 			},
-			wantErr: &error.Error{
-				Code:    error.InvalidArgument,
+			err: &errorutil.Error{
+				Code:    errorutil.InvalidArgument,
 				Message: "any message",
 				Context: "repository",
 				Param:   "any param",
@@ -94,11 +94,11 @@ func (s *CreateRoomServiceTestSuite) TestCreateRoom_Handle() {
 				mockGenerate := s.uuid.On("Generate").Return("uuid")
 				mockSaveRoom := s.repo.On("SaveRoom", mock.Anything).Return(
 					nil,
-					[]*error.Error{{
+					[]*errorutil.Error{{
 						Message: "any message",
 						Param:   "any param",
 						Context: "repository",
-						Code:    error.InvalidArgument,
+						Code:    errorutil.InvalidArgument,
 					}},
 				)
 
@@ -115,13 +115,13 @@ func (s *CreateRoomServiceTestSuite) TestCreateRoom_Handle() {
 
 			_, err := s.createRoom.Handle(tt.args.input)
 
-			if tt.wantErr != nil {
+			if tt.err != nil {
 				s.Equal(
-					[]*error.Error{{
-						Code:    tt.wantErr.Code,
-						Context: tt.wantErr.Context,
-						Message: tt.wantErr.Message,
-						Param:   tt.wantErr.Param,
+					[]*errorutil.Error{{
+						Code:    tt.err.Code,
+						Context: tt.err.Context,
+						Message: tt.err.Message,
+						Param:   tt.err.Param,
 					}},
 					err,
 				)

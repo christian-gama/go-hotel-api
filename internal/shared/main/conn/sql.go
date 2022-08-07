@@ -3,6 +3,7 @@ package conn
 import (
 	_sql "database/sql"
 	"fmt"
+	"time"
 
 	"github.com/christian-gama/go-booking-api/internal/shared/infra/configger"
 )
@@ -24,8 +25,17 @@ func (s *sql) open() error {
 		return fmt.Errorf("failed to open database: %w", err)
 	}
 
-	if err := db.Ping(); err != nil {
-		return fmt.Errorf("failed to ping database: %w", err)
+	for i := 0; i <= 3; i++ {
+		err = db.Ping()
+		if err == nil {
+			break
+		}
+
+		if i == 3 {
+			return fmt.Errorf("failed to ping database: %w", err)
+		}
+
+		time.Sleep(time.Second * 2)
 	}
 
 	s.db = db
@@ -37,7 +47,7 @@ func (s *sql) open() error {
 func (s *sql) setup() {
 	s.db.SetMaxIdleConns(s.dbConfigger.MaxIdleConnections())
 	s.db.SetMaxOpenConns(s.dbConfigger.MaxConnections())
-	s.db.SetConnMaxLifetime(s.dbConfigger.MaxLifeTimeMin())
+	s.db.SetConnMaxLifetime(s.dbConfigger.MaxLifeTime())
 }
 
 // setDsn sets the data source name.

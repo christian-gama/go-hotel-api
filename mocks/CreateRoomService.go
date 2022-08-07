@@ -6,7 +6,7 @@ import (
 	dto "github.com/christian-gama/go-booking-api/internal/room/app/dto"
 	entity "github.com/christian-gama/go-booking-api/internal/room/domain/entity"
 
-	error "github.com/christian-gama/go-booking-api/internal/shared/domain/error"
+	errorutil "github.com/christian-gama/go-booking-api/internal/shared/domain/errorutil"
 
 	mock "github.com/stretchr/testify/mock"
 )
@@ -17,7 +17,7 @@ type CreateRoomService struct {
 }
 
 // Handle provides a mock function with given fields: input
-func (_m *CreateRoomService) Handle(input *dto.CreateRoom) (*entity.Room, []*error.Error) {
+func (_m *CreateRoomService) Handle(input *dto.CreateRoom) (*entity.Room, []*errorutil.Error) {
 	ret := _m.Called(input)
 
 	var r0 *entity.Room
@@ -29,12 +29,12 @@ func (_m *CreateRoomService) Handle(input *dto.CreateRoom) (*entity.Room, []*err
 		}
 	}
 
-	var r1 []*error.Error
-	if rf, ok := ret.Get(1).(func(*dto.CreateRoom) []*error.Error); ok {
+	var r1 []*errorutil.Error
+	if rf, ok := ret.Get(1).(func(*dto.CreateRoom) []*errorutil.Error); ok {
 		r1 = rf(input)
 	} else {
 		if ret.Get(1) != nil {
-			r1 = ret.Get(1).([]*error.Error)
+			r1 = ret.Get(1).([]*errorutil.Error)
 		}
 	}
 

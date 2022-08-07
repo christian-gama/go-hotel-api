@@ -46,6 +46,7 @@ services:
       - ./.generated/coverage:/go/src/github.com/christian-gama/go-booking-api/.generated/coverage
       - ./.generated/build:/go/src/github.com/christian-gama/go-booking-api/.generated/build
       - ./mocks:/go/src/github.com/christian-gama/go-booking-api/mocks
+      - ./test:/go/src/github.com/christian-gama/go-booking-api/test
   
   psql_test:
     container_name: go_booking_psql_test
@@ -59,4 +60,4 @@ services:
     tmpfs:
       - /var/lib/postgresql/data
     ports:
-      - "18501:${DB_PORT}"
+      - "${DB_EXPOSED_PORT}:${DB_PORT}"

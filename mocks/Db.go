@@ -55,8 +55,8 @@ func (_m *Db) MaxIdleConnections() int {
 	return r0
 }
 
-// MaxLifeTimeMin provides a mock function with given fields:
-func (_m *Db) MaxLifeTimeMin() time.Duration {
+// MaxLifeTime provides a mock function with given fields:
+func (_m *Db) MaxLifeTime() time.Duration {
 	ret := _m.Called()
 
 	var r0 time.Duration
@@ -139,8 +139,8 @@ func (_m *Db) SslMode() string {
 	return r0
 }
 
-// TimeoutSec provides a mock function with given fields:
-func (_m *Db) TimeoutSec() time.Duration {
+// Timeout provides a mock function with given fields:
+func (_m *Db) Timeout() time.Duration {
 	ret := _m.Called()
 
 	var r0 time.Duration

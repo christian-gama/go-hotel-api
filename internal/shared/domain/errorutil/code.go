@@ -1,4 +1,4 @@
-package error
+package errorutil
 
 // ErrorCode represents the error code of a domain error.
 type ErrorCode string

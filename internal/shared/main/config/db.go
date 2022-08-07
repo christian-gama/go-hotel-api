@@ -81,8 +81,8 @@ func (d *db) MaxIdleConnections() int {
 	return i
 }
 
-// MaxLifeTimeMin returns the maximum lifetime of a connection in minutes to the database.
-func (d *db) MaxLifeTimeMin() time.Duration {
+// MaxLifeTime returns the maximum lifetime of a connection in minutes to the database.
+func (d *db) MaxLifeTime() time.Duration {
 	i, err := strconv.Atoi(getEnv(dbMaxLifeTimeMin))
 	if err != nil {
 		panic(err)
@@ -90,8 +90,8 @@ func (d *db) MaxLifeTimeMin() time.Duration {
 	return time.Duration(i) * time.Minute
 }
 
-// TimeoutSec returns the timeout in seconds of the database.
-func (d *db) TimeoutSec() time.Duration {
+// Timeout returns the timeout in seconds of the database.
+func (d *db) Timeout() time.Duration {
 	i, err := strconv.Atoi(getEnv(dbTimeoutSec))
 	if err != nil {
 		panic(err)

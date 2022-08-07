@@ -6,7 +6,7 @@ import (
 	"testing"
 
 	"github.com/christian-gama/go-booking-api/internal/room/domain/entity"
-	"github.com/christian-gama/go-booking-api/internal/shared/domain/error"
+	"github.com/christian-gama/go-booking-api/internal/shared/domain/errorutil"
 	"github.com/christian-gama/go-booking-api/internal/shared/domain/notification"
 	"github.com/stretchr/testify/suite"
 )
@@ -102,7 +102,7 @@ func (s *RoomTestSuite) TestNewRoom() {
 				isAvailable: s.isAvailable,
 			},
 			err: &notification.Error{
-				Code:    error.InvalidArgument,
+				Code:    errorutil.InvalidArgument,
 				Message: "uuid cannot be empty",
 				Param:   "uuid",
 			},
@@ -118,7 +118,7 @@ func (s *RoomTestSuite) TestNewRoom() {
 				isAvailable: s.isAvailable,
 			},
 			err: &notification.Error{
-				Code:    error.InvalidArgument,
+				Code:    errorutil.InvalidArgument,
 				Message: "name cannot be empty",
 				Param:   "name",
 			},
@@ -134,7 +134,7 @@ func (s *RoomTestSuite) TestNewRoom() {
 				isAvailable: s.isAvailable,
 			},
 			err: &notification.Error{
-				Code:    error.InvalidArgument,
+				Code:    errorutil.InvalidArgument,
 				Message: fmt.Sprintf("description cannot be longer than %d characters", entity.MaxRoomDescriptionLen),
 				Param:   "description",
 			},
@@ -150,7 +150,7 @@ func (s *RoomTestSuite) TestNewRoom() {
 				isAvailable: s.isAvailable,
 			},
 			err: &notification.Error{
-				Code:    error.InvalidArgument,
+				Code:    errorutil.InvalidArgument,
 				Message: fmt.Sprintf("description cannot be shorter than %d characters", entity.MinRoomDescriptionLen),
 				Param:   "description",
 			},
@@ -166,7 +166,7 @@ func (s *RoomTestSuite) TestNewRoom() {
 				isAvailable: s.isAvailable,
 			},
 			err: &notification.Error{
-				Code:    error.InvalidArgument,
+				Code:    errorutil.InvalidArgument,
 				Message: fmt.Sprintf("bed count cannot be less than %d", entity.MinRoomBedCount),
 				Param:   "bedCount",
 			},
@@ -182,7 +182,7 @@ func (s *RoomTestSuite) TestNewRoom() {
 				isAvailable: s.isAvailable,
 			},
 			err: &notification.Error{
-				Code:    error.InvalidArgument,
+				Code:    errorutil.InvalidArgument,
 				Message: fmt.Sprintf("bed count cannot be greater than %d", entity.MaxRoomBedCount),
 				Param:   "bedCount",
 			},
@@ -198,7 +198,7 @@ func (s *RoomTestSuite) TestNewRoom() {
 				isAvailable: s.isAvailable,
 			},
 			err: &notification.Error{
-				Code:    error.InvalidArgument,
+				Code:    errorutil.InvalidArgument,
 				Message: fmt.Sprintf("price cannot be less than %.2f", entity.MinRoomPrice),
 				Param:   "price",
 			},
@@ -214,7 +214,7 @@ func (s *RoomTestSuite) TestNewRoom() {
 				isAvailable: s.isAvailable,
 			},
 			err: &notification.Error{
-				Code:    error.InvalidArgument,
+				Code:    errorutil.InvalidArgument,
 				Message: fmt.Sprintf("price cannot be greater than %.2f", entity.MaxRoomPrice),
 				Param:   "price",
 			},
@@ -233,7 +233,7 @@ func (s *RoomTestSuite) TestNewRoom() {
 			)
 			if tt.err != nil {
 				s.Equal(
-					[]*error.Error{{
+					[]*errorutil.Error{{
 						Code:    tt.err.Code,
 						Message: tt.err.Message,
 						Param:   tt.err.Param,
