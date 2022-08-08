@@ -4,6 +4,7 @@ import (
 	"testing"
 
 	"github.com/christian-gama/go-booking-api/internal/shared/util"
+	"github.com/christian-gama/go-booking-api/test"
 	"github.com/stretchr/testify/suite"
 )
 
@@ -18,5 +19,5 @@ func (s *RootPathTestSuite) TestGetRootPath() {
 }
 
 func TestRootPathTestSuite(t *testing.T) {
-	suite.Run(t, new(RootPathTestSuite))
+	test.RunUnitTest(t, new(RootPathTestSuite))
 }

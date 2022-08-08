@@ -5,6 +5,7 @@ import (
 
 	"github.com/christian-gama/go-booking-api/internal/shared/app/uuid"
 	uuidImpl "github.com/christian-gama/go-booking-api/internal/shared/infra/uuid"
+	"github.com/christian-gama/go-booking-api/test"
 	"github.com/stretchr/testify/suite"
 )
 
@@ -28,5 +29,5 @@ func (s *UuidTestSuite) TestNewUuid() {
 }
 
 func TestUuidTestSuite(t *testing.T) {
-	suite.Run(t, new(UuidTestSuite))
+	test.RunUnitTest(t, new(UuidTestSuite))
 }

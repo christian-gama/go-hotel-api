@@ -25,11 +25,11 @@ build: cmd-exists-go
 
 
 test_integration: cmd-exists-go
-	@TEST_MODE=unit gotestsum --format pkgname -- $(TEST_FLAGS) -p 1 ./...
+	@TEST_MODE=integration gotestsum --format pkgname -- $(TEST_FLAGS) -p 1 ./...
 
 
 test: cmd-exists-go cmd-exists-gotestsum
-	@TEST_MODE=unit gotestsum --format pkgname -- $(TEST_FLAGS) ./...
+	@TEST_MODE=unit gotestsum --format pkgname -- $(TEST_FLAGS) -v ./...
 
 
 cover: cmd-exists-go

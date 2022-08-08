@@ -5,6 +5,7 @@ import (
 
 	"github.com/christian-gama/go-booking-api/internal/shared/domain/errorutil"
 	"github.com/christian-gama/go-booking-api/internal/shared/domain/notification"
+	"github.com/christian-gama/go-booking-api/test"
 	"github.com/stretchr/testify/suite"
 )
 
@@ -51,5 +52,5 @@ func (s *NotificationTestSuite) TestNotification_Errors() {
 }
 
 func TestNotifificationTestSuite(t *testing.T) {
-	suite.Run(t, new(NotificationTestSuite))
+	test.RunUnitTest(t, new(NotificationTestSuite))
 }

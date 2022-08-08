@@ -9,6 +9,7 @@ import (
 	"github.com/christian-gama/go-booking-api/internal/room/domain/entity"
 	"github.com/christian-gama/go-booking-api/internal/shared/domain/errorutil"
 	"github.com/christian-gama/go-booking-api/mocks"
+	"github.com/christian-gama/go-booking-api/test"
 	"github.com/stretchr/testify/mock"
 	"github.com/stretchr/testify/suite"
 )
@@ -133,5 +134,5 @@ func (s *CreateRoomServiceTestSuite) TestCreateRoom_Handle() {
 }
 
 func TestCreateRoomTestSuite(t *testing.T) {
-	suite.Run(t, new(CreateRoomServiceTestSuite))
+	test.RunUnitTest(t, new(CreateRoomServiceTestSuite))
 }

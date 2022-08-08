@@ -13,6 +13,8 @@ import (
 func SetupDb() *sql.DB {
 	config.LoadEnvFile(".env.test")
 
+	mode()
+
 	db, err := conn.NewSQL("pgx", config.NewDb())
 	if err != nil {
 		panic(err)

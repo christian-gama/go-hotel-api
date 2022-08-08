@@ -8,6 +8,7 @@ import (
 	"github.com/christian-gama/go-booking-api/internal/guest/domain/entity"
 	"github.com/christian-gama/go-booking-api/internal/shared/domain/errorutil"
 	"github.com/christian-gama/go-booking-api/internal/shared/domain/notification"
+	"github.com/christian-gama/go-booking-api/test"
 	"github.com/stretchr/testify/suite"
 )
 
@@ -195,5 +196,5 @@ func (s *CheckinTestSuite) TestNewCheckin() {
 }
 
 func TestCheckinTestSuite(t *testing.T) {
-	suite.Run(t, new(CheckinTestSuite))
+	test.RunUnitTest(t, new(CheckinTestSuite))
 }

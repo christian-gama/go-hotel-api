@@ -68,5 +68,5 @@ func (s *RoomRepoTestSuite) TestRoomRepo_SaveRoom() {
 }
 
 func TestRoomRepoTestSuite(t *testing.T) {
-	suite.Run(t, new(RoomRepoTestSuite))
+	test.RunIntegrationTest(t, new(RoomRepoTestSuite))
 }
