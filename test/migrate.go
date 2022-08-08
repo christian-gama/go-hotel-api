@@ -8,8 +8,6 @@ import (
 	"github.com/christian-gama/go-booking-api/internal/shared/util"
 	"github.com/golang-migrate/migrate/v4"
 	"github.com/golang-migrate/migrate/v4/database/postgres"
-
-	// sources the postgres driver.
 	_ "github.com/golang-migrate/migrate/v4/source/file"
 )
 

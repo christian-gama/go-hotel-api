@@ -5,8 +5,6 @@ import (
 
 	"github.com/christian-gama/go-booking-api/internal/shared/main/config"
 	"github.com/christian-gama/go-booking-api/internal/shared/main/conn"
-
-	// sources postgres driver.
 	_ "github.com/jackc/pgconn"
 	_ "github.com/jackc/pgx/v4"
 	_ "github.com/jackc/pgx/v4/stdlib"
