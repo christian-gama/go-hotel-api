@@ -31,48 +31,18 @@ const (
 type Room struct {
 	notification *notification.Notification
 
-	uuid        string
-	name        string
-	description string
-	bedCount    uint8
-	price       float32
-	isAvailable bool
-}
-
-// UUID returns the room id.
-func (r *Room) UUID() string {
-	return r.uuid
-}
-
-// Name returns the room name.
-func (r *Room) Name() string {
-	return r.name
-}
-
-// Description returns the room description.
-func (r *Room) Description() string {
-	return r.description
-}
-
-// BedCount returns the number of beds in the room.
-func (r *Room) BedCount() uint8 {
-	return r.bedCount
-}
-
-// Price returns the room price.
-func (r *Room) Price() float32 {
-	return r.price
-}
-
-// IsAvailable returns the room busy status.
-func (r *Room) IsAvailable() bool {
-	return r.isAvailable
+	UUID        string
+	Name        string
+	Description string
+	BedCount    uint8
+	Price       float32
+	IsAvailable bool
 }
 
 // validate ensure the entity is valid. It will add an error to notification each time
 // it fails a validation. It will return nil if the entity is valid.
 func (r *Room) validate() []*errorutil.Error {
-	if r.uuid == "" {
+	if r.UUID == "" {
 		r.notification.AddError(
 			&notification.Error{
 				Code:    errorutil.InvalidArgument,
@@ -82,7 +52,7 @@ func (r *Room) validate() []*errorutil.Error {
 		)
 	}
 
-	if r.name == "" {
+	if r.Name == "" {
 		r.notification.AddError(
 			&notification.Error{
 				Code:    errorutil.InvalidArgument,
@@ -92,7 +62,7 @@ func (r *Room) validate() []*errorutil.Error {
 		)
 	}
 
-	if len(r.description) > MaxRoomDescriptionLen {
+	if len(r.Description) > MaxRoomDescriptionLen {
 		r.notification.AddError(
 			&notification.Error{
 				Code:    errorutil.InvalidArgument,
@@ -102,7 +72,7 @@ func (r *Room) validate() []*errorutil.Error {
 		)
 	}
 
-	if len(r.description) < MinRoomDescriptionLen {
+	if len(r.Description) < MinRoomDescriptionLen {
 		r.notification.AddError(
 			&notification.Error{
 				Code:    errorutil.InvalidArgument,
@@ -112,7 +82,7 @@ func (r *Room) validate() []*errorutil.Error {
 		)
 	}
 
-	if r.bedCount < MinRoomBedCount {
+	if r.BedCount < MinRoomBedCount {
 		r.notification.AddError(
 			&notification.Error{
 				Code:    errorutil.InvalidArgument,
@@ -122,7 +92,7 @@ func (r *Room) validate() []*errorutil.Error {
 		)
 	}
 
-	if r.bedCount > MaxRoomBedCount {
+	if r.BedCount > MaxRoomBedCount {
 		r.notification.AddError(
 			&notification.Error{
 				Code:    errorutil.InvalidArgument,
@@ -132,7 +102,7 @@ func (r *Room) validate() []*errorutil.Error {
 		)
 	}
 
-	if r.price < MinRoomPrice {
+	if r.Price < MinRoomPrice {
 		r.notification.AddError(
 			&notification.Error{
 				Code:    errorutil.InvalidArgument,
@@ -142,7 +112,7 @@ func (r *Room) validate() []*errorutil.Error {
 		)
 	}
 
-	if r.price > MaxRoomPrice {
+	if r.Price > MaxRoomPrice {
 		r.notification.AddError(
 			&notification.Error{
 				Code:    errorutil.InvalidArgument,
@@ -168,15 +138,15 @@ func NewRoom(
 	price float32,
 	isAvailable bool,
 ) (*Room, []*errorutil.Error) {
-	n := notification.New("room")
 	room := &Room{
-		uuid:         uuid,
-		notification: n,
-		name:         name,
-		description:  description,
-		bedCount:     bedCount,
-		price:        price,
-		isAvailable:  isAvailable,
+		notification.New("room"),
+
+		uuid,
+		name,
+		description,
+		bedCount,
+		price,
+		isAvailable,
 	}
 
 	if err := room.validate(); err != nil {

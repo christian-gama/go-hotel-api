@@ -44,26 +44,6 @@ func (s *CheckinTestSuite) SetupTest() {
 	s.checkin = checkin
 }
 
-func (s *CheckinTestSuite) TestCheckin_Uuid() {
-	s.Equal(s.uuid, s.checkin.UUID())
-}
-
-func (s *CheckinTestSuite) TestCheckin_Guest() {
-	s.Equal(s.guest, s.checkin.Guest())
-}
-
-func (s *CheckinTestSuite) TestCheckin_RoomId() {
-	s.Equal(s.roomId, s.checkin.RoomId())
-}
-
-func (s *CheckinTestSuite) TestCheckin_CheckinDate() {
-	s.Equal(s.checkinDate, s.checkin.CheckinDate())
-}
-
-func (s *CheckinTestSuite) TestCheckin_CheckoutDate() {
-	s.Equal(s.checkoutDate, s.checkin.CheckoutDate())
-}
-
 func (s *CheckinTestSuite) TestNewCheckin() {
 	type args struct {
 		uuid         string

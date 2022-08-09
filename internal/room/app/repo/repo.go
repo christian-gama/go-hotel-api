@@ -7,5 +7,9 @@ import (
 
 // Room is the interface for the room repo.
 type Room interface {
+	// SaveRoom is the method that will save a room.
 	SaveRoom(room *entity.Room) (*entity.Room, []*errorutil.Error)
+
+	// GetRoom is the method that will get a room by its uuid.
+	GetRoom(uuid string) (*entity.Room, []*errorutil.Error)
 }

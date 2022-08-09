@@ -18,30 +18,15 @@ const (
 type Guest struct {
 	notification *notification.Notification
 
-	uuid    string
-	credits float32
-	roomIds []uint8
-}
-
-// UUID returns the guest uuid.
-func (g *Guest) UUID() string {
-	return g.uuid
-}
-
-// Credits returns the guest credits. It will never return a negative value.
-func (g *Guest) Credits() float32 {
-	return g.credits
-}
-
-// Checkin adds a room id to the guest's room ids. It will return an error if does not pass the validation.
-func (g *Guest) RoomIds() []uint8 {
-	return g.roomIds
+	UUID    string
+	Credits float32
+	RoomIds []uint8
 }
 
 // validate ensure the entity is valid. It will add an error to notification each time
 // it fails a validation. It will return nil if the entity is valid.
 func (g *Guest) validate() []*errorutil.Error {
-	if g.uuid == "" {
+	if g.UUID == "" {
 		g.notification.AddError(
 			&notification.Error{
 				Code:    errorutil.InvalidArgument,
@@ -51,7 +36,7 @@ func (g *Guest) validate() []*errorutil.Error {
 		)
 	}
 
-	if g.credits < 0 {
+	if g.Credits < 0 {
 		g.notification.AddError(
 			&notification.Error{
 				Code:    errorutil.InvalidArgument,
@@ -61,7 +46,7 @@ func (g *Guest) validate() []*errorutil.Error {
 		)
 	}
 
-	if len(g.roomIds) > MaxRooms {
+	if len(g.RoomIds) > MaxRooms {
 		g.notification.AddError(
 			&notification.Error{
 				Code:    errorutil.InvalidArgument,
@@ -84,9 +69,9 @@ func NewGuest(
 	credits float32,
 	roomIds []uint8,
 ) (*Guest, []*errorutil.Error) {
-	n := notification.New("guest")
 	guest := &Guest{
-		n,
+		notification.New("guest"),
+
 		uuid,
 		credits,
 		roomIds,

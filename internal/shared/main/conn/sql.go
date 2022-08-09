@@ -25,14 +25,15 @@ func (s *sql) open() error {
 		return fmt.Errorf("failed to open database: %w", err)
 	}
 
-	for i := 0; i <= 3; i++ {
+	const attempts = 3
+	for i := 0; i <= attempts; i++ {
 		err = db.Ping()
 		if err == nil {
 			break
 		}
 
-		if i == 3 {
-			return fmt.Errorf("failed to ping database: %w", err)
+		if i == attempts {
+			return fmt.Errorf("failed to ping database after %d attempts: %w", i, err)
 		}
 
 		time.Sleep(time.Second * 2)

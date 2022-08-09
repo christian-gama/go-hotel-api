@@ -27,12 +27,12 @@ func (r *roomRepo) SaveRoom(room *entity.Room) (*entity.Room, []*errorutil.Error
 	_, err := r.db.ExecContext(
 		ctx,
 		stmt,
-		room.UUID(),
-		room.Name(),
-		room.Description(),
-		room.BedCount(),
-		room.Price(),
-		room.IsAvailable(),
+		room.UUID,
+		room.Name,
+		room.Description,
+		room.BedCount,
+		room.Price,
+		room.IsAvailable,
 	)
 	if err != nil {
 		return nil, []*errorutil.Error{{
@@ -40,6 +40,34 @@ func (r *roomRepo) SaveRoom(room *entity.Room) (*entity.Room, []*errorutil.Error
 			Message: "Could not save a new room.",
 			Context: "roomRepo",
 			Param:   "SaveRoom",
+		}}
+	}
+
+	return room, nil
+}
+
+func (r *roomRepo) GetRoom(uuid string) (*entity.Room, []*errorutil.Error) {
+	ctx, cancel := context.WithTimeout(context.Background(), r.dbConfigger.Timeout())
+	defer cancel()
+
+	stmt := `SELECT uuid, name, description, bed_count, price, is_available FROM rooms WHERE uuid = $1`
+	row := r.db.QueryRowContext(ctx, stmt, uuid)
+
+	room := &entity.Room{}
+	err := row.Scan(
+		&room.UUID,
+		&room.Name,
+		&room.Description,
+		&room.BedCount,
+		&room.Price,
+		&room.IsAvailable,
+	)
+	if err != nil {
+		return nil, []*errorutil.Error{{
+			Code:    errorutil.DatabaseError,
+			Message: "Could not get a room.",
+			Context: "roomRepo",
+			Param:   "GetRoom",
 		}}
 	}
 

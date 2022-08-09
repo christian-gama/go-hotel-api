@@ -40,30 +40,6 @@ func (s *RoomTestSuite) SetupTest() {
 	s.room = room
 }
 
-func (s *RoomTestSuite) TestRoom_Uuid() {
-	s.Equal(s.uuid, s.room.UUID(), "should get the room uuid")
-}
-
-func (s *RoomTestSuite) TestRoom_Name() {
-	s.Equal(s.name, s.room.Name(), "should get the room name")
-}
-
-func (s *RoomTestSuite) TestRoom_Description() {
-	s.Equal(s.description, s.room.Description(), "should get the room description")
-}
-
-func (s *RoomTestSuite) TestRoom_BedCount() {
-	s.Equal(s.bedCount, s.room.BedCount(), "should get the room bed count")
-}
-
-func (s *RoomTestSuite) TestRoom_Price() {
-	s.Equal(s.price, s.room.Price(), "should get the room price")
-}
-
-func (s *RoomTestSuite) TestRoom_IsAvailable() {
-	s.False(s.room.IsAvailable(), "should get the room status availability")
-}
-
 func (s *RoomTestSuite) TestNewRoom() {
 	type args struct {
 		uuid        string

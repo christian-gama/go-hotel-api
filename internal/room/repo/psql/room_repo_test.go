@@ -44,7 +44,63 @@ func (s *RoomRepoTestSuite) TearDownSuite() {
 	s.m.Close()
 }
 
-func (s *RoomRepoTestSuite) TestRoomRepo_SaveRoom() {
+func (s *RoomRepoTestSuite) TestRoomRepo_SaveRoom_Success() {
+	room, _ := entity.NewRoom(
+		"12345678-1234-1234-1234-123456789012",
+		"Test Room",
+		"This is a test room",
+		1,
+		1,
+		false,
+	)
+	dbConfigMock := mocks.NewDb(s.T())
+	roomRepo := psql.NewRoomRepo(s.db, dbConfigMock)
+	dbConfigMock.On("Timeout").Return(2 * time.Second)
+
+	_, err := roomRepo.SaveRoom(room)
+
+	s.Nil(err)
+}
+
+func (s *RoomRepoTestSuite) TestRoomRepo_SaveRoom_Error() {
+	room, _ := entity.NewRoom(
+		"12345678-1234-1234-1234-123456789012",
+		"Test Room",
+		"This is a test room",
+		1,
+		1,
+		false,
+	)
+	dbConfigMock := mocks.NewDb(s.T())
+	roomRepo := psql.NewRoomRepo(s.db, dbConfigMock)
+	dbConfigMock.On("Timeout").Return(1 * time.Microsecond)
+
+	_, err := roomRepo.SaveRoom(room)
+
+	s.Equal(errorutil.DatabaseError, err[0].Code)
+}
+
+func (s *RoomRepoTestSuite) TestRoomRepo_GetRoom_Success() {
+	room, _ := entity.NewRoom(
+		"12345678-1234-1234-1234-123456789012",
+		"Test Room",
+		"This is a test room",
+		1,
+		1,
+		false,
+	)
+	dbConfigMock := mocks.NewDb(s.T())
+	roomRepo := psql.NewRoomRepo(s.db, dbConfigMock)
+	dbConfigMock.On("Timeout").Return(2 * time.Second)
+	roomRepo.SaveRoom(room)
+
+	result, err := roomRepo.GetRoom(room.UUID)
+
+	s.Nil(err)
+	s.Equal(room.UUID, result.UUID)
+}
+
+func (s *RoomRepoTestSuite) TestRoomRepo_GetRoom_Error() {
 	room, _ := entity.NewRoom(
 		"12345678-1234-1234-1234-123456789012",
 		"Test Room",
@@ -56,13 +112,11 @@ func (s *RoomRepoTestSuite) TestRoomRepo_SaveRoom() {
 	dbConfigMock := mocks.NewDb(s.T())
 	roomRepo := psql.NewRoomRepo(s.db, dbConfigMock)
 	mock := dbConfigMock.On("Timeout").Return(2 * time.Second)
-
-	_, err := roomRepo.SaveRoom(room)
-	s.Nil(err)
-
+	roomRepo.SaveRoom(room)
 	mock.Unset()
 	mock.On("Timeout").Return(1 * time.Microsecond)
-	_, err = roomRepo.SaveRoom(room)
+
+	_, err := roomRepo.GetRoom(room.UUID)
 
 	s.Equal(errorutil.DatabaseError, err[0].Code)
 }

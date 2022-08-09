@@ -33,18 +33,6 @@ func (s *GuestTestSuite) SetupTest() {
 	s.guest = guest
 }
 
-func (s *GuestTestSuite) TestGuest_Uuid() {
-	s.Equal(s.uuid, s.guest.UUID())
-}
-
-func (s *GuestTestSuite) TestGuest_Credits() {
-	s.Equal(s.credits, s.guest.Credits())
-}
-
-func (s *GuestTestSuite) TestGuest_RoomIds() {
-	s.Equal(s.roomIds, s.guest.RoomIds())
-}
-
 func (s *GuestTestSuite) TestNewGuest() {
 	type args struct {
 		uuid    string

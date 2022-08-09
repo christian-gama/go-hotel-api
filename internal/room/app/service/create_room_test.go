@@ -20,6 +20,8 @@ type CreateRoomServiceTestSuite struct {
 	createRoom service.CreateRoomService
 	repo       *mocks.Room
 	uuid       *mocks.UUID
+
+	input *dto.CreateRoom
 }
 
 func (s *CreateRoomServiceTestSuite) SetupTest() {
@@ -27,110 +29,45 @@ func (s *CreateRoomServiceTestSuite) SetupTest() {
 	s.repo = mocks.NewRoom(s.T())
 	s.uuid = mocks.NewUUID(s.T())
 	s.createRoom = service.NewCreateRoom(s.repo, s.uuid)
-}
-
-func (s *CreateRoomServiceTestSuite) TestNewCreateRoom() {
-	s.NotNil(s.createRoom)
-}
-
-func (s *CreateRoomServiceTestSuite) TestCreateRoom_Handle() {
-	input := &dto.CreateRoom{
+	s.input = &dto.CreateRoom{
 		Name:        "name",
 		Description: "description",
 		BedCount:    1,
 		Price:       1.0,
 	}
+}
 
-	type args struct {
-		input *dto.CreateRoom
-	}
+func (s *CreateRoomServiceTestSuite) TestNewCreateRoom_NotNil() {
+	s.NotNil(s.createRoom)
+}
 
-	tests := []struct {
-		name string
-		args args
-		err  *errorutil.Error
-		mock func() (*mock.Call, *mock.Call)
-	}{
-		{
-			name: "should create a room without errors",
-			args: args{
-				input: input,
-			},
-			err: nil,
-			mock: func() (*mock.Call, *mock.Call) {
-				mockGenerate := s.uuid.On("Generate").Return("uuid")
-				mockSaveRoom := s.repo.On("SaveRoom", mock.Anything).Return(&entity.Room{}, nil)
-				return mockGenerate, mockSaveRoom
-			},
-		},
-		{
-			name: "should return an error when passing an invalid input",
-			args: args{
-				input: input,
-			},
-			err: &errorutil.Error{
-				Code:    errorutil.InvalidArgument,
-				Message: "uuid cannot be empty",
-				Context: "room",
-				Param:   "uuid",
-			},
-			mock: func() (*mock.Call, *mock.Call) {
-				mockGenerate := s.uuid.On("Generate").Return("")
-				mockSaveRoom := s.repo.On("SaveRoom", mock.Anything).Return(&entity.Room{}, nil)
-				return mockGenerate, mockSaveRoom
-			},
-		},
-		{
-			name: "should return an error when saving the room fails",
-			args: args{
-				input: input,
-			},
-			err: &errorutil.Error{
-				Code:    errorutil.InvalidArgument,
-				Message: "any message",
-				Context: "repository",
-				Param:   "any param",
-			},
-			mock: func() (*mock.Call, *mock.Call) {
-				mockGenerate := s.uuid.On("Generate").Return("uuid")
-				mockSaveRoom := s.repo.On("SaveRoom", mock.Anything).Return(
-					nil,
-					[]*errorutil.Error{{
-						Message: "any message",
-						Param:   "any param",
-						Context: "repository",
-						Code:    errorutil.InvalidArgument,
-					}},
-				)
+func (s *CreateRoomServiceTestSuite) TestCreateRoom_Handle_Success() {
+	s.uuid.On("Generate").Return("uuid")
+	s.repo.On("SaveRoom", mock.Anything).Return(&entity.Room{}, nil)
 
-				return mockGenerate, mockSaveRoom
-			},
-		},
-	}
+	result, err := s.createRoom.Handle(s.input)
 
-	for _, tt := range tests {
-		s.Run(tt.name, func() {
-			m1, m2 := tt.mock()
-			defer m1.Unset()
-			defer m2.Unset()
+	s.NotNil(result)
+	s.Nil(err)
+}
 
-			_, err := s.createRoom.Handle(tt.args.input)
+func (s *CreateRoomServiceTestSuite) TestCreateRoom_Handle_InvalidInput() {
+	s.uuid.On("Generate").Return("")
 
-			if tt.err != nil {
-				s.Equal(
-					[]*errorutil.Error{{
-						Code:    tt.err.Code,
-						Context: tt.err.Context,
-						Message: tt.err.Message,
-						Param:   tt.err.Param,
-					}},
-					err,
-				)
-			} else {
-				s.Nil(err)
-			}
-		})
-	}
+	result, err := s.createRoom.Handle(s.input)
+
+	s.Nil(result)
+	s.NotNil(err[0].Code, errorutil.InvalidArgument)
+}
+
+func (s *CreateRoomServiceTestSuite) TestCreateRoom_Handle_SaveRoomError() {
+	s.uuid.On("Generate").Return("uuid")
+	s.repo.On("SaveRoom", mock.Anything).Return(nil, []*errorutil.Error{{}})
+
+	result, err := s.createRoom.Handle(s.input)
+
+	s.Nil(result)
+	s.NotNil(err[0])
 }
 
 func TestCreateRoomTestSuite(t *testing.T) {

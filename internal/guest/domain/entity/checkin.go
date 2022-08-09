@@ -20,42 +20,17 @@ const (
 type Checkin struct {
 	notification *notification.Notification
 
-	uuid         string
-	roomId       uint32
-	guest        *Guest
-	checkinDate  time.Time
-	checkoutDate time.Time
-}
-
-// UUID returns the checkin id.
-func (c *Checkin) UUID() string {
-	return c.uuid
-}
-
-// RoomId returns the room id that the guest is checking in to.
-func (c *Checkin) RoomId() uint32 {
-	return c.roomId
-}
-
-// Guest returns the guest that is checking in.
-func (c *Checkin) Guest() *Guest {
-	return c.guest
-}
-
-// CheckinDate returns the checkin date.
-func (c *Checkin) CheckinDate() time.Time {
-	return c.checkinDate
-}
-
-// CheckoutDate returns the checkout date.
-func (c *Checkin) CheckoutDate() time.Time {
-	return c.checkoutDate
+	UUID         string
+	RoomId       uint32
+	Guest        *Guest
+	CheckinDate  time.Time
+	CheckoutDate time.Time
 }
 
 // validate ensure the entity is valid. It will add an error to notification each time
 // it fails a validation. It will return nil if the entity is valid.
 func (c *Checkin) validate() []*errorutil.Error {
-	if c.uuid == "" {
+	if c.UUID == "" {
 		c.notification.AddError(
 			&notification.Error{
 				Code:    errorutil.InvalidArgument,
@@ -65,7 +40,7 @@ func (c *Checkin) validate() []*errorutil.Error {
 		)
 	}
 
-	if c.roomId == 0 {
+	if c.RoomId == 0 {
 		c.notification.AddError(
 			&notification.Error{
 				Code:    errorutil.InvalidArgument,
@@ -75,7 +50,7 @@ func (c *Checkin) validate() []*errorutil.Error {
 		)
 	}
 
-	if c.guest == nil {
+	if c.Guest == nil {
 		c.notification.AddError(
 			&notification.Error{
 				Code:    errorutil.InvalidArgument,
@@ -85,7 +60,7 @@ func (c *Checkin) validate() []*errorutil.Error {
 		)
 	}
 
-	if c.checkoutDate.Before(c.checkinDate) {
+	if c.CheckoutDate.Before(c.CheckinDate) {
 		c.notification.AddError(
 			&notification.Error{
 				Code:    errorutil.Conflict,
@@ -95,7 +70,7 @@ func (c *Checkin) validate() []*errorutil.Error {
 		)
 	}
 
-	if time.Until(c.checkoutDate) < WaitTimeToCheckout {
+	if time.Until(c.CheckoutDate) < WaitTimeToCheckout {
 		fmtTime := time.Time{}.Add(WaitTimeToCheckout).Format("15h04min")
 
 		c.notification.AddError(
@@ -124,10 +99,9 @@ func NewCheckin(
 	checkinDate time.Time,
 	checkoutDate time.Time,
 ) (*Checkin, []*errorutil.Error) {
-	n := notification.New("checkin")
-
 	checkin := &Checkin{
-		n,
+		notification.New("checkin"),
+
 		uuid,
 		roomId,
 		guest,
