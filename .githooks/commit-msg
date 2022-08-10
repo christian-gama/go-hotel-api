@@ -61,5 +61,5 @@ if (subject[subject.length - 1] === ".") {
   log.error(hookName, "Subject must not end with a period");
 }
 
-log.success(hookName, "Commit message is valid");
+log.success(hookName, `Commit message is valid (length: ${subject.length})`);
 process.exit(0);
