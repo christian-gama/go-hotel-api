@@ -36,7 +36,7 @@ cover: cmd-exists-go
 	@if [ ! -d "$(COVERAGE_DIR)" ]; then \
 		mkdir -p $(COVERAGE_DIR); \
 	fi
-	@make test TEST_FLAGS=-coverprofile=$(COVERAGE_DIR)/coverage.out 
+	@TEST_MODE=both gotestsum --format pkgname -- -coverprofile=$(COVERAGE_DIR)/coverage.out -p 1 ./...
 
 
 cover-html: cmd-exists-go

@@ -8,29 +8,35 @@ import (
 	"github.com/stretchr/testify/suite"
 )
 
+const (
+	unitTest        = "unit"
+	integrationTest = "integration"
+	bothTest        = "both"
+)
+
 func mode() string {
 	config.LoadEnvFile(".env.test")
 	mode := os.Getenv("TEST_MODE")
 
-	if mode != "unit" && mode != "integration" {
-		panic("TEST_MODE must be either 'unit' or 'integration'")
+	if mode != unitTest && mode != integrationTest && mode != bothTest {
+		panic("TEST_MODE must be either 'unit', 'integration' or 'both'")
 	}
 
 	return mode
 }
 
 func RunIntegrationTest(t *testing.T, s suite.TestingSuite) {
-	if mode() == "integration" {
+	if mode() == integrationTest || mode() == bothTest {
 		suite.Run(t, s)
 	} else {
-		t.Skip("Skipping integration test")
+		t.SkipNow()
 	}
 }
 
 func RunUnitTest(t *testing.T, s suite.TestingSuite) {
-	if mode() == "unit" {
+	if mode() == unitTest || mode() == bothTest {
 		suite.Run(t, s)
 	} else {
-		t.Skip("Skipping unit test")
+		t.SkipNow()
 	}
 }

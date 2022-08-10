@@ -1,12 +1,10 @@
 package entity_test
 
 import (
-	"fmt"
 	"testing"
 
 	"github.com/christian-gama/go-booking-api/internal/guest/domain/entity"
 	"github.com/christian-gama/go-booking-api/internal/shared/domain/errorutil"
-	"github.com/christian-gama/go-booking-api/internal/shared/domain/notification"
 	"github.com/christian-gama/go-booking-api/test"
 	"github.com/stretchr/testify/suite"
 )
@@ -33,86 +31,32 @@ func (s *GuestTestSuite) SetupTest() {
 	s.guest = guest
 }
 
-func (s *GuestTestSuite) TestNewGuest() {
-	type args struct {
-		uuid    string
-		credits float32
-		roomIds []uint8
-	}
+func (s *GuestTestSuite) TestNewGuest_Success() {
+	result, err := entity.NewGuest(s.uuid, s.credits, s.roomIds)
 
-	tests := []struct {
-		name string
-		args args
-		err  *notification.Error
-	}{
-		{
-			name: "should create a new guest",
-			args: args{
-				uuid:    s.uuid,
-				credits: s.credits,
-				roomIds: s.roomIds,
-			},
-			err: nil,
-		},
-		{
-			name: "should return an error when guest uuid is empty",
-			args: args{
-				uuid:    "",
-				credits: s.credits,
-				roomIds: s.roomIds,
-			},
-			err: &notification.Error{
-				Code:    errorutil.InvalidArgument,
-				Message: "uuid cannot be empty",
-				Param:   "uuid",
-			},
-		},
-		{
-			name: "should return an error when guest credit is negative",
-			args: args{
-				uuid:    s.uuid,
-				credits: -1,
-				roomIds: s.roomIds,
-			},
-			err: &notification.Error{
-				Code:    errorutil.InvalidArgument,
-				Message: "credits cannot be negative",
-				Param:   "credits",
-			},
-		},
-		{
-			name: "should return an error when guest room id length is greater than max allowed rooms",
-			args: args{
-				uuid:    s.uuid,
-				credits: s.credits,
-				roomIds: make([]uint8, entity.MaxRooms+1),
-			},
-			err: &notification.Error{
-				Code:    errorutil.InvalidArgument,
-				Message: fmt.Sprintf("guest cannot have more than %d rooms", entity.MaxRooms),
-				Param:   "roomIds",
-			},
-		},
-	}
+	s.NotNil(result)
+	s.Nil(err)
+}
 
-	for _, tt := range tests {
-		s.Run(tt.name, func() {
-			_, err := entity.NewGuest(tt.args.uuid, tt.args.credits, tt.args.roomIds)
-			if tt.err != nil {
-				s.Equal(
-					[]*errorutil.Error{{
-						Code:    tt.err.Code,
-						Message: tt.err.Message,
-						Param:   tt.err.Param,
-						Context: "guest",
-					}},
-					err,
-				)
-			} else {
-				s.Nil(err)
-			}
-		})
-	}
+func (s *GuestTestSuite) TestNewGuest_UuidEmptyError() {
+	result, err := entity.NewGuest("", s.credits, s.roomIds)
+
+	s.Nil(result)
+	s.Equal(errorutil.InvalidArgument, err[0].Code)
+}
+
+func (s *GuestTestSuite) TestNewGuest_RoomIdsMaxLengthError() {
+	result, err := entity.NewGuest(s.uuid, s.credits, make([]uint8, entity.MaxRooms+1))
+
+	s.Nil(result)
+	s.Equal(errorutil.InvalidArgument, err[0].Code)
+}
+
+func (s *GuestTestSuite) TestNewGuest_NegativeCreditsError() {
+	result, err := entity.NewGuest(s.uuid, -1.0, s.roomIds)
+
+	s.Nil(result)
+	s.Equal(errorutil.InvalidArgument, err[0].Code)
 }
 
 func TestGuestTestSuite(t *testing.T) {
