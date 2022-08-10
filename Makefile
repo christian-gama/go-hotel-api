@@ -19,7 +19,7 @@ run: cmd-exists-go
 
 
 build: cmd-exists-go
-	@CGO_ENABLED=0 go build -o $(BUILD_DIR)/$(APP_NAME) ./cmd/api/*.go
+	@CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -o $(BUILD_DIR)/$(APP_NAME) ./cmd/api/*.go
 	@chmod +x $(BUILD_DIR)/$(APP_NAME)
 	@echo "Build was generated at $(BUILD_DIR)/$(APP_NAME)"
 
