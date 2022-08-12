@@ -13,7 +13,6 @@ import (
 type CheckinTestSuite struct {
 	suite.Suite
 
-	checkin      *entity.Checkin
 	uuid         string
 	guest        *entity.Guest
 	roomId       uint32
@@ -27,19 +26,6 @@ func (s *CheckinTestSuite) SetupTest() {
 	s.roomId = 1
 	s.checkinDate = time.Now().Add(entity.WaitTimeToCheckin + (1 * time.Minute))
 	s.checkoutDate = time.Now().Add(entity.WaitTimeToCheckout + (1 * time.Minute))
-
-	checkin, err := entity.NewCheckin(
-		s.uuid,
-		s.guest,
-		s.roomId,
-		s.checkinDate,
-		s.checkoutDate,
-	)
-	if err != nil {
-		s.Fail("could not create checkin in test suite")
-	}
-
-	s.checkin = checkin
 }
 
 func (s *CheckinTestSuite) TestNewCheckin_Success() {

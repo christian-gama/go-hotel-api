@@ -13,7 +13,6 @@ import (
 type RestrictionTestSuite struct {
 	suite.Suite
 
-	restriction *entity.Restriction
 	uuid        string
 	name        string
 	description string
@@ -23,13 +22,6 @@ func (s *RestrictionTestSuite) SetupTest() {
 	s.uuid = "12345678-1234-1234-1234-123456789012"
 	s.name = "Any name"
 	s.description = strings.Repeat("a", entity.MaxRoomDescriptionLen)
-
-	restriction, err := entity.NewRestriction(s.uuid, s.name, s.description)
-	if err != nil {
-		s.Fail("Error creating restriction")
-	}
-
-	s.restriction = restriction
 }
 
 func (s *RestrictionTestSuite) TestNewRestriction_Success() {

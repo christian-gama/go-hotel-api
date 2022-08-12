@@ -12,7 +12,6 @@ import (
 type GuestTestSuite struct {
 	suite.Suite
 
-	guest   *entity.Guest
 	uuid    string
 	credits float32
 	roomIds []uint8
@@ -22,13 +21,6 @@ func (s *GuestTestSuite) SetupTest() {
 	s.uuid = "12345678-1234-1234-1234-123456789012"
 	s.credits = 0.0
 	s.roomIds = []uint8{1, 2, 3}
-
-	guest, err := entity.NewGuest(s.uuid, s.credits, s.roomIds)
-	if err != nil {
-		s.Fail("could not create guest in test suite")
-	}
-
-	s.guest = guest
 }
 
 func (s *GuestTestSuite) TestNewGuest_Success() {

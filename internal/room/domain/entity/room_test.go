@@ -13,13 +13,11 @@ import (
 type RoomTestSuite struct {
 	suite.Suite
 
-	room        *entity.Room
 	uuid        string
 	name        string
 	description string
 	bedCount    uint8
 	price       float32
-	isAvailable bool
 }
 
 func (s *RoomTestSuite) SetupTest() {
@@ -28,14 +26,6 @@ func (s *RoomTestSuite) SetupTest() {
 	s.description = strings.Repeat("a", entity.MaxRoomDescriptionLen)
 	s.bedCount = entity.MinRoomBedCount
 	s.price = entity.MinRoomPrice
-	s.isAvailable = false
-
-	room, err := entity.NewRoom(s.uuid, s.name, s.description, s.bedCount, s.price)
-	if err != nil {
-		s.Fail("could not create a new room in the test suite")
-	}
-
-	s.room = room
 }
 
 func (s *RoomTestSuite) TestNewRoom_Success() {
