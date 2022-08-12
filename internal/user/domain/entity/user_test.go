@@ -36,6 +36,7 @@ func (s *UserTestSuite) TestNewUser_UuidEmptyError() {
 
 	s.Nil(result)
 	s.Equal(errorutil.InvalidArgument, err[0].Code)
+	s.Equal("uuid", err[0].Param)
 }
 
 func (s *UserTestSuite) TestNewUser_EmailEmptyError() {
@@ -43,6 +44,7 @@ func (s *UserTestSuite) TestNewUser_EmailEmptyError() {
 
 	s.Nil(result)
 	s.Equal(errorutil.InvalidArgument, err[0].Code)
+	s.Equal("email", err[0].Param)
 }
 
 func (s *UserTestSuite) TestNewUser_MinPasswordLenError() {
@@ -52,6 +54,7 @@ func (s *UserTestSuite) TestNewUser_MinPasswordLenError() {
 
 	s.Nil(result)
 	s.Equal(errorutil.InvalidArgument, err[0].Code)
+	s.Equal("password", err[0].Param)
 }
 
 func (s *UserTestSuite) TestNewUser_MaxPasswordLenError() {
@@ -61,6 +64,7 @@ func (s *UserTestSuite) TestNewUser_MaxPasswordLenError() {
 
 	s.Nil(result)
 	s.Equal(errorutil.InvalidArgument, err[0].Code)
+	s.Equal("password", err[0].Param)
 }
 
 func TestUserTestSuite(t *testing.T) {

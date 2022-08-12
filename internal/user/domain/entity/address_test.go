@@ -44,6 +44,7 @@ func (s *AddressTestSuite) TestNewAddress_UuidEmptyError() {
 
 	s.Nil(result)
 	s.Equal(errorutil.InvalidArgument, err[0].Code)
+	s.Equal("uuid", err[0].Param)
 }
 
 func (s *AddressTestSuite) TestNewAddress_StreetEmptyError() {
@@ -51,6 +52,7 @@ func (s *AddressTestSuite) TestNewAddress_StreetEmptyError() {
 
 	s.Nil(result)
 	s.Equal(errorutil.InvalidArgument, err[0].Code)
+	s.Equal("street", err[0].Param)
 }
 
 func (s *AddressTestSuite) TestNewAddress_CityEmptyError() {
@@ -58,6 +60,7 @@ func (s *AddressTestSuite) TestNewAddress_CityEmptyError() {
 
 	s.Nil(result)
 	s.Equal(errorutil.InvalidArgument, err[0].Code)
+	s.Equal("city", err[0].Param)
 }
 
 func (s *AddressTestSuite) TestNewAddress_StateEmptyError() {
@@ -65,6 +68,7 @@ func (s *AddressTestSuite) TestNewAddress_StateEmptyError() {
 
 	s.Nil(result)
 	s.Equal(errorutil.InvalidArgument, err[0].Code)
+	s.Equal("state", err[0].Param)
 }
 
 func (s *AddressTestSuite) TestNewAddress_CountryEmptyError() {
@@ -72,6 +76,7 @@ func (s *AddressTestSuite) TestNewAddress_CountryEmptyError() {
 
 	s.Nil(result)
 	s.Equal(errorutil.InvalidArgument, err[0].Code)
+	s.Equal("country", err[0].Param)
 }
 
 func (s *AddressTestSuite) TestNewAddress_ZipCodeEmptyError() {
@@ -79,6 +84,7 @@ func (s *AddressTestSuite) TestNewAddress_ZipCodeEmptyError() {
 
 	s.Nil(result)
 	s.Equal(errorutil.InvalidArgument, err[0].Code)
+	s.Equal("zipCode", err[0].Param)
 }
 
 func (s *AddressTestSuite) TestNewAddress_MinNumberLenError() {
@@ -88,6 +94,7 @@ func (s *AddressTestSuite) TestNewAddress_MinNumberLenError() {
 
 	s.Nil(result)
 	s.Equal(errorutil.InvalidArgument, err[0].Code)
+	s.Equal("number", err[0].Param)
 }
 
 func (s *AddressTestSuite) TestNewAddress_MaxNumberLenError() {
@@ -97,6 +104,7 @@ func (s *AddressTestSuite) TestNewAddress_MaxNumberLenError() {
 
 	s.Nil(result)
 	s.Equal(errorutil.InvalidArgument, err[0].Code)
+	s.Equal("number", err[0].Param)
 }
 
 func TestAddressTestSuite(t *testing.T) {

@@ -55,6 +55,7 @@ func (s *RoomRestrictionTestSuite) TestNewRestriction_UuidEmptyError() {
 
 	s.Nil(result)
 	s.Equal(errorutil.InvalidArgument, err[0].Code)
+	s.Equal("uuid", err[0].Param)
 }
 
 func (s *RoomRestrictionTestSuite) TestNewRestriction_RoomNilError() {
@@ -62,6 +63,7 @@ func (s *RoomRestrictionTestSuite) TestNewRestriction_RoomNilError() {
 
 	s.Nil(result)
 	s.Equal(errorutil.InvalidArgument, err[0].Code)
+	s.Equal("room", err[0].Param)
 }
 
 func (s *RoomRestrictionTestSuite) TestNewRestriction_RestrictionNilError() {
@@ -69,20 +71,23 @@ func (s *RoomRestrictionTestSuite) TestNewRestriction_RestrictionNilError() {
 
 	s.Nil(result)
 	s.Equal(errorutil.InvalidArgument, err[0].Code)
+	s.Equal("restriction", err[0].Param)
 }
 
 func (s *RoomRestrictionTestSuite) TestNewRestriction_StartDateCurrentTimeError() {
 	result, err := entity.NewRoomRestriction(s.uuid, s.room, s.restriction, time.Now(), s.endDate)
 
 	s.Nil(result)
-	s.Equal(errorutil.InvalidArgument, err[0].Code)
+	s.Equal(errorutil.ConditionNotMet, err[0].Code)
+	s.Equal("startDate", err[0].Param)
 }
 
 func (s *RoomRestrictionTestSuite) TestNewRestriction_StartDateAfterEndTimeError() {
 	result, err := entity.NewRoomRestriction(s.uuid, s.room, s.restriction, s.endDate, s.startDate)
 
 	s.Nil(result)
-	s.Equal(errorutil.InvalidArgument, err[0].Code)
+	s.Equal(errorutil.ConditionNotMet, err[0].Code)
+	s.Equal("startDate", err[0].Param)
 }
 
 func TestRoomRestrictionTestSuite(t *testing.T) {

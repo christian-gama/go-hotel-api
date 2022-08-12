@@ -40,6 +40,7 @@ func (s *CheckinTestSuite) TestNewCheckin_UuidEmptyError() {
 
 	s.Nil(result)
 	s.Equal(errorutil.InvalidArgument, err[0].Code)
+	s.Equal("uuid", err[0].Param)
 }
 
 func (s *CheckinTestSuite) TestNewCheckin_GuestEmptyError() {
@@ -47,6 +48,7 @@ func (s *CheckinTestSuite) TestNewCheckin_GuestEmptyError() {
 
 	s.Nil(result)
 	s.Equal(errorutil.InvalidArgument, err[0].Code)
+	s.Equal("guest", err[0].Param)
 }
 
 func (s *CheckinTestSuite) TestNewCheckin_RoomIdZeroError() {
@@ -54,6 +56,7 @@ func (s *CheckinTestSuite) TestNewCheckin_RoomIdZeroError() {
 
 	s.Nil(result)
 	s.Equal(errorutil.InvalidArgument, err[0].Code)
+	s.Equal("roomId", err[0].Param)
 }
 
 func (s *CheckinTestSuite) TestNewCheckin_CheckoutWaitError() {
@@ -61,6 +64,7 @@ func (s *CheckinTestSuite) TestNewCheckin_CheckoutWaitError() {
 
 	s.Nil(result)
 	s.Equal(errorutil.ConditionNotMet, err[0].Code)
+	s.Equal("checkoutDate", err[0].Param)
 }
 
 func (s *CheckinTestSuite) TestNewCheckin_CheckinAfterCheckoutError() {
@@ -68,6 +72,7 @@ func (s *CheckinTestSuite) TestNewCheckin_CheckinAfterCheckoutError() {
 
 	s.Nil(result)
 	s.Equal(errorutil.Conflict, err[0].Code)
+	s.Equal("checkinDate", err[0].Param)
 }
 
 func TestCheckinTestSuite(t *testing.T) {

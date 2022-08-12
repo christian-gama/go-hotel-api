@@ -36,6 +36,7 @@ func (s *RestrictionTestSuite) TestNewRestriction_UuidEmptyError() {
 
 	s.Nil(result)
 	s.Equal(errorutil.InvalidArgument, err[0].Code)
+	s.Equal("uuid", err[0].Param)
 }
 
 func (s *RestrictionTestSuite) TestNewRestriction_NameEmptyError() {
@@ -43,6 +44,7 @@ func (s *RestrictionTestSuite) TestNewRestriction_NameEmptyError() {
 
 	s.Nil(result)
 	s.Equal(errorutil.InvalidArgument, err[0].Code)
+	s.Equal("name", err[0].Param)
 }
 
 func (s *RestrictionTestSuite) TestNewRestriction_MinDescriptionLenError() {
@@ -52,6 +54,7 @@ func (s *RestrictionTestSuite) TestNewRestriction_MinDescriptionLenError() {
 
 	s.Nil(result)
 	s.Equal(errorutil.InvalidArgument, err[0].Code)
+	s.Equal("description", err[0].Param)
 }
 
 func (s *RestrictionTestSuite) TestNewRestriction_MaxDescriptionLenError() {
@@ -61,6 +64,7 @@ func (s *RestrictionTestSuite) TestNewRestriction_MaxDescriptionLenError() {
 
 	s.Nil(result)
 	s.Equal(errorutil.InvalidArgument, err[0].Code)
+	s.Equal("description", err[0].Param)
 }
 
 func TestRestrictionTestSuite(t *testing.T) {

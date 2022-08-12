@@ -35,6 +35,7 @@ func (s *GuestTestSuite) TestNewGuest_UuidEmptyError() {
 
 	s.Nil(result)
 	s.Equal(errorutil.InvalidArgument, err[0].Code)
+	s.Equal("uuid", err[0].Param)
 }
 
 func (s *GuestTestSuite) TestNewGuest_RoomIdsMaxLengthError() {
@@ -42,6 +43,7 @@ func (s *GuestTestSuite) TestNewGuest_RoomIdsMaxLengthError() {
 
 	s.Nil(result)
 	s.Equal(errorutil.InvalidArgument, err[0].Code)
+	s.Equal("roomIds", err[0].Param)
 }
 
 func (s *GuestTestSuite) TestNewGuest_NegativeCreditsError() {
@@ -49,6 +51,7 @@ func (s *GuestTestSuite) TestNewGuest_NegativeCreditsError() {
 
 	s.Nil(result)
 	s.Equal(errorutil.InvalidArgument, err[0].Code)
+	s.Equal("credits", err[0].Param)
 }
 
 func TestGuestTestSuite(t *testing.T) {

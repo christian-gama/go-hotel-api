@@ -51,7 +51,7 @@ func (r *RoomRestriction) validate() []*errorutil.Error {
 	if r.StartDate.After(r.EndDate) {
 		r.notification.AddError(
 			&notification.Error{
-				Code:    errorutil.InvalidArgument,
+				Code:    errorutil.ConditionNotMet,
 				Message: "start date cannot be after end date",
 				Param:   "startDate",
 			},
@@ -61,7 +61,7 @@ func (r *RoomRestriction) validate() []*errorutil.Error {
 	if r.StartDate.Before(time.Now()) {
 		r.notification.AddError(
 			&notification.Error{
-				Code:    errorutil.InvalidArgument,
+				Code:    errorutil.ConditionNotMet,
 				Message: "start date cannot be before current time",
 				Param:   "startDate",
 			},

@@ -40,6 +40,7 @@ func (s *RoomTestSuite) TestNewRoom_UuidEmptyError() {
 
 	s.Nil(result)
 	s.Equal(errorutil.InvalidArgument, err[0].Code)
+	s.Equal("uuid", err[0].Param)
 }
 
 func (s *RoomTestSuite) TestNewRoom_NameEmptyError() {
@@ -47,6 +48,7 @@ func (s *RoomTestSuite) TestNewRoom_NameEmptyError() {
 
 	s.Nil(result)
 	s.Equal(errorutil.InvalidArgument, err[0].Code)
+	s.Equal("name", err[0].Param)
 }
 
 func (s *RoomTestSuite) TestNewRoom_MinDescriptionLenError() {
@@ -56,6 +58,7 @@ func (s *RoomTestSuite) TestNewRoom_MinDescriptionLenError() {
 
 	s.Nil(result)
 	s.Equal(errorutil.InvalidArgument, err[0].Code)
+	s.Equal("description", err[0].Param)
 }
 
 func (s *RoomTestSuite) TestNewRoom_MaxDescriptionLenError() {
@@ -65,6 +68,7 @@ func (s *RoomTestSuite) TestNewRoom_MaxDescriptionLenError() {
 
 	s.Nil(result)
 	s.Equal(errorutil.InvalidArgument, err[0].Code)
+	s.Equal("description", err[0].Param)
 }
 
 func (s *RoomTestSuite) TestNewRoom_MinBedCountError() {
@@ -74,6 +78,7 @@ func (s *RoomTestSuite) TestNewRoom_MinBedCountError() {
 
 	s.Nil(result)
 	s.Equal(errorutil.InvalidArgument, err[0].Code)
+	s.Equal("bedCount", err[0].Param)
 }
 
 func (s *RoomTestSuite) TestNewRoom_MaxBedCountError() {
@@ -83,6 +88,7 @@ func (s *RoomTestSuite) TestNewRoom_MaxBedCountError() {
 
 	s.Nil(result)
 	s.Equal(errorutil.InvalidArgument, err[0].Code)
+	s.Equal("bedCount", err[0].Param)
 }
 
 func (s *RoomTestSuite) TestNewRoom_MinPriceError() {
@@ -92,6 +98,7 @@ func (s *RoomTestSuite) TestNewRoom_MinPriceError() {
 
 	s.Nil(result)
 	s.Equal(errorutil.InvalidArgument, err[0].Code)
+	s.Equal("price", err[0].Param)
 }
 
 func (s *RoomTestSuite) TestNewRoom_MaxPriceError() {
@@ -101,6 +108,7 @@ func (s *RoomTestSuite) TestNewRoom_MaxPriceError() {
 
 	s.Nil(result)
 	s.Equal(errorutil.InvalidArgument, err[0].Code)
+	s.Equal("price", err[0].Param)
 }
 
 func TestRoomTestSuite(t *testing.T) {
