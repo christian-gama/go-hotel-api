@@ -23,7 +23,7 @@ type createRoom struct {
 // goes wrong with room creation or if the room repo return an error.
 func (c *createRoom) Handle(input *dto.CreateRoom) (*entity.Room, []*errorutil.Error) {
 	uuid := c.uuid.Generate()
-	room, err := entity.NewRoom(uuid, input.Name, input.Description, input.BedCount, input.Price, false)
+	room, err := entity.NewRoom(uuid, input.Name, input.Description, input.BedCount, input.Price)
 	if err != nil {
 		return nil, err
 	}

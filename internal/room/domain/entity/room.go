@@ -36,7 +36,6 @@ type Room struct {
 	Description string
 	BedCount    uint8
 	Price       float32
-	IsAvailable bool
 }
 
 // validate ensure the entity is valid. It will add an error to notification each time
@@ -136,7 +135,6 @@ func NewRoom(
 	description string,
 	bedCount uint8,
 	price float32,
-	isAvailable bool,
 ) (*Room, []*errorutil.Error) {
 	room := &Room{
 		notification.New("room"),
@@ -146,7 +144,6 @@ func NewRoom(
 		description,
 		bedCount,
 		price,
-		isAvailable,
 	}
 
 	if err := room.validate(); err != nil {

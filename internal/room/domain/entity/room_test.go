@@ -30,7 +30,7 @@ func (s *RoomTestSuite) SetupTest() {
 	s.price = entity.MinRoomPrice
 	s.isAvailable = false
 
-	room, err := entity.NewRoom(s.uuid, s.name, s.description, s.bedCount, s.price, s.isAvailable)
+	room, err := entity.NewRoom(s.uuid, s.name, s.description, s.bedCount, s.price)
 	if err != nil {
 		s.Fail("could not create a new room in the test suite")
 	}
@@ -39,21 +39,21 @@ func (s *RoomTestSuite) SetupTest() {
 }
 
 func (s *RoomTestSuite) TestNewRoom_Success() {
-	result, err := entity.NewRoom(s.uuid, s.name, s.description, s.bedCount, s.price, s.isAvailable)
+	result, err := entity.NewRoom(s.uuid, s.name, s.description, s.bedCount, s.price)
 
 	s.NotNil(result)
 	s.Nil(err)
 }
 
 func (s *RoomTestSuite) TestNewRoom_UuidEmptyError() {
-	result, err := entity.NewRoom("", s.name, s.description, s.bedCount, s.price, s.isAvailable)
+	result, err := entity.NewRoom("", s.name, s.description, s.bedCount, s.price)
 
 	s.Nil(result)
 	s.Equal(errorutil.InvalidArgument, err[0].Code)
 }
 
 func (s *RoomTestSuite) TestNewRoom_NameEmptyError() {
-	result, err := entity.NewRoom(s.uuid, "", s.description, s.bedCount, s.price, s.isAvailable)
+	result, err := entity.NewRoom(s.uuid, "", s.description, s.bedCount, s.price)
 
 	s.Nil(result)
 	s.Equal(errorutil.InvalidArgument, err[0].Code)
@@ -62,7 +62,7 @@ func (s *RoomTestSuite) TestNewRoom_NameEmptyError() {
 func (s *RoomTestSuite) TestNewRoom_MinDescriptionLenError() {
 	description := strings.Repeat("a", entity.MinRoomDescriptionLen-1)
 
-	result, err := entity.NewRoom(s.uuid, s.name, description, s.bedCount, s.price, s.isAvailable)
+	result, err := entity.NewRoom(s.uuid, s.name, description, s.bedCount, s.price)
 
 	s.Nil(result)
 	s.Equal(errorutil.InvalidArgument, err[0].Code)
@@ -71,7 +71,7 @@ func (s *RoomTestSuite) TestNewRoom_MinDescriptionLenError() {
 func (s *RoomTestSuite) TestNewRoom_MaxDescriptionLenError() {
 	description := strings.Repeat("a", entity.MaxRoomDescriptionLen+1)
 
-	result, err := entity.NewRoom(s.uuid, s.name, description, s.bedCount, s.price, s.isAvailable)
+	result, err := entity.NewRoom(s.uuid, s.name, description, s.bedCount, s.price)
 
 	s.Nil(result)
 	s.Equal(errorutil.InvalidArgument, err[0].Code)
@@ -80,7 +80,7 @@ func (s *RoomTestSuite) TestNewRoom_MaxDescriptionLenError() {
 func (s *RoomTestSuite) TestNewRoom_MinBedCountError() {
 	bedCount := entity.MinRoomBedCount - 1
 
-	result, err := entity.NewRoom(s.uuid, s.name, s.description, bedCount, s.price, s.isAvailable)
+	result, err := entity.NewRoom(s.uuid, s.name, s.description, bedCount, s.price)
 
 	s.Nil(result)
 	s.Equal(errorutil.InvalidArgument, err[0].Code)
@@ -89,7 +89,7 @@ func (s *RoomTestSuite) TestNewRoom_MinBedCountError() {
 func (s *RoomTestSuite) TestNewRoom_MaxBedCountError() {
 	bedCount := entity.MaxRoomBedCount + 1
 
-	result, err := entity.NewRoom(s.uuid, s.name, s.description, bedCount, s.price, s.isAvailable)
+	result, err := entity.NewRoom(s.uuid, s.name, s.description, bedCount, s.price)
 
 	s.Nil(result)
 	s.Equal(errorutil.InvalidArgument, err[0].Code)
@@ -98,7 +98,7 @@ func (s *RoomTestSuite) TestNewRoom_MaxBedCountError() {
 func (s *RoomTestSuite) TestNewRoom_MinPriceError() {
 	price := entity.MinRoomPrice - 1
 
-	result, err := entity.NewRoom(s.uuid, s.name, s.description, s.bedCount, price, s.isAvailable)
+	result, err := entity.NewRoom(s.uuid, s.name, s.description, s.bedCount, price)
 
 	s.Nil(result)
 	s.Equal(errorutil.InvalidArgument, err[0].Code)
@@ -107,7 +107,7 @@ func (s *RoomTestSuite) TestNewRoom_MinPriceError() {
 func (s *RoomTestSuite) TestNewRoom_MaxPriceError() {
 	price := entity.MaxRoomPrice + 1
 
-	result, err := entity.NewRoom(s.uuid, s.name, s.description, s.bedCount, price, s.isAvailable)
+	result, err := entity.NewRoom(s.uuid, s.name, s.description, s.bedCount, price)
 
 	s.Nil(result)
 	s.Equal(errorutil.InvalidArgument, err[0].Code)

@@ -32,7 +32,6 @@ func (r *roomRepo) SaveRoom(room *entity.Room) (*entity.Room, []*errorutil.Error
 		room.Description,
 		room.BedCount,
 		room.Price,
-		room.IsAvailable,
 	)
 	if err != nil {
 		return nil, []*errorutil.Error{{
@@ -60,7 +59,6 @@ func (r *roomRepo) GetRoom(uuid string) (*entity.Room, []*errorutil.Error) {
 		&room.Description,
 		&room.BedCount,
 		&room.Price,
-		&room.IsAvailable,
 	)
 	if err != nil {
 		return nil, []*errorutil.Error{{

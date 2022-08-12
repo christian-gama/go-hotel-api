@@ -89,4 +89,6 @@ issues:
   exclude-rules:
     - path: '(.+)_test\.go'
       text: "create a named constant for it"
+    - path: '(.+)_test\.go'
+      text: "make it a constant"
   fix: true

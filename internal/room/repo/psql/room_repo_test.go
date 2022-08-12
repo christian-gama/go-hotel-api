@@ -51,7 +51,6 @@ func (s *RoomRepoTestSuite) TestRoomRepo_SaveRoom_Success() {
 		"This is a test room",
 		1,
 		1,
-		false,
 	)
 	dbConfigMock := mocks.NewDb(s.T())
 	roomRepo := psql.NewRoomRepo(s.db, dbConfigMock)
@@ -69,7 +68,6 @@ func (s *RoomRepoTestSuite) TestRoomRepo_SaveRoom_Error() {
 		"This is a test room",
 		1,
 		1,
-		false,
 	)
 	dbConfigMock := mocks.NewDb(s.T())
 	roomRepo := psql.NewRoomRepo(s.db, dbConfigMock)
@@ -87,7 +85,6 @@ func (s *RoomRepoTestSuite) TestRoomRepo_GetRoom_Success() {
 		"This is a test room",
 		1,
 		1,
-		false,
 	)
 	dbConfigMock := mocks.NewDb(s.T())
 	roomRepo := psql.NewRoomRepo(s.db, dbConfigMock)
@@ -107,7 +104,6 @@ func (s *RoomRepoTestSuite) TestRoomRepo_GetRoom_Error() {
 		"This is a test room",
 		1,
 		1,
-		false,
 	)
 	dbConfigMock := mocks.NewDb(s.T())
 	roomRepo := psql.NewRoomRepo(s.db, dbConfigMock)
