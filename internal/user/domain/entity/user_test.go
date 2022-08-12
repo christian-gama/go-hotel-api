@@ -6,6 +6,7 @@ import (
 
 	"github.com/christian-gama/go-booking-api/internal/shared/domain/errorutil"
 	"github.com/christian-gama/go-booking-api/internal/user/domain/entity"
+	"github.com/christian-gama/go-booking-api/test"
 	"github.com/stretchr/testify/suite"
 )
 
@@ -63,5 +64,5 @@ func (s *UserTestSuite) TestNewUser_MaxPasswordLenError() {
 }
 
 func TestUserTestSuite(t *testing.T) {
-	suite.Run(t, new(UserTestSuite))
+	test.RunUnitTest(t, new(UserTestSuite))
 }
