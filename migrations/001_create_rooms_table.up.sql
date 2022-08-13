@@ -1,3 +1,5 @@
+BEGIN;
+
 CREATE TABLE rooms (
   id serial PRIMARY KEY,
   uuid uuid NOT NULL,
@@ -6,3 +8,5 @@ CREATE TABLE rooms (
   price decimal(10,2) NOT NULL,
   bed_count integer NOT NULL
 );
+
+COMMIT;

@@ -56,6 +56,10 @@ migrate-%: cmd-exists-docker
 
 
 migrate: cmd-exists-docker
+	@if [ ! "$( docker container inspect -f '{{.State.Running}}' psql )" == "true" ]; then \
+		docker compose --env-file "$(ENV_FILE)" up -d psql; \
+	fi;
+
 	@mkdir -p $(PWD)/$(MIG_DIR)
 	@docker run \
 		-v $(PWD)/$(MIG_DIR):/migrations \
@@ -64,6 +68,7 @@ migrate: cmd-exists-docker
 		migrate/migrate \
 		-path=/migrations/ \
 		-database $(DB_SGBD)://$(DB_USER):$(DB_PASSWORD)@localhost:$(DB_EXPOSED_PORT)/$(DB_NAME)?sslmode=$(DB_SSL_MODE) $(MIGRATION) $(VERSION)
+
 	
 mock: cmd-exists-docker
 	docker run -v "$(PWD)":/src -w /src vektra/mockery --all --exported --dir ./internal
