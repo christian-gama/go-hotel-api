@@ -39,6 +39,31 @@ func (_m *Room) GetRoom(uuid string) (*entity.Room, []*errorutil.Error) {
 	return r0, r1
 }
 
+// ListRooms provides a mock function with given fields:
+func (_m *Room) ListRooms() ([]*entity.Room, []*errorutil.Error) {
+	ret := _m.Called()
+
+	var r0 []*entity.Room
+	if rf, ok := ret.Get(0).(func() []*entity.Room); ok {
+		r0 = rf()
+	} else {
+		if ret.Get(0) != nil {
+			r0 = ret.Get(0).([]*entity.Room)
+		}
+	}
+
+	var r1 []*errorutil.Error
+	if rf, ok := ret.Get(1).(func() []*errorutil.Error); ok {
+		r1 = rf()
+	} else {
+		if ret.Get(1) != nil {
+			r1 = ret.Get(1).([]*errorutil.Error)
+		}
+	}
+
+	return r0, r1
+}
+
 // SaveRoom provides a mock function with given fields: room
 func (_m *Room) SaveRoom(room *entity.Room) (*entity.Room, []*errorutil.Error) {
 	ret := _m.Called(room)

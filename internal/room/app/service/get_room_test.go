@@ -13,24 +13,24 @@ import (
 	"github.com/stretchr/testify/suite"
 )
 
-type GetRoomServiceTestSuite struct {
+type GetRoomTestSuite struct {
 	suite.Suite
 
-	getRoom service.GetRoomService
+	getRoom service.GetRoom
 	repo    *mocks.Room
 }
 
-func (s *GetRoomServiceTestSuite) SetupTest() {
+func (s *GetRoomTestSuite) SetupTest() {
 	fmt.Println("SetupTest")
 	s.repo = mocks.NewRoom(s.T())
 	s.getRoom = service.NewGetRoom(s.repo)
 }
 
-func (s *GetRoomServiceTestSuite) TestNewGetRoom_NotNil() {
+func (s *GetRoomTestSuite) TestNewGetRoom_NotNil() {
 	s.NotNil(s.getRoom)
 }
 
-func (s *GetRoomServiceTestSuite) TestGetRoom_Handle_Success() {
+func (s *GetRoomTestSuite) TestGetRoom_Handle_Success() {
 	s.repo.On("GetRoom", mock.Anything).Return(&entity.Room{}, nil)
 
 	result, err := s.getRoom.Handle("12345678-1234-1234-1234-1234567890ab")
@@ -39,7 +39,7 @@ func (s *GetRoomServiceTestSuite) TestGetRoom_Handle_Success() {
 	s.Nil(err)
 }
 
-func (s *GetRoomServiceTestSuite) TestGetRoom_Handle_GetRoomError() {
+func (s *GetRoomTestSuite) TestGetRoom_Handle_GetRoomError() {
 	s.repo.On("GetRoom", mock.Anything).Return(nil, []*errorutil.Error{{}})
 
 	result, err := s.getRoom.Handle("12345678-1234-1234-1234-1234567890ab")
@@ -49,5 +49,5 @@ func (s *GetRoomServiceTestSuite) TestGetRoom_Handle_GetRoomError() {
 }
 
 func TestGetRoomTestSuite(t *testing.T) {
-	test.RunUnitTest(t, new(GetRoomServiceTestSuite))
+	test.RunUnitTest(t, new(GetRoomTestSuite))
 }

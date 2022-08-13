@@ -10,11 +10,13 @@ import (
 	"github.com/christian-gama/go-booking-api/internal/shared/infra/configger"
 )
 
+// roomRepo is concrete implementation of the Room repository.
 type roomRepo struct {
 	db          *sql.DB
 	dbConfigger configger.Db
 }
 
+// SaveRoom is the method that will save a room in the database.
 func (r *roomRepo) SaveRoom(room *entity.Room) (*entity.Room, []*errorutil.Error) {
 	ctx, cancel := context.WithTimeout(context.Background(), r.dbConfigger.Timeout())
 	defer cancel()
@@ -45,6 +47,7 @@ func (r *roomRepo) SaveRoom(room *entity.Room) (*entity.Room, []*errorutil.Error
 	return room, nil
 }
 
+// GetRoom is the method that will get a room from the database.
 func (r *roomRepo) GetRoom(uuid string) (*entity.Room, []*errorutil.Error) {
 	ctx, cancel := context.WithTimeout(context.Background(), r.dbConfigger.Timeout())
 	defer cancel()
@@ -72,6 +75,48 @@ func (r *roomRepo) GetRoom(uuid string) (*entity.Room, []*errorutil.Error) {
 	return room, nil
 }
 
+// ListRooms is the method that will list all the rooms from the database.
+func (r *roomRepo) ListRooms() ([]*entity.Room, []*errorutil.Error) {
+	ctx, cancel := context.WithTimeout(context.Background(), r.dbConfigger.Timeout())
+	defer cancel()
+
+	stmt := `SELECT uuid, name, description, bed_count, price FROM rooms`
+	rows, err := r.db.QueryContext(ctx, stmt)
+	if err != nil {
+		return nil, []*errorutil.Error{{
+			Code:    errorutil.DatabaseError,
+			Message: "Could not list rooms.",
+			Context: "roomRepo",
+			Param:   "ListRooms",
+		}}
+	}
+	defer rows.Close()
+
+	rooms := []*entity.Room{}
+	for rows.Next() {
+		room := &entity.Room{}
+		err := rows.Scan(
+			&room.UUID,
+			&room.Name,
+			&room.Description,
+			&room.BedCount,
+			&room.Price,
+		)
+		if err != nil {
+			return nil, []*errorutil.Error{{
+				Code:    errorutil.DatabaseError,
+				Message: "Could not list rooms.",
+				Context: "roomRepo",
+				Param:   "ListRooms",
+			}}
+		}
+		rooms = append(rooms, room)
+	}
+
+	return rooms, nil
+}
+
+// NewRoomRepo creates a new instance of the Room repository.
 func NewRoomRepo(db *sql.DB, dbConfigger configger.Db) repo.Room {
 	return &roomRepo{
 		db,

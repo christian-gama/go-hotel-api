@@ -24,27 +24,18 @@ type RoomRepoTestSuite struct {
 func (s *RoomRepoTestSuite) SetupSuite() {
 	s.db = test.SetupDb()
 	s.m = test.Migrate(s.db)
-	err := s.m.Force(1)
-	if err != nil && err != migrate.ErrNoChange {
-		panic(err)
-	}
 }
 
 func (s *RoomRepoTestSuite) SetupTest() {
-	err := s.m.Up()
-	if err != nil && err != migrate.ErrNoChange {
-		panic(err)
-	}
+	s.m.Up()
 }
 
 func (s *RoomRepoTestSuite) TearDownTest() {
-	err := s.m.Down()
-	if err != nil && err != migrate.ErrNoChange {
-		panic(err)
-	}
+	s.m.Down()
 }
 
 func (s *RoomRepoTestSuite) TearDownSuite() {
+	s.m.Drop()
 	s.m.Close()
 }
 
@@ -117,6 +108,43 @@ func (s *RoomRepoTestSuite) TestRoomRepo_GetRoom_Error() {
 	mock.On("Timeout").Return(1 * time.Microsecond)
 
 	_, err := roomRepo.GetRoom(room.UUID)
+
+	s.Equal(errorutil.DatabaseError, err[0].Code)
+}
+
+func (s *RoomRepoTestSuite) TestRoomRepo_ListRooms_Success() {
+	room, _ := entity.NewRoom(
+		"12345678-1234-1234-1234-123456789012",
+		"Test Room",
+		"This is a test room",
+		1,
+		1,
+	)
+	dbConfigMock := mocks.NewDb(s.T())
+	roomRepo := psql.NewRoomRepo(s.db, dbConfigMock)
+	dbConfigMock.On("Timeout").Return(2 * time.Second)
+	roomRepo.SaveRoom(room)
+
+	result, err := roomRepo.ListRooms()
+
+	s.Nil(err)
+	s.Equal(1, len(result))
+}
+
+func (s *RoomRepoTestSuite) TestRoomRepo_ListRooms_Error() {
+	room, _ := entity.NewRoom(
+		"12345678-1234-1234-1234-123456789012",
+		"Test Room",
+		"This is a test room",
+		1,
+		1,
+	)
+	dbConfigMock := mocks.NewDb(s.T())
+	roomRepo := psql.NewRoomRepo(s.db, dbConfigMock)
+	dbConfigMock.On("Timeout").Return(1 * time.Microsecond)
+	roomRepo.SaveRoom(room)
+
+	_, err := roomRepo.ListRooms()
 
 	s.Equal(errorutil.DatabaseError, err[0].Code)
 }

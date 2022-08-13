@@ -12,4 +12,7 @@ type Room interface {
 
 	// GetRoom is the method that will get a room by its uuid.
 	GetRoom(uuid string) (*entity.Room, []*errorutil.Error)
+
+	// ListRooms is the method that will list all rooms.
+	ListRooms() ([]*entity.Room, []*errorutil.Error)
 }

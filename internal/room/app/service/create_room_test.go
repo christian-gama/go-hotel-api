@@ -1,7 +1,6 @@
 package service_test
 
 import (
-	"fmt"
 	"testing"
 
 	"github.com/christian-gama/go-booking-api/internal/room/app/dto"
@@ -14,18 +13,17 @@ import (
 	"github.com/stretchr/testify/suite"
 )
 
-type CreateRoomServiceTestSuite struct {
+type CreateRoomTestSuite struct {
 	suite.Suite
 
-	createRoom service.CreateRoomService
+	createRoom service.CreateRoom
 	repo       *mocks.Room
 	uuid       *mocks.UUID
 
 	input *dto.CreateRoom
 }
 
-func (s *CreateRoomServiceTestSuite) SetupTest() {
-	fmt.Println("SetupTest")
+func (s *CreateRoomTestSuite) SetupTest() {
 	s.repo = mocks.NewRoom(s.T())
 	s.uuid = mocks.NewUUID(s.T())
 	s.createRoom = service.NewCreateRoom(s.repo, s.uuid)
@@ -37,11 +35,11 @@ func (s *CreateRoomServiceTestSuite) SetupTest() {
 	}
 }
 
-func (s *CreateRoomServiceTestSuite) TestNewCreateRoom_NotNil() {
+func (s *CreateRoomTestSuite) TestNewCreateRoom_NotNil() {
 	s.NotNil(s.createRoom)
 }
 
-func (s *CreateRoomServiceTestSuite) TestCreateRoom_Handle_Success() {
+func (s *CreateRoomTestSuite) TestCreateRoom_Handle_Success() {
 	s.uuid.On("Generate").Return("uuid")
 	s.repo.On("SaveRoom", mock.Anything).Return(&entity.Room{}, nil)
 
@@ -51,7 +49,7 @@ func (s *CreateRoomServiceTestSuite) TestCreateRoom_Handle_Success() {
 	s.Nil(err)
 }
 
-func (s *CreateRoomServiceTestSuite) TestCreateRoom_Handle_InvalidInput() {
+func (s *CreateRoomTestSuite) TestCreateRoom_Handle_InvalidInput() {
 	s.uuid.On("Generate").Return("")
 
 	result, err := s.createRoom.Handle(s.input)
@@ -60,7 +58,7 @@ func (s *CreateRoomServiceTestSuite) TestCreateRoom_Handle_InvalidInput() {
 	s.NotNil(err[0].Code, errorutil.InvalidArgument)
 }
 
-func (s *CreateRoomServiceTestSuite) TestCreateRoom_Handle_SaveRoomError() {
+func (s *CreateRoomTestSuite) TestCreateRoom_Handle_SaveRoomError() {
 	s.uuid.On("Generate").Return("uuid")
 	s.repo.On("SaveRoom", mock.Anything).Return(nil, []*errorutil.Error{{}})
 
@@ -71,5 +69,5 @@ func (s *CreateRoomServiceTestSuite) TestCreateRoom_Handle_SaveRoomError() {
 }
 
 func TestCreateRoomTestSuite(t *testing.T) {
-	test.RunUnitTest(t, new(CreateRoomServiceTestSuite))
+	test.RunUnitTest(t, new(CreateRoomTestSuite))
 }

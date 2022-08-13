@@ -91,4 +91,7 @@ issues:
       text: "create a named constant for it"
     - path: '(.+)_test\.go'
       text: "make it a constant"
+    - path: '(.+)_test\.go'
+      linters:
+        - errcheck
   fix: true

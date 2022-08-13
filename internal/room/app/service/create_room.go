@@ -8,12 +8,12 @@ import (
 	"github.com/christian-gama/go-booking-api/internal/shared/domain/errorutil"
 )
 
-// CreatRoomService is the interface that defines the CreateRoomService.
-type CreateRoomService interface {
+// CreatRoom is the interface that defines the creation of a room.
+type CreateRoom interface {
 	Handle(input *dto.CreateRoom) (*entity.Room, []*errorutil.Error)
 }
 
-// createRoom is a concrete implementation of the CreateRoomService.
+// createRoom is a concrete implementation of the CreateRoom.
 type createRoom struct {
 	repo repo.Room
 	uuid uuid.UUID
@@ -36,8 +36,8 @@ func (c *createRoom) Handle(input *dto.CreateRoom) (*entity.Room, []*errorutil.E
 	return room, nil
 }
 
-// NewCreateRoom creates a new CreateRoomService.
-func NewCreateRoom(repo repo.Room, uuid uuid.UUID) CreateRoomService {
+// NewCreateRoom creates a new CreateRoom.
+func NewCreateRoom(repo repo.Room, uuid uuid.UUID) CreateRoom {
 	return &createRoom{
 		repo,
 		uuid,
