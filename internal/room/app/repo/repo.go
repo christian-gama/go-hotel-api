@@ -15,4 +15,7 @@ type Room interface {
 
 	// ListRooms is the method that will list all rooms.
 	ListRooms() ([]*entity.Room, []*errorutil.Error)
+
+	// DeleteRoom is the method that will delete a room by its uuid.
+	DeleteRoom(uuid string) []*errorutil.Error
 }

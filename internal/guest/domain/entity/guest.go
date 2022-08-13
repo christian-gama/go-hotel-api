@@ -3,6 +3,7 @@ package entity
 import (
 	"github.com/christian-gama/go-booking-api/internal/shared/domain/errorutil"
 	"github.com/christian-gama/go-booking-api/internal/shared/domain/notification"
+	"github.com/christian-gama/go-booking-api/internal/shared/util"
 )
 
 // Guest represents a guest in the hotel. He is able to make checkins and checkouts of rooms and are allowed to
@@ -53,7 +54,7 @@ func NewGuest(
 	personId uint32,
 ) (*Guest, []*errorutil.Error) {
 	guest := &Guest{
-		notification.New("guest"),
+		notification.New(util.StructName(Guest{})),
 
 		uuid,
 		credits,

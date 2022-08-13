@@ -5,6 +5,7 @@ import (
 
 	"github.com/christian-gama/go-booking-api/internal/shared/domain/errorutil"
 	"github.com/christian-gama/go-booking-api/internal/shared/domain/notification"
+	"github.com/christian-gama/go-booking-api/internal/shared/util"
 )
 
 const (
@@ -124,7 +125,7 @@ func NewPerson(
 	address *Address,
 ) (*Person, []*errorutil.Error) {
 	person := &Person{
-		notification: notification.New("person"),
+		notification: notification.New(util.StructName(Person{})),
 
 		UUID:      uuid,
 		FirstName: firstName,

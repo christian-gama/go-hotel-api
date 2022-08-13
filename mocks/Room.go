@@ -14,6 +14,22 @@ type Room struct {
 	mock.Mock
 }
 
+// DeleteRoom provides a mock function with given fields: uuid
+func (_m *Room) DeleteRoom(uuid string) []*errorutil.Error {
+	ret := _m.Called(uuid)
+
+	var r0 []*errorutil.Error
+	if rf, ok := ret.Get(0).(func(string) []*errorutil.Error); ok {
+		r0 = rf(uuid)
+	} else {
+		if ret.Get(0) != nil {
+			r0 = ret.Get(0).([]*errorutil.Error)
+		}
+	}
+
+	return r0
+}
+
 // GetRoom provides a mock function with given fields: uuid
 func (_m *Room) GetRoom(uuid string) (*entity.Room, []*errorutil.Error) {
 	ret := _m.Called(uuid)

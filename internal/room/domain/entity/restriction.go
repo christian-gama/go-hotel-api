@@ -5,6 +5,7 @@ import (
 
 	"github.com/christian-gama/go-booking-api/internal/shared/domain/errorutil"
 	"github.com/christian-gama/go-booking-api/internal/shared/domain/notification"
+	"github.com/christian-gama/go-booking-api/internal/shared/util"
 )
 
 const (
@@ -81,7 +82,7 @@ func (r *Restriction) validate() []*errorutil.Error {
 
 func NewRestriction(uuid string, name string, description string) (*Restriction, []*errorutil.Error) {
 	room := &Restriction{
-		notification: *notification.New("restriction"),
+		notification: *notification.New(util.StructName(Restriction{})),
 
 		UUID:        uuid,
 		name:        name,

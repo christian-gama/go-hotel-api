@@ -5,6 +5,7 @@ import (
 
 	"github.com/christian-gama/go-booking-api/internal/shared/domain/errorutil"
 	"github.com/christian-gama/go-booking-api/internal/shared/domain/notification"
+	"github.com/christian-gama/go-booking-api/internal/shared/util"
 )
 
 const (
@@ -70,7 +71,7 @@ func (u *User) validate() []*errorutil.Error {
 
 func NewUser(uuid, email, password string) (*User, []*errorutil.Error) {
 	user := &User{
-		notification: notification.New("user"),
+		notification: notification.New(util.StructName(User{})),
 
 		UUID:     uuid,
 		Email:    email,

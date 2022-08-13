@@ -5,10 +5,11 @@ import (
 
 	"github.com/christian-gama/go-booking-api/internal/shared/domain/errorutil"
 	"github.com/christian-gama/go-booking-api/internal/shared/domain/notification"
+	"github.com/christian-gama/go-booking-api/internal/shared/util"
 )
 
 type RoomRestriction struct {
-	notification notification.Notification
+	notification *notification.Notification
 
 	UUID        string
 	Room        *Room
@@ -83,13 +84,13 @@ func NewRoomRestriction(
 	endDate time.Time,
 ) (*RoomRestriction, []*errorutil.Error) {
 	roomRestriction := &RoomRestriction{
-		notification: *notification.New("room restriction"),
+		notification.New(util.StructName(RoomRestriction{})),
 
-		UUID:        uuid,
-		Room:        room,
-		Restriction: restriction,
-		StartDate:   startDate,
-		EndDate:     endDate,
+		uuid,
+		room,
+		restriction,
+		startDate,
+		endDate,
 	}
 
 	if err := roomRestriction.validate(); err != nil {

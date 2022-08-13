@@ -6,6 +6,7 @@ import (
 
 	"github.com/christian-gama/go-booking-api/internal/shared/domain/errorutil"
 	"github.com/christian-gama/go-booking-api/internal/shared/domain/notification"
+	"github.com/christian-gama/go-booking-api/internal/shared/util"
 )
 
 const (
@@ -100,7 +101,7 @@ func NewCheckin(
 	checkoutDate time.Time,
 ) (*Checkin, []*errorutil.Error) {
 	checkin := &Checkin{
-		notification.New("checkin"),
+		notification.New(util.StructName(Checkin{})),
 
 		uuid,
 		roomId,

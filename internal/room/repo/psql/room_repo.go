@@ -8,6 +8,7 @@ import (
 	"github.com/christian-gama/go-booking-api/internal/room/domain/entity"
 	"github.com/christian-gama/go-booking-api/internal/shared/domain/errorutil"
 	"github.com/christian-gama/go-booking-api/internal/shared/infra/configger"
+	"github.com/christian-gama/go-booking-api/internal/shared/util"
 )
 
 // roomRepo is concrete implementation of the Room repository.
@@ -39,7 +40,7 @@ func (r *roomRepo) SaveRoom(room *entity.Room) (*entity.Room, []*errorutil.Error
 		return nil, []*errorutil.Error{{
 			Code:    errorutil.DatabaseError,
 			Message: "Could not save a new room.",
-			Context: "roomRepo",
+			Context: util.StructName(r),
 			Param:   "SaveRoom",
 		}}
 	}
@@ -67,7 +68,7 @@ func (r *roomRepo) GetRoom(uuid string) (*entity.Room, []*errorutil.Error) {
 		return nil, []*errorutil.Error{{
 			Code:    errorutil.DatabaseError,
 			Message: "Could not get a room.",
-			Context: "roomRepo",
+			Context: util.StructName(r),
 			Param:   "GetRoom",
 		}}
 	}
@@ -86,7 +87,7 @@ func (r *roomRepo) ListRooms() ([]*entity.Room, []*errorutil.Error) {
 		return nil, []*errorutil.Error{{
 			Code:    errorutil.DatabaseError,
 			Message: "Could not list rooms.",
-			Context: "roomRepo",
+			Context: util.StructName(r),
 			Param:   "ListRooms",
 		}}
 	}
@@ -106,7 +107,7 @@ func (r *roomRepo) ListRooms() ([]*entity.Room, []*errorutil.Error) {
 			return nil, []*errorutil.Error{{
 				Code:    errorutil.DatabaseError,
 				Message: "Could not list rooms.",
-				Context: "roomRepo",
+				Context: util.StructName(r),
 				Param:   "ListRooms",
 			}}
 		}
@@ -114,6 +115,24 @@ func (r *roomRepo) ListRooms() ([]*entity.Room, []*errorutil.Error) {
 	}
 
 	return rooms, nil
+}
+
+func (r *roomRepo) DeleteRoom(uuid string) []*errorutil.Error {
+	ctx, cancel := context.WithTimeout(context.Background(), r.dbConfigger.Timeout())
+	defer cancel()
+
+	stmt := `DELETE FROM rooms WHERE uuid = $1`
+	_, err := r.db.ExecContext(ctx, stmt, uuid)
+	if err != nil {
+		return []*errorutil.Error{{
+			Code:    errorutil.DatabaseError,
+			Message: "Could not delete a room.",
+			Context: "roomRepo",
+			Param:   "DeleteRoom",
+		}}
+	}
+
+	return nil
 }
 
 // NewRoomRepo creates a new instance of the Room repository.
