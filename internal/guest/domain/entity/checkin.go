@@ -21,7 +21,7 @@ type Checkin struct {
 	notification *notification.Notification
 
 	UUID         string
-	RoomId       uint32
+	RoomId       uint8
 	Guest        *Guest
 	CheckinDate  time.Time
 	CheckoutDate time.Time
@@ -95,7 +95,7 @@ func (c *Checkin) validate() []*errorutil.Error {
 func NewCheckin(
 	uuid string,
 	guest *Guest,
-	roomId uint32,
+	roomId uint8,
 	checkinDate time.Time,
 	checkoutDate time.Time,
 ) (*Checkin, []*errorutil.Error) {

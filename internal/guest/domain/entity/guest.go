@@ -18,9 +18,10 @@ const (
 type Guest struct {
 	notification *notification.Notification
 
-	UUID    string
-	Credits float32
-	RoomIds []uint8
+	UUID     string
+	Credits  float32
+	RoomIds  []uint8
+	PersonId uint32
 }
 
 // validate ensure the entity is valid. It will add an error to notification each time
@@ -68,6 +69,7 @@ func NewGuest(
 	uuid string,
 	credits float32,
 	roomIds []uint8,
+	personId uint32,
 ) (*Guest, []*errorutil.Error) {
 	guest := &Guest{
 		notification.New("guest"),
@@ -75,6 +77,7 @@ func NewGuest(
 		uuid,
 		credits,
 		roomIds,
+		personId,
 	}
 
 	if err := guest.validate(); err != nil {

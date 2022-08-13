@@ -96,16 +96,6 @@ func (p *Person) validate() []*errorutil.Error {
 		)
 	}
 
-	if p.User == nil {
-		p.notification.AddError(
-			&notification.Error{
-				Code:    errorutil.InvalidArgument,
-				Message: "user cannot be empty",
-				Param:   "user",
-			},
-		)
-	}
-
 	if p.Address == nil {
 		p.notification.AddError(
 			&notification.Error{

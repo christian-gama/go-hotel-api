@@ -101,14 +101,6 @@ func (s *PersonTestSuite) TestNewPerson_SsnEmptyError() {
 	s.Equal("ssn", err[0].Param)
 }
 
-func (s *PersonTestSuite) TestNewPerson_UserNilError() {
-	result, err := entity.NewPerson(s.uuid, s.name, s.lastName, s.phone, s.ssn, s.isActive, nil, s.address)
-
-	s.Nil(result)
-	s.Equal(errorutil.InvalidArgument, err[0].Code)
-	s.Equal("user", err[0].Param)
-}
-
 func (s *PersonTestSuite) TestNewPerson_AddressNilError() {
 	result, err := entity.NewPerson(s.uuid, s.name, s.lastName, s.phone, s.ssn, s.isActive, s.user, nil)
 

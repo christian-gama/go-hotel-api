@@ -15,14 +15,14 @@ type CheckinTestSuite struct {
 
 	uuid         string
 	guest        *entity.Guest
-	roomId       uint32
+	roomId       uint8
 	checkinDate  time.Time
 	checkoutDate time.Time
 }
 
 func (s *CheckinTestSuite) SetupTest() {
 	s.uuid = "12345678-1234-1234-1234-123456789012"
-	s.guest, _ = entity.NewGuest("12345678-1234-1234-123456789012", 0, make([]uint8, entity.MaxRooms))
+	s.guest, _ = entity.NewGuest("12345678-1234-1234-123456789012", 0, make([]uint8, entity.MaxRooms), 1)
 	s.roomId = 1
 	s.checkinDate = time.Now().Add(entity.WaitTimeToCheckin + (1 * time.Minute))
 	s.checkoutDate = time.Now().Add(entity.WaitTimeToCheckout + (1 * time.Minute))
