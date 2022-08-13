@@ -13,19 +13,19 @@ import (
 type PersonTestSuite struct {
 	suite.Suite
 
-	uuid     string
-	name     string
-	lastName string
-	phone    string
-	ssn      string
-	isActive bool
-	user     *entity.User
-	address  *entity.Address
+	uuid      string
+	firstName string
+	lastName  string
+	phone     string
+	ssn       string
+	isActive  bool
+	user      *entity.User
+	address   *entity.Address
 }
 
 func (s *PersonTestSuite) SetupTest() {
 	s.uuid = "12345678-1234-1234-1234-123456789012"
-	s.name = "Any name"
+	s.firstName = "Any name"
 	s.lastName = "Any last name"
 	s.phone = "Any phone"
 	s.ssn = "Any ssn"
@@ -35,14 +35,14 @@ func (s *PersonTestSuite) SetupTest() {
 }
 
 func (s *PersonTestSuite) TestNewPerson_Success() {
-	result, err := entity.NewPerson(s.uuid, s.name, s.lastName, s.phone, s.ssn, s.isActive, s.user, s.address)
+	result, err := entity.NewPerson(s.uuid, s.firstName, s.lastName, s.phone, s.ssn, s.isActive, s.user, s.address)
 
 	s.NotNil(result)
 	s.Nil(err)
 }
 
 func (s *PersonTestSuite) TestNewPerson_UuidEmptyError() {
-	result, err := entity.NewPerson("", s.name, s.lastName, s.phone, s.ssn, s.isActive, s.user, s.address)
+	result, err := entity.NewPerson("", s.firstName, s.lastName, s.phone, s.ssn, s.isActive, s.user, s.address)
 
 	s.Nil(result)
 	s.Equal(errorutil.InvalidArgument, err[0].Code)
@@ -58,9 +58,9 @@ func (s *PersonTestSuite) TestNewPerson_NameEmptyError() {
 }
 
 func (s *PersonTestSuite) TestNewPerson_MaxNameLenError() {
-	name := strings.Repeat("a", entity.MaxPersonNameLen+1)
+	firstName := strings.Repeat("a", entity.MaxPersonNameLen+1)
 
-	result, err := entity.NewPerson(s.uuid, name, s.lastName, s.phone, s.ssn, s.isActive, s.user, s.address)
+	result, err := entity.NewPerson(s.uuid, firstName, s.lastName, s.phone, s.ssn, s.isActive, s.user, s.address)
 
 	s.Nil(result)
 	s.Equal(errorutil.InvalidArgument, err[0].Code)
@@ -68,7 +68,7 @@ func (s *PersonTestSuite) TestNewPerson_MaxNameLenError() {
 }
 
 func (s *PersonTestSuite) TestNewPerson_LastNameEmptyError() {
-	result, err := entity.NewPerson(s.uuid, s.name, "", s.phone, s.ssn, s.isActive, s.user, s.address)
+	result, err := entity.NewPerson(s.uuid, s.firstName, "", s.phone, s.ssn, s.isActive, s.user, s.address)
 
 	s.Nil(result)
 	s.Equal(errorutil.InvalidArgument, err[0].Code)
@@ -78,7 +78,7 @@ func (s *PersonTestSuite) TestNewPerson_LastNameEmptyError() {
 func (s *PersonTestSuite) TestNewPerson_LastNameLenError() {
 	lastName := strings.Repeat("a", entity.MaxPersonLastNameLen+1)
 
-	result, err := entity.NewPerson(s.uuid, s.name, lastName, s.phone, s.ssn, s.isActive, s.user, s.address)
+	result, err := entity.NewPerson(s.uuid, s.firstName, lastName, s.phone, s.ssn, s.isActive, s.user, s.address)
 
 	s.Nil(result)
 	s.Equal(errorutil.InvalidArgument, err[0].Code)
@@ -86,7 +86,7 @@ func (s *PersonTestSuite) TestNewPerson_LastNameLenError() {
 }
 
 func (s *PersonTestSuite) TestNewPerson_PhoneEmptyError() {
-	result, err := entity.NewPerson(s.uuid, s.name, s.lastName, "", s.ssn, s.isActive, s.user, s.address)
+	result, err := entity.NewPerson(s.uuid, s.firstName, s.lastName, "", s.ssn, s.isActive, s.user, s.address)
 
 	s.Nil(result)
 	s.Equal(errorutil.InvalidArgument, err[0].Code)
@@ -94,7 +94,7 @@ func (s *PersonTestSuite) TestNewPerson_PhoneEmptyError() {
 }
 
 func (s *PersonTestSuite) TestNewPerson_SsnEmptyError() {
-	result, err := entity.NewPerson(s.uuid, s.name, s.lastName, s.phone, "", s.isActive, s.user, s.address)
+	result, err := entity.NewPerson(s.uuid, s.firstName, s.lastName, s.phone, "", s.isActive, s.user, s.address)
 
 	s.Nil(result)
 	s.Equal(errorutil.InvalidArgument, err[0].Code)
@@ -102,7 +102,7 @@ func (s *PersonTestSuite) TestNewPerson_SsnEmptyError() {
 }
 
 func (s *PersonTestSuite) TestNewPerson_AddressNilError() {
-	result, err := entity.NewPerson(s.uuid, s.name, s.lastName, s.phone, s.ssn, s.isActive, s.user, nil)
+	result, err := entity.NewPerson(s.uuid, s.firstName, s.lastName, s.phone, s.ssn, s.isActive, s.user, nil)
 
 	s.Nil(result)
 	s.Equal(errorutil.InvalidArgument, err[0].Code)

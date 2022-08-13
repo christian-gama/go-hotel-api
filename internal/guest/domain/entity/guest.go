@@ -1,15 +1,8 @@
 package entity
 
 import (
-	"fmt"
-
 	"github.com/christian-gama/go-booking-api/internal/shared/domain/errorutil"
 	"github.com/christian-gama/go-booking-api/internal/shared/domain/notification"
-)
-
-const (
-	// The amount of rooms that a guest can have reserved at the same time, but not necessarily in the same date.
-	MaxRooms = 12
 )
 
 // Guest represents a guest in the hotel. He is able to make checkins and checkouts of rooms and are allowed to
@@ -20,7 +13,6 @@ type Guest struct {
 
 	UUID     string
 	Credits  float32
-	RoomIds  []uint8
 	PersonId uint32
 }
 
@@ -47,16 +39,6 @@ func (g *Guest) validate() []*errorutil.Error {
 		)
 	}
 
-	if len(g.RoomIds) > MaxRooms {
-		g.notification.AddError(
-			&notification.Error{
-				Code:    errorutil.InvalidArgument,
-				Message: fmt.Sprintf("guest cannot have more than %d rooms", MaxRooms),
-				Param:   "roomIds",
-			},
-		)
-	}
-
 	if g.notification.HasErrors() {
 		return g.notification.Errors()
 	}
@@ -68,7 +50,6 @@ func (g *Guest) validate() []*errorutil.Error {
 func NewGuest(
 	uuid string,
 	credits float32,
-	roomIds []uint8,
 	personId uint32,
 ) (*Guest, []*errorutil.Error) {
 	guest := &Guest{
@@ -76,7 +57,6 @@ func NewGuest(
 
 		uuid,
 		credits,
-		roomIds,
 		personId,
 	}
 

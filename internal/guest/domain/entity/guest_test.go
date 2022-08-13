@@ -14,42 +14,32 @@ type GuestTestSuite struct {
 
 	uuid     string
 	credits  float32
-	roomIds  []uint8
 	personId uint32
 }
 
 func (s *GuestTestSuite) SetupTest() {
 	s.uuid = "12345678-1234-1234-1234-123456789012"
 	s.credits = 0.0
-	s.roomIds = []uint8{1, 2, 3}
 	s.personId = 1
 }
 
 func (s *GuestTestSuite) TestNewGuest_Success() {
-	result, err := entity.NewGuest(s.uuid, s.credits, s.roomIds, s.personId)
+	result, err := entity.NewGuest(s.uuid, s.credits, s.personId)
 
 	s.NotNil(result)
 	s.Nil(err)
 }
 
 func (s *GuestTestSuite) TestNewGuest_UuidEmptyError() {
-	result, err := entity.NewGuest("", s.credits, s.roomIds, s.personId)
+	result, err := entity.NewGuest("", s.credits, s.personId)
 
 	s.Nil(result)
 	s.Equal(errorutil.InvalidArgument, err[0].Code)
 	s.Equal("uuid", err[0].Param)
 }
 
-func (s *GuestTestSuite) TestNewGuest_RoomIdsMaxLengthError() {
-	result, err := entity.NewGuest(s.uuid, s.credits, make([]uint8, entity.MaxRooms+1), s.personId)
-
-	s.Nil(result)
-	s.Equal(errorutil.InvalidArgument, err[0].Code)
-	s.Equal("roomIds", err[0].Param)
-}
-
 func (s *GuestTestSuite) TestNewGuest_NegativeCreditsError() {
-	result, err := entity.NewGuest(s.uuid, -1.0, s.roomIds, s.personId)
+	result, err := entity.NewGuest(s.uuid, -1.0, s.personId)
 
 	s.Nil(result)
 	s.Equal(errorutil.InvalidArgument, err[0].Code)

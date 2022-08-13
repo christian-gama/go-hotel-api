@@ -61,7 +61,7 @@ migrate: cmd-exists-docker
 	fi;
 
 	@mkdir -p $(PWD)/$(MIG_DIR)
-	@docker run \
+	@docker run -it \
 		-v $(PWD)/$(MIG_DIR):/migrations \
 		--rm \
 		--network host \

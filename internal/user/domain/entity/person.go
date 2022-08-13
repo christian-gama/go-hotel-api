@@ -15,14 +15,14 @@ const (
 type Person struct {
 	notification *notification.Notification
 
-	UUID     string
-	Name     string
-	LastName string
-	Phone    string
-	Ssn      string
-	IsActive bool
-	User     *User
-	Address  *Address
+	UUID      string
+	FirstName string
+	LastName  string
+	Phone     string
+	Ssn       string
+	IsActive  bool
+	User      *User
+	Address   *Address
 }
 
 func (p *Person) validate() []*errorutil.Error {
@@ -36,7 +36,7 @@ func (p *Person) validate() []*errorutil.Error {
 		)
 	}
 
-	if p.Name == "" {
+	if p.FirstName == "" {
 		p.notification.AddError(
 			&notification.Error{
 				Code:    errorutil.InvalidArgument,
@@ -46,7 +46,7 @@ func (p *Person) validate() []*errorutil.Error {
 		)
 	}
 
-	if len(p.Name) > MaxPersonNameLen {
+	if len(p.FirstName) > MaxPersonNameLen {
 		p.notification.AddError(
 			&notification.Error{
 				Code:    errorutil.InvalidArgument,
@@ -115,7 +115,7 @@ func (p *Person) validate() []*errorutil.Error {
 
 func NewPerson(
 	uuid string,
-	name string,
+	firstName string,
 	lastName string,
 	phone string,
 	ssn string,
@@ -126,14 +126,14 @@ func NewPerson(
 	person := &Person{
 		notification: notification.New("person"),
 
-		UUID:     uuid,
-		Name:     name,
-		LastName: lastName,
-		Phone:    phone,
-		Ssn:      ssn,
-		IsActive: isActive,
-		User:     user,
-		Address:  address,
+		UUID:      uuid,
+		FirstName: firstName,
+		LastName:  lastName,
+		Phone:     phone,
+		Ssn:       ssn,
+		IsActive:  isActive,
+		User:      user,
+		Address:   address,
 	}
 
 	if err := person.validate(); err != nil {
