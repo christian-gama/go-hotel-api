@@ -4,6 +4,5 @@ CREATE TABLE rooms (
   name varchar(255) NOT NULL,
   description text NOT NULL,
   price decimal(10,2) NOT NULL,
-  bed_count integer NOT NULL,
-  is_available boolean NOT NULL
+  bed_count integer NOT NULL
 );

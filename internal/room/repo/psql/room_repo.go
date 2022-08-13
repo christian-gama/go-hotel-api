@@ -20,8 +20,8 @@ func (r *roomRepo) SaveRoom(room *entity.Room) (*entity.Room, []*errorutil.Error
 	defer cancel()
 
 	stmt := `INSERT INTO rooms 
-					(uuid, name, description, bed_count, price, is_available) 
-					VALUES ($1, $2, $3, $4, $5, $6) 
+					(uuid, name, description, bed_count, price) 
+					VALUES ($1, $2, $3, $4, $5) 
 					RETURNING uuid`
 
 	_, err := r.db.ExecContext(
@@ -49,7 +49,7 @@ func (r *roomRepo) GetRoom(uuid string) (*entity.Room, []*errorutil.Error) {
 	ctx, cancel := context.WithTimeout(context.Background(), r.dbConfigger.Timeout())
 	defer cancel()
 
-	stmt := `SELECT uuid, name, description, bed_count, price, is_available FROM rooms WHERE uuid = $1`
+	stmt := `SELECT uuid, name, description, bed_count, price FROM rooms WHERE uuid = $1`
 	row := r.db.QueryRowContext(ctx, stmt, uuid)
 
 	room := &entity.Room{}

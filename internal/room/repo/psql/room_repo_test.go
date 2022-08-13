@@ -24,6 +24,10 @@ type RoomRepoTestSuite struct {
 func (s *RoomRepoTestSuite) SetupSuite() {
 	s.db = test.SetupDb()
 	s.m = test.Migrate(s.db)
+	err := s.m.Force(1)
+	if err != nil && err != migrate.ErrNoChange {
+		panic(err)
+	}
 }
 
 func (s *RoomRepoTestSuite) SetupTest() {
