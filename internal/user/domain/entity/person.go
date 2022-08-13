@@ -1,6 +1,8 @@
 package entity
 
 import (
+	"fmt"
+
 	"github.com/christian-gama/go-booking-api/internal/shared/domain/errorutil"
 	"github.com/christian-gama/go-booking-api/internal/shared/domain/notification"
 )
@@ -48,7 +50,7 @@ func (p *Person) validate() []*errorutil.Error {
 		p.notification.AddError(
 			&notification.Error{
 				Code:    errorutil.InvalidArgument,
-				Message: "name cannot be longer than 80 characters",
+				Message: fmt.Sprintf("name cannot be longer than %d characters", MaxPersonNameLen),
 				Param:   "name",
 			},
 		)
@@ -58,7 +60,7 @@ func (p *Person) validate() []*errorutil.Error {
 		p.notification.AddError(
 			&notification.Error{
 				Code:    errorutil.InvalidArgument,
-				Message: "last name cannot be longer than 80 characters",
+				Message: fmt.Sprintf("last name cannot be longer than %d characters", MaxPersonLastNameLen),
 				Param:   "lastName",
 			},
 		)

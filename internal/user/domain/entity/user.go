@@ -1,6 +1,8 @@
 package entity
 
 import (
+	"fmt"
+
 	"github.com/christian-gama/go-booking-api/internal/shared/domain/errorutil"
 	"github.com/christian-gama/go-booking-api/internal/shared/domain/notification"
 )
@@ -43,7 +45,7 @@ func (u *User) validate() []*errorutil.Error {
 		u.notification.AddError(
 			&notification.Error{
 				Code:    errorutil.InvalidArgument,
-				Message: "password cannot be shorter than 8 characters",
+				Message: fmt.Sprintf("password cannot be shorter than %d characters", MinUserPasswordLen),
 				Param:   "password",
 			},
 		)
@@ -53,7 +55,7 @@ func (u *User) validate() []*errorutil.Error {
 		u.notification.AddError(
 			&notification.Error{
 				Code:    errorutil.InvalidArgument,
-				Message: "password cannot be longer than 32 characters",
+				Message: fmt.Sprintf("password cannot be longer than %d characters", MaxUserPasswordLen),
 				Param:   "password",
 			},
 		)

@@ -1,6 +1,8 @@
 package entity
 
 import (
+	"fmt"
+
 	"github.com/christian-gama/go-booking-api/internal/shared/domain/errorutil"
 	"github.com/christian-gama/go-booking-api/internal/shared/domain/notification"
 )
@@ -44,7 +46,7 @@ func (r *Restriction) validate() []*errorutil.Error {
 		r.notification.AddError(
 			&notification.Error{
 				Code:    errorutil.InvalidArgument,
-				Message: "name cannot be longer than 40 characters",
+				Message: fmt.Sprintf("name cannot be longer than %d characters", MaxRestrictionNameLen),
 				Param:   "name",
 			},
 		)
@@ -54,7 +56,7 @@ func (r *Restriction) validate() []*errorutil.Error {
 		r.notification.AddError(
 			&notification.Error{
 				Code:    errorutil.InvalidArgument,
-				Message: "description cannot be longer than 255 characters",
+				Message: fmt.Sprintf("description cannot be longer than %d characters", MaxRestrictionDescriptionLen),
 				Param:   "description",
 			},
 		)
@@ -64,7 +66,7 @@ func (r *Restriction) validate() []*errorutil.Error {
 		r.notification.AddError(
 			&notification.Error{
 				Code:    errorutil.InvalidArgument,
-				Message: "description cannot be shorter than 10 characters",
+				Message: fmt.Sprintf("description cannot be shorter than %d characters", MinRestrictionDescriptionLen),
 				Param:   "description",
 			},
 		)

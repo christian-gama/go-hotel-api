@@ -1,6 +1,8 @@
 package entity
 
 import (
+	"fmt"
+
 	"github.com/christian-gama/go-booking-api/internal/shared/domain/errorutil"
 	"github.com/christian-gama/go-booking-api/internal/shared/domain/notification"
 )
@@ -91,7 +93,7 @@ func (a *Address) validate() []*errorutil.Error {
 		a.notification.AddError(
 			&notification.Error{
 				Code:    errorutil.InvalidArgument,
-				Message: "street cannot be longer than 100 characters",
+				Message: fmt.Sprintf("street cannot be longer than %d characters", MaxAddressStreetLen),
 				Param:   "street",
 			},
 		)
@@ -101,7 +103,7 @@ func (a *Address) validate() []*errorutil.Error {
 		a.notification.AddError(
 			&notification.Error{
 				Code:    errorutil.InvalidArgument,
-				Message: "number cannot be shorter than 1 character",
+				Message: fmt.Sprintf("number cannot be shorter than %d characters", MinAddressNumberLen),
 				Param:   "number",
 			},
 		)
@@ -111,7 +113,7 @@ func (a *Address) validate() []*errorutil.Error {
 		a.notification.AddError(
 			&notification.Error{
 				Code:    errorutil.InvalidArgument,
-				Message: "number cannot be longer than 8 characters",
+				Message: fmt.Sprintf("number cannot be longer than %d characters", MaxAddressNumberLen),
 				Param:   "number",
 			},
 		)
