@@ -1,10 +1,10 @@
-package service_test
+package usecase_test
 
 import (
 	"testing"
 
 	"github.com/christian-gama/go-booking-api/internal/room/app/dto"
-	"github.com/christian-gama/go-booking-api/internal/room/app/service"
+	"github.com/christian-gama/go-booking-api/internal/room/app/usecase"
 	"github.com/christian-gama/go-booking-api/internal/room/domain/entity"
 	"github.com/christian-gama/go-booking-api/internal/shared/domain/errorutil"
 	"github.com/christian-gama/go-booking-api/mocks"
@@ -16,17 +16,17 @@ import (
 type CreateRoomTestSuite struct {
 	suite.Suite
 
-	createRoom service.CreateRoom
-	repo       *mocks.Room
+	createRoom usecase.CreateRoom
+	repo       *mocks.SaveRoomRepo
 	uuid       *mocks.UUID
 
 	input *dto.CreateRoom
 }
 
 func (s *CreateRoomTestSuite) SetupTest() {
-	s.repo = mocks.NewRoom(s.T())
+	s.repo = mocks.NewSaveRoomRepo(s.T())
 	s.uuid = mocks.NewUUID(s.T())
-	s.createRoom = service.NewCreateRoom(s.repo, s.uuid)
+	s.createRoom = usecase.NewCreateRoom(s.repo, s.uuid)
 	s.input = &dto.CreateRoom{
 		Name:        "name",
 		Description: "description",

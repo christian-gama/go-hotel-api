@@ -1,21 +1,21 @@
-package service
+package usecase
 
 import (
 	"github.com/christian-gama/go-booking-api/internal/room/app/dto"
-	"github.com/christian-gama/go-booking-api/internal/room/app/repo"
+	"github.com/christian-gama/go-booking-api/internal/room/app/protocol"
 	"github.com/christian-gama/go-booking-api/internal/room/domain/entity"
 	"github.com/christian-gama/go-booking-api/internal/shared/app/uuid"
 	"github.com/christian-gama/go-booking-api/internal/shared/domain/errorutil"
 )
 
-// CreatRoom is the interface that defines the creation of a room.
+// CreateRoom is the interface that defines the creation of a room.
 type CreateRoom interface {
 	Handle(input *dto.CreateRoom) (*entity.Room, []*errorutil.Error)
 }
 
 // createRoom is a concrete implementation of the CreateRoom.
 type createRoom struct {
-	repo repo.Room
+	repo protocol.SaveRoomRepo
 	uuid uuid.UUID
 }
 
@@ -37,7 +37,7 @@ func (c *createRoom) Handle(input *dto.CreateRoom) (*entity.Room, []*errorutil.E
 }
 
 // NewCreateRoom creates a new CreateRoom.
-func NewCreateRoom(repo repo.Room, uuid uuid.UUID) CreateRoom {
+func NewCreateRoom(repo protocol.SaveRoomRepo, uuid uuid.UUID) CreateRoom {
 	return &createRoom{
 		repo,
 		uuid,

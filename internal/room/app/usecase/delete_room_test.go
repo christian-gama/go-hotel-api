@@ -1,9 +1,9 @@
-package service_test
+package usecase_test
 
 import (
 	"testing"
 
-	"github.com/christian-gama/go-booking-api/internal/room/app/service"
+	"github.com/christian-gama/go-booking-api/internal/room/app/usecase"
 	"github.com/christian-gama/go-booking-api/internal/shared/domain/errorutil"
 	"github.com/christian-gama/go-booking-api/mocks"
 	"github.com/christian-gama/go-booking-api/test"
@@ -14,13 +14,13 @@ import (
 type DeleteRoomTestSuite struct {
 	suite.Suite
 
-	deleteRoom service.DeleteRoom
-	repo       *mocks.Room
+	deleteRoom usecase.DeleteRoom
+	repo       *mocks.DeleteRoomRepo
 }
 
 func (s *DeleteRoomTestSuite) SetupTest() {
-	s.repo = mocks.NewRoom(s.T())
-	s.deleteRoom = service.NewDeleteRoom(s.repo)
+	s.repo = mocks.NewDeleteRoomRepo(s.T())
+	s.deleteRoom = usecase.NewDeleteRoom(s.repo)
 }
 
 func (s *DeleteRoomTestSuite) TestNewDeleteRoom_NotNil() {

@@ -1,7 +1,7 @@
-package service
+package usecase
 
 import (
-	"github.com/christian-gama/go-booking-api/internal/room/app/repo"
+	"github.com/christian-gama/go-booking-api/internal/room/app/protocol"
 	"github.com/christian-gama/go-booking-api/internal/room/domain/entity"
 	"github.com/christian-gama/go-booking-api/internal/shared/domain/errorutil"
 )
@@ -13,7 +13,7 @@ type ListRooms interface {
 
 // listRooms is a concrete implementation of the ListRooms.
 type listRooms struct {
-	repo repo.Room
+	repo protocol.ListRoomsRepo
 }
 
 // Handle retrieves multiple room. It will return an error if something
@@ -28,7 +28,7 @@ func (l *listRooms) Handle() ([]*entity.Room, []*errorutil.Error) {
 }
 
 // NewListRooms creates a new ListRooms.
-func NewListRooms(repo repo.Room) ListRooms {
+func NewListRooms(repo protocol.ListRoomsRepo) ListRooms {
 	return &listRooms{
 		repo,
 	}

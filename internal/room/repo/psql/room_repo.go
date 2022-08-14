@@ -4,21 +4,28 @@ import (
 	"context"
 	"database/sql"
 
-	"github.com/christian-gama/go-booking-api/internal/room/app/repo"
+	"github.com/christian-gama/go-booking-api/internal/room/app/protocol"
 	"github.com/christian-gama/go-booking-api/internal/room/domain/entity"
 	"github.com/christian-gama/go-booking-api/internal/shared/domain/errorutil"
 	"github.com/christian-gama/go-booking-api/internal/shared/infra/configger"
 	"github.com/christian-gama/go-booking-api/internal/shared/util"
 )
 
-// roomRepo is concrete implementation of the Room repository.
-type roomRepo struct {
+type roomRepo interface {
+	protocol.SaveRoomRepo
+	protocol.GetRoomRepo
+	protocol.ListRoomsRepo
+	protocol.DeleteRoomRepo
+}
+
+// roomRepoImpl is concrete implementation of the Room repository.
+type roomRepoImpl struct {
 	db          *sql.DB
 	dbConfigger configger.Db
 }
 
 // SaveRoom is the method that will save a room in the database.
-func (r *roomRepo) SaveRoom(room *entity.Room) (*entity.Room, []*errorutil.Error) {
+func (r *roomRepoImpl) SaveRoom(room *entity.Room) (*entity.Room, []*errorutil.Error) {
 	ctx, cancel := context.WithTimeout(context.Background(), r.dbConfigger.Timeout())
 	defer cancel()
 
@@ -49,7 +56,7 @@ func (r *roomRepo) SaveRoom(room *entity.Room) (*entity.Room, []*errorutil.Error
 }
 
 // GetRoom is the method that will get a room from the database.
-func (r *roomRepo) GetRoom(uuid string) (*entity.Room, []*errorutil.Error) {
+func (r *roomRepoImpl) GetRoom(uuid string) (*entity.Room, []*errorutil.Error) {
 	ctx, cancel := context.WithTimeout(context.Background(), r.dbConfigger.Timeout())
 	defer cancel()
 
@@ -77,7 +84,7 @@ func (r *roomRepo) GetRoom(uuid string) (*entity.Room, []*errorutil.Error) {
 }
 
 // ListRooms is the method that will list all the rooms from the database.
-func (r *roomRepo) ListRooms() ([]*entity.Room, []*errorutil.Error) {
+func (r *roomRepoImpl) ListRooms() ([]*entity.Room, []*errorutil.Error) {
 	ctx, cancel := context.WithTimeout(context.Background(), r.dbConfigger.Timeout())
 	defer cancel()
 
@@ -118,7 +125,7 @@ func (r *roomRepo) ListRooms() ([]*entity.Room, []*errorutil.Error) {
 }
 
 // DeleteRoom is the method that will delete a room from the database.
-func (r *roomRepo) DeleteRoom(uuid string) []*errorutil.Error {
+func (r *roomRepoImpl) DeleteRoom(uuid string) []*errorutil.Error {
 	ctx, cancel := context.WithTimeout(context.Background(), r.dbConfigger.Timeout())
 	defer cancel()
 
@@ -137,8 +144,8 @@ func (r *roomRepo) DeleteRoom(uuid string) []*errorutil.Error {
 }
 
 // NewRoomRepo creates a new instance of the Room repository.
-func NewRoomRepo(db *sql.DB, dbConfigger configger.Db) repo.Room {
-	return &roomRepo{
+func NewRoomRepo(db *sql.DB, dbConfigger configger.Db) roomRepo {
+	return &roomRepoImpl{
 		db,
 		dbConfigger,
 	}

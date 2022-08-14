@@ -1,7 +1,7 @@
-package service
+package usecase
 
 import (
-	"github.com/christian-gama/go-booking-api/internal/room/app/repo"
+	"github.com/christian-gama/go-booking-api/internal/room/app/protocol"
 	"github.com/christian-gama/go-booking-api/internal/room/domain/entity"
 	"github.com/christian-gama/go-booking-api/internal/shared/domain/errorutil"
 )
@@ -13,7 +13,7 @@ type GetRoom interface {
 
 // getRoom is a concrete implementation of the GetRoom.
 type getRoom struct {
-	repo repo.Room
+	repo protocol.GetRoomRepo
 }
 
 // Handle receives a uuid and retrieves a room. It will return an error if something
@@ -28,7 +28,7 @@ func (g *getRoom) Handle(uuid string) (*entity.Room, []*errorutil.Error) {
 }
 
 // NewGetRoom creates a new GetRoom.
-func NewGetRoom(repo repo.Room) GetRoom {
+func NewGetRoom(repo protocol.GetRoomRepo) GetRoom {
 	return &getRoom{
 		repo,
 	}
