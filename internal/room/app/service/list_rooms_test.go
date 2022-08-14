@@ -1,7 +1,6 @@
 package service_test
 
 import (
-	"fmt"
 	"testing"
 
 	"github.com/christian-gama/go-booking-api/internal/room/app/service"
@@ -20,7 +19,6 @@ type ListRoomsTestSuite struct {
 }
 
 func (s *ListRoomsTestSuite) SetupTest() {
-	fmt.Println("SetupTest")
 	s.repo = mocks.NewRoom(s.T())
 	s.listRooms = service.NewListRooms(s.repo)
 }

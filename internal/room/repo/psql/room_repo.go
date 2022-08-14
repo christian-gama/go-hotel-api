@@ -117,6 +117,7 @@ func (r *roomRepo) ListRooms() ([]*entity.Room, []*errorutil.Error) {
 	return rooms, nil
 }
 
+// DeleteRoom is the method that will delete a room from the database.
 func (r *roomRepo) DeleteRoom(uuid string) []*errorutil.Error {
 	ctx, cancel := context.WithTimeout(context.Background(), r.dbConfigger.Timeout())
 	defer cancel()

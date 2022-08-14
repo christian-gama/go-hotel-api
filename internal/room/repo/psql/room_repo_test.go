@@ -149,6 +149,42 @@ func (s *RoomRepoTestSuite) TestRoomRepo_ListRooms_Error() {
 	s.Equal(errorutil.DatabaseError, err[0].Code)
 }
 
+func (s *RoomRepoTestSuite) TestRoomRepo_DeleteRoom_Success() {
+	room, _ := entity.NewRoom(
+		"12345678-1234-1234-1234-123456789012",
+		"Test Room",
+		"This is a test room",
+		1,
+		1,
+	)
+	dbConfigMock := mocks.NewDb(s.T())
+	roomRepo := psql.NewRoomRepo(s.db, dbConfigMock)
+	dbConfigMock.On("Timeout").Return(2 * time.Second)
+	roomRepo.SaveRoom(room)
+
+	err := roomRepo.DeleteRoom(room.UUID)
+
+	s.Nil(err)
+}
+
+func (s *RoomRepoTestSuite) TestRoomRepo_DeleteRoom_Error() {
+	room, _ := entity.NewRoom(
+		"12345678-1234-1234-1234-123456789012",
+		"Test Room",
+		"This is a test room",
+		1,
+		1,
+	)
+	dbConfigMock := mocks.NewDb(s.T())
+	roomRepo := psql.NewRoomRepo(s.db, dbConfigMock)
+	dbConfigMock.On("Timeout").Return(1 * time.Microsecond)
+	roomRepo.SaveRoom(room)
+
+	err := roomRepo.DeleteRoom(room.UUID)
+
+	s.Equal(errorutil.DatabaseError, err[0].Code)
+}
+
 func TestRoomRepoTestSuite(t *testing.T) {
 	test.RunIntegrationTest(t, new(RoomRepoTestSuite))
 }
