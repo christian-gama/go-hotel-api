@@ -3,8 +3,8 @@
 package mocks
 
 import (
-	entity "github.com/christian-gama/go-booking-api/internal/room/domain/entity"
-	errorutil "github.com/christian-gama/go-booking-api/internal/shared/domain/errorutil"
+	entity "github.com/christian-gama/go-booking-api/internal/domain/entity"
+	errorutil "github.com/christian-gama/go-booking-api/internal/domain/errorutil"
 
 	mock "github.com/stretchr/testify/mock"
 )
@@ -14,8 +14,8 @@ type GetRoom struct {
 	mock.Mock
 }
 
-// Handle provides a mock function with given fields: uuid
-func (_m *GetRoom) Handle(uuid string) (*entity.Room, []*errorutil.Error) {
+// GetRoom provides a mock function with given fields: uuid
+func (_m *GetRoom) GetRoom(uuid string) (*entity.Room, []*errorutil.Error) {
 	ret := _m.Called(uuid)
 
 	var r0 *entity.Room

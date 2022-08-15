@@ -3,7 +3,7 @@
 package mocks
 
 import (
-	errorutil "github.com/christian-gama/go-booking-api/internal/shared/domain/errorutil"
+	errorutil "github.com/christian-gama/go-booking-api/internal/domain/errorutil"
 	mock "github.com/stretchr/testify/mock"
 )
 

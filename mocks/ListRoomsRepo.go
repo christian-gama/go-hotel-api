@@ -3,8 +3,8 @@
 package mocks
 
 import (
-	entity "github.com/christian-gama/go-booking-api/internal/room/domain/entity"
-	errorutil "github.com/christian-gama/go-booking-api/internal/shared/domain/errorutil"
+	entity "github.com/christian-gama/go-booking-api/internal/domain/entity"
+	errorutil "github.com/christian-gama/go-booking-api/internal/domain/errorutil"
 
 	mock "github.com/stretchr/testify/mock"
 )

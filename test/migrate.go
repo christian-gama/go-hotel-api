@@ -4,8 +4,8 @@ import (
 	"database/sql"
 	"fmt"
 
-	"github.com/christian-gama/go-booking-api/internal/shared/main/config"
-	"github.com/christian-gama/go-booking-api/internal/shared/util"
+	"github.com/christian-gama/go-booking-api/internal/infra/config"
+	"github.com/christian-gama/go-booking-api/internal/util"
 	"github.com/golang-migrate/migrate/v4"
 	"github.com/golang-migrate/migrate/v4/database/postgres"
 	_ "github.com/golang-migrate/migrate/v4/source/file"
@@ -19,7 +19,6 @@ func Migrate(db *sql.DB) *migrate.Migrate {
 		panic(err)
 	}
 
-	fmt.Println(util.RootPath())
 	m, err := migrate.NewWithDatabaseInstance(
 		fmt.Sprintf("file:///%s/%s", util.RootPath(), migConfigger.Dir()),
 		"postgres", driver)

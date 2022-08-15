@@ -3,8 +3,8 @@ package test
 import (
 	"database/sql"
 
-	"github.com/christian-gama/go-booking-api/internal/shared/main/config"
-	"github.com/christian-gama/go-booking-api/internal/shared/main/conn"
+	"github.com/christian-gama/go-booking-api/internal/infra/config"
+	"github.com/christian-gama/go-booking-api/internal/main/conn"
 	_ "github.com/jackc/pgconn"
 	_ "github.com/jackc/pgx/v4"
 	_ "github.com/jackc/pgx/v4/stdlib"
