@@ -4,7 +4,7 @@ import (
 	"testing"
 
 	"github.com/christian-gama/go-booking-api/internal/infra/config"
-	"github.com/christian-gama/go-booking-api/internal/main/conn"
+	"github.com/christian-gama/go-booking-api/internal/ui/conn"
 	"github.com/christian-gama/go-booking-api/test"
 	"github.com/stretchr/testify/suite"
 )

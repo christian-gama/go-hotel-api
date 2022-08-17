@@ -4,7 +4,7 @@ import (
 	"database/sql"
 
 	"github.com/christian-gama/go-booking-api/internal/infra/config"
-	"github.com/christian-gama/go-booking-api/internal/main/conn"
+	"github.com/christian-gama/go-booking-api/internal/ui/conn"
 	_ "github.com/jackc/pgconn"
 	_ "github.com/jackc/pgx/v4"
 	_ "github.com/jackc/pgx/v4/stdlib"
@@ -12,8 +12,6 @@ import (
 
 func SetupDb() *sql.DB {
 	config.LoadEnvFile(".env.test")
-
-	mode()
 
 	db, err := conn.NewSQL("pgx", config.NewDb())
 	if err != nil {

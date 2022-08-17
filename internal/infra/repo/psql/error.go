@@ -8,6 +8,7 @@ import (
 )
 
 const (
+	// ErrUniqueViolation is the error code for unique constraint violation from postgres.
 	ErrUniqueViolation = "23505"
 )
 
@@ -15,6 +16,7 @@ func errIs(err error, code string) bool {
 	return strings.Contains(err.Error(), fmt.Sprintf("SQLSTATE %s", code))
 }
 
+// Error handles the error from postgres.
 func Error(err error) []*errorutil.Error {
 	if err == nil {
 		return nil

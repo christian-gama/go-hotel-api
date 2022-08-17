@@ -10,6 +10,7 @@ type createRoom struct {
 	createRoomUsecase usecase.CreateRoom
 }
 
+// Handle is a function that handles the room's creation request.
 func (c *createRoom) Handle(req *request.Request) *response.Response {
 	input := &usecase.CreateRoomInput{}
 	res := response.Unmarshal(req, input)
@@ -25,6 +26,7 @@ func (c *createRoom) Handle(req *request.Request) *response.Response {
 	return response.OK(room)
 }
 
+// NewCreateRoom returns a new instance of a controller that handles the room's creation.
 func NewCreateRoom(createRoomUsecase usecase.CreateRoom) Controller {
 	return &createRoom{createRoomUsecase}
 }

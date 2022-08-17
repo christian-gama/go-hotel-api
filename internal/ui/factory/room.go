@@ -7,6 +7,7 @@ import (
 	"github.com/christian-gama/go-booking-api/internal/usecase"
 )
 
+// CreateRoomRepo is a factory function that returns a new room repository.
 func CreateRoomRepo() repo.SaveRoom {
 	conn := PsqlConn()
 	dbConfig := DbConfig()
@@ -14,11 +15,13 @@ func CreateRoomRepo() repo.SaveRoom {
 	return psql.NewRoomRepo(conn, dbConfig)
 }
 
+// CreateRoomUsecase is a factory function that returns a new room usecase.
 func CreateRoomUsecase() usecase.CreateRoom {
 	repo := CreateRoomRepo()
 	return usecase.NewCreateRoom(repo, UUID())
 }
 
+// CreateRoomController is a factory function that returns a new room controller.
 func CreateRoomController() controller.Controller {
 	return controller.NewCreateRoom(CreateRoomUsecase())
 }
