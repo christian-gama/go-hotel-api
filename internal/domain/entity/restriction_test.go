@@ -47,6 +47,16 @@ func (s *RestrictionTestSuite) TestNewRestriction_NameEmptyError() {
 	s.Equal("name", err[0].Param)
 }
 
+func (s *RestrictionTestSuite) TestNewRestriction_MaxNameLenError() {
+	name := strings.Repeat("a", entity.MaxRestrictionNameLen+1)
+
+	result, err := entity.NewRestriction(s.uuid, name, s.description)
+
+	s.Nil(result)
+	s.Equal(errorutil.InvalidArgument, err[0].Code)
+	s.Equal("name", err[0].Param)
+}
+
 func (s *RestrictionTestSuite) TestNewRestriction_MinDescriptionLenError() {
 	description := strings.Repeat("a", entity.MinRestrictionDescriptionLen-1)
 

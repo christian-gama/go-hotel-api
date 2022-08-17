@@ -21,11 +21,11 @@ const (
 type Checkin struct {
 	notification *notification.Notification
 
-	UUID         string
-	RoomId       uint8
-	Guest        *Guest
-	CheckinDate  time.Time
-	CheckoutDate time.Time
+	UUID         string    `json:"uuid"`
+	RoomId       uint8     `json:"roomId"`
+	Guest        *Guest    `json:"guest"`
+	CheckinDate  time.Time `json:"checkinDate"`
+	CheckoutDate time.Time `json:"checkoutDate"`
 }
 
 // validate ensure the entity is valid. It will add an error to notification each time

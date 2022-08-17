@@ -17,9 +17,9 @@ const (
 type Restriction struct {
 	notification notification.Notification
 
-	UUID        string
-	name        string
-	description string
+	UUID        string `json:"uuid"`
+	Name        string `json:"name"`
+	Description string `json:"description"`
 }
 
 func (r *Restriction) validate() []*errorutil.Error {
@@ -33,7 +33,7 @@ func (r *Restriction) validate() []*errorutil.Error {
 		)
 	}
 
-	if r.name == "" {
+	if r.Name == "" {
 		r.notification.AddError(
 			&notification.Error{
 				Code:    errorutil.InvalidArgument,
@@ -43,7 +43,7 @@ func (r *Restriction) validate() []*errorutil.Error {
 		)
 	}
 
-	if len(r.name) > MaxRestrictionNameLen {
+	if len(r.Name) > MaxRestrictionNameLen {
 		r.notification.AddError(
 			&notification.Error{
 				Code:    errorutil.InvalidArgument,
@@ -53,7 +53,7 @@ func (r *Restriction) validate() []*errorutil.Error {
 		)
 	}
 
-	if len(r.description) > MaxRestrictionDescriptionLen {
+	if len(r.Description) > MaxRestrictionDescriptionLen {
 		r.notification.AddError(
 			&notification.Error{
 				Code:    errorutil.InvalidArgument,
@@ -63,7 +63,7 @@ func (r *Restriction) validate() []*errorutil.Error {
 		)
 	}
 
-	if len(r.description) < MinRestrictionDescriptionLen {
+	if len(r.Description) < MinRestrictionDescriptionLen {
 		r.notification.AddError(
 			&notification.Error{
 				Code:    errorutil.InvalidArgument,
@@ -85,8 +85,8 @@ func NewRestriction(uuid string, name string, description string) (*Restriction,
 		notification: *notification.New(util.StructName(Restriction{})),
 
 		UUID:        uuid,
-		name:        name,
-		description: description,
+		Name:        name,
+		Description: description,
 	}
 
 	if err := room.validate(); err != nil {

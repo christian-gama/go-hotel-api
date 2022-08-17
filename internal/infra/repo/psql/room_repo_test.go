@@ -70,7 +70,7 @@ func (s *RoomRepoTestSuite) TestRoomRepo_SaveRoom_Error() {
 
 	_, err := roomRepo.SaveRoom(room)
 
-	s.Equal(errorutil.DatabaseError, err[0].Code)
+	s.Equal(errorutil.RepositoryError, err[0].Code)
 }
 
 func (s *RoomRepoTestSuite) TestRoomRepo_GetRoom_Success() {
@@ -109,7 +109,7 @@ func (s *RoomRepoTestSuite) TestRoomRepo_GetRoom_Error() {
 
 	_, err := roomRepo.GetRoom(room.UUID)
 
-	s.Equal(errorutil.DatabaseError, err[0].Code)
+	s.Equal(errorutil.RepositoryError, err[0].Code)
 }
 
 func (s *RoomRepoTestSuite) TestRoomRepo_ListRooms_Success() {
@@ -146,7 +146,7 @@ func (s *RoomRepoTestSuite) TestRoomRepo_ListRooms_Error() {
 
 	_, err := roomRepo.ListRooms()
 
-	s.Equal(errorutil.DatabaseError, err[0].Code)
+	s.Equal(errorutil.RepositoryError, err[0].Code)
 }
 
 func (s *RoomRepoTestSuite) TestRoomRepo_DeleteRoom_Success() {
@@ -182,7 +182,7 @@ func (s *RoomRepoTestSuite) TestRoomRepo_DeleteRoom_Error() {
 
 	err := roomRepo.DeleteRoom(room.UUID)
 
-	s.Equal(errorutil.DatabaseError, err[0].Code)
+	s.Equal(errorutil.RepositoryError, err[0].Code)
 }
 
 func TestRoomRepoTestSuite(t *testing.T) {

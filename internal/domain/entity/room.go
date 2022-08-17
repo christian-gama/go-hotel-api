@@ -32,11 +32,11 @@ const (
 type Room struct {
 	notification *notification.Notification
 
-	UUID        string
-	Name        string
-	Description string
-	BedCount    uint8
-	Price       float32
+	UUID        string  `json:"uuid"`
+	Name        string  `json:"name"`
+	Description string  `json:"description"`
+	BedCount    uint8   `json:"bed_count"`
+	Price       float32 `json:"price"`
 }
 
 // validate ensure the entity is valid. It will add an error to notification each time

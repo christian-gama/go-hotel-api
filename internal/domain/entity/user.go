@@ -16,9 +16,9 @@ const (
 type User struct {
 	notification *notification.Notification
 
-	UUID     string
-	Email    string
-	Password string
+	UUID     string `json:"uuid"`
+	Email    string `json:"email"`
+	Password string `json:"-"`
 }
 
 func (u *User) validate() []*errorutil.Error {

@@ -16,14 +16,14 @@ const (
 type Person struct {
 	notification *notification.Notification
 
-	UUID      string
-	FirstName string
-	LastName  string
-	Phone     string
-	Ssn       string
-	IsActive  bool
-	User      *User
-	Address   *Address
+	UUID      string   `json:"uuid"`
+	FirstName string   `json:"firstName"`
+	LastName  string   `json:"lastName"`
+	Phone     string   `json:"phone"`
+	Ssn       string   `json:"ssn"`
+	IsActive  bool     `json:"isActive"`
+	User      *User    `json:"user"`
+	Address   *Address `json:"address"`
 }
 
 func (p *Person) validate() []*errorutil.Error {

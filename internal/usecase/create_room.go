@@ -12,7 +12,7 @@ type (
 	CreateRoomInput struct {
 		Name        string  `json:"name"`
 		Description string  `json:"description"`
-		BedCount    uint8   `json:"bed_count"`
+		BedCount    uint8   `json:"bedCount"`
 		Price       float32 `json:"price"`
 	}
 

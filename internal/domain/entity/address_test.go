@@ -55,6 +55,16 @@ func (s *AddressTestSuite) TestNewAddress_StreetEmptyError() {
 	s.Equal("street", err[0].Param)
 }
 
+func (s *AddressTestSuite) TestNewAddress_MaxStreetLenError() {
+	street := strings.Repeat("0", entity.MaxAddressStreetLen+1)
+
+	result, err := entity.NewAddress(s.uuid, street, s.number, s.zipCode, s.city, s.country, s.state)
+
+	s.Nil(result)
+	s.Equal(errorutil.InvalidArgument, err[0].Code)
+	s.Equal("street", err[0].Param)
+}
+
 func (s *AddressTestSuite) TestNewAddress_CityEmptyError() {
 	result, err := entity.NewAddress(s.uuid, s.street, s.number, s.zipCode, "", s.country, s.state)
 

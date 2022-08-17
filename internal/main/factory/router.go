@@ -3,8 +3,8 @@ package factory
 import (
 	"net/http"
 
-	"github.com/christian-gama/go-booking-api/internal/infra/router"
-	"github.com/christian-gama/go-booking-api/internal/infra/router/route"
+	"github.com/christian-gama/go-booking-api/internal/infra/route"
+	"github.com/christian-gama/go-booking-api/internal/main/router"
 	"github.com/go-chi/chi/v5"
 )
 

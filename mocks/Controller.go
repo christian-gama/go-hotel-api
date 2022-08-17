@@ -3,7 +3,8 @@
 package mocks
 
 import (
-	http "github.com/christian-gama/go-booking-api/internal/presenter/http"
+	request "github.com/christian-gama/go-booking-api/internal/presenter/http/request"
+	response "github.com/christian-gama/go-booking-api/internal/presenter/http/response"
 	mock "github.com/stretchr/testify/mock"
 )
 
@@ -13,14 +14,16 @@ type Controller struct {
 }
 
 // Handle provides a mock function with given fields: _a0
-func (_m *Controller) Handle(_a0 http.Request) http.Response {
+func (_m *Controller) Handle(_a0 *request.Request) *response.Response {
 	ret := _m.Called(_a0)
 
-	var r0 http.Response
-	if rf, ok := ret.Get(0).(func(http.Request) http.Response); ok {
+	var r0 *response.Response
+	if rf, ok := ret.Get(0).(func(*request.Request) *response.Response); ok {
 		r0 = rf(_a0)
 	} else {
-		r0 = ret.Get(0).(http.Response)
+		if ret.Get(0) != nil {
+			r0 = ret.Get(0).(*response.Response)
+		}
 	}
 
 	return r0

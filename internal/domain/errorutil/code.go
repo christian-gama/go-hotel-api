@@ -13,8 +13,8 @@ const (
 	// InternalError is the error code when an internal error is found.
 	InternalError ErrorCode = "INTERNAL_ERROR"
 
-	// DatabaseError is the error code when a database error is found.
-	DatabaseError ErrorCode = "DATABASE_ERROR"
+	// RepositoryError is the error code when a database error is found.
+	RepositoryError ErrorCode = "REPOSITORY_ERROR"
 
 	// InvalidArgument is the error code when some argument is invalid.
 	InvalidArgument ErrorCode = "INVALID_ARGUMENT"

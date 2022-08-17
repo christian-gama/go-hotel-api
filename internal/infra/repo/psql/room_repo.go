@@ -29,7 +29,7 @@ func (r *roomRepoImpl) SaveRoom(room *entity.Room) (*entity.Room, []*errorutil.E
 	ctx, cancel := context.WithTimeout(context.Background(), r.dbConfigger.Timeout())
 	defer cancel()
 
-	stmt := `INSERT INTO rooms 
+	stmt := `INSERT INTO room 
 					(uuid, name, description, bed_count, price) 
 					VALUES ($1, $2, $3, $4, $5) 
 					RETURNING uuid`
@@ -44,12 +44,7 @@ func (r *roomRepoImpl) SaveRoom(room *entity.Room) (*entity.Room, []*errorutil.E
 		room.Price,
 	)
 	if err != nil {
-		return nil, []*errorutil.Error{{
-			Code:    errorutil.DatabaseError,
-			Message: "Could not save a new room.",
-			Context: util.StructName(r),
-			Param:   "SaveRoom",
-		}}
+		return nil, Error(err)
 	}
 
 	return room, nil
@@ -60,7 +55,7 @@ func (r *roomRepoImpl) GetRoom(uuid string) (*entity.Room, []*errorutil.Error) {
 	ctx, cancel := context.WithTimeout(context.Background(), r.dbConfigger.Timeout())
 	defer cancel()
 
-	stmt := `SELECT uuid, name, description, bed_count, price FROM rooms WHERE uuid = $1`
+	stmt := `SELECT uuid, name, description, bed_count, price FROM room WHERE uuid = $1`
 	row := r.db.QueryRowContext(ctx, stmt, uuid)
 
 	room := &entity.Room{}
@@ -73,10 +68,10 @@ func (r *roomRepoImpl) GetRoom(uuid string) (*entity.Room, []*errorutil.Error) {
 	)
 	if err != nil {
 		return nil, []*errorutil.Error{{
-			Code:    errorutil.DatabaseError,
-			Message: "Could not get a room.",
-			Context: util.StructName(r),
-			Param:   "GetRoom",
+			Code:    errorutil.RepositoryError,
+			Message: "could not get a room using the provided uuid",
+			Context: util.StructName(entity.Room{}),
+			Param:   "uuid",
 		}}
 	}
 
@@ -88,14 +83,14 @@ func (r *roomRepoImpl) ListRooms() ([]*entity.Room, []*errorutil.Error) {
 	ctx, cancel := context.WithTimeout(context.Background(), r.dbConfigger.Timeout())
 	defer cancel()
 
-	stmt := `SELECT uuid, name, description, bed_count, price FROM rooms`
+	stmt := `SELECT uuid, name, description, bed_count, price FROM room`
 	rows, err := r.db.QueryContext(ctx, stmt)
 	if err != nil {
 		return nil, []*errorutil.Error{{
-			Code:    errorutil.DatabaseError,
-			Message: "Could not list rooms.",
-			Context: util.StructName(r),
-			Param:   "ListRooms",
+			Code:    errorutil.RepositoryError,
+			Message: "could not find any rooms",
+			Context: util.StructName(entity.Room{}),
+			Param:   "",
 		}}
 	}
 	defer rows.Close()
@@ -112,10 +107,10 @@ func (r *roomRepoImpl) ListRooms() ([]*entity.Room, []*errorutil.Error) {
 		)
 		if err != nil {
 			return nil, []*errorutil.Error{{
-				Code:    errorutil.DatabaseError,
-				Message: "Could not list rooms.",
-				Context: util.StructName(r),
-				Param:   "ListRooms",
+				Code:    errorutil.RepositoryError,
+				Message: "failed to scan room",
+				Context: util.StructName(entity.Room{}),
+				Param:   "",
 			}}
 		}
 		rooms = append(rooms, room)
@@ -129,14 +124,14 @@ func (r *roomRepoImpl) DeleteRoom(uuid string) []*errorutil.Error {
 	ctx, cancel := context.WithTimeout(context.Background(), r.dbConfigger.Timeout())
 	defer cancel()
 
-	stmt := `DELETE FROM rooms WHERE uuid = $1`
+	stmt := `DELETE FROM room WHERE uuid = $1`
 	_, err := r.db.ExecContext(ctx, stmt, uuid)
 	if err != nil {
 		return []*errorutil.Error{{
-			Code:    errorutil.DatabaseError,
-			Message: "Could not delete a room.",
-			Context: "roomRepo",
-			Param:   "DeleteRoom",
+			Code:    errorutil.RepositoryError,
+			Message: "could not delete a room using the provided uuid",
+			Context: util.StructName(entity.Room{}),
+			Param:   "uuid",
 		}}
 	}
 

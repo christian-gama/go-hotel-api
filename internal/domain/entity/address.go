@@ -20,13 +20,13 @@ const (
 type Address struct {
 	notification *notification.Notification
 
-	UUID    string
-	Street  string
-	Number  string
-	ZipCode string
-	City    string
-	Country string
-	State   string
+	UUID    string `json:"uuid"`
+	Street  string `json:"street"`
+	Number  string `json:"number"`
+	ZipCode string `json:"zipCode"`
+	City    string `json:"city"`
+	Country string `json:"country"`
+	State   string `json:"state"`
 }
 
 func (a *Address) validate() []*errorutil.Error {

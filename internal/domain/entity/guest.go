@@ -12,9 +12,9 @@ import (
 type Guest struct {
 	notification *notification.Notification
 
-	UUID     string
-	Credits  float32
-	PersonId uint32
+	UUID     string  `json:"uuid"`
+	Credits  float32 `json:"credits"`
+	PersonId uint32  `json:"person_id"`
 }
 
 // validate ensure the entity is valid. It will add an error to notification each time

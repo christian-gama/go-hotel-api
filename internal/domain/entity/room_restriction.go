@@ -11,11 +11,11 @@ import (
 type RoomRestriction struct {
 	notification *notification.Notification
 
-	UUID        string
-	Room        *Room
-	Restriction *Restriction
-	StartDate   time.Time
-	EndDate     time.Time
+	UUID        string       `json:"uuid"`
+	Room        *Room        `json:"room"`
+	Restriction *Restriction `json:"restriction"`
+	StartDate   time.Time    `json:"startDate"`
+	EndDate     time.Time    `json:"endDate"`
 }
 
 func (r *RoomRestriction) validate() []*errorutil.Error {

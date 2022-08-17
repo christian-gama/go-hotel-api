@@ -1,6 +1,6 @@
 BEGIN;
 
-CREATE TABLE rooms (
+CREATE TABLE room (
   id serial PRIMARY KEY,
   uuid uuid UNIQUE NOT NULL,
   name varchar(255) UNIQUE NOT NULL,
