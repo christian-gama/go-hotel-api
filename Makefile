@@ -29,7 +29,11 @@ test_integration: cmd-exists-go
 
 
 test: cmd-exists-go cmd-exists-gotestsum
-	@TEST_MODE=unit gotestsum --format pkgname -- $(TEST_FLAGS) -v ./...
+	@TEST_MODE=unit gotestsum --format pkgname -- $(TEST_FLAGS) ./...
+
+
+test_verbose: cmd-exists-go cmd-exists-gotestsum
+	@TEST_MODE=unit gotestsum --format standard-verbose -- $(TEST_FLAGS) ./...
 
 
 cover: cmd-exists-go
