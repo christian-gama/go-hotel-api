@@ -26,15 +26,15 @@ build: cmd-exists-go
 	@echo "Build was generated at $(BUILD_DIR)/$(APP_NAME)"
 
 
-test_integration: cmd-exists-go
-	@TEST_MODE=integration gotestsum --format pkgname -- $(TEST_FLAGS) -p 1 ./...
-
-
 test: cmd-exists-go cmd-exists-gotestsum
 	@TEST_MODE=unit gotestsum --format pkgname -- $(TEST_FLAGS) ./...
 
 
-test_verbose: cmd-exists-go cmd-exists-gotestsum
+test-integration: cmd-exists-go
+	@TEST_MODE=integration gotestsum --format pkgname -- $(TEST_FLAGS) -p 1 ./...
+
+
+test-verbose: cmd-exists-go cmd-exists-gotestsum
 	@TEST_MODE=unit gotestsum --format standard-verbose -- $(TEST_FLAGS) ./...
 
 
@@ -48,6 +48,10 @@ cover: cmd-exists-go
 
 cover-html: cmd-exists-go
 	@go tool cover -html=$(COVERAGE_DIR)/coverage.out -o $(COVERAGE_DIR)/coverage.html
+
+
+cover-open:
+	@google-chrome $(COVERAGE_DIR)/coverage.html
 
 
 lint: cmd-exists-docker
@@ -108,39 +112,39 @@ docker: cmd-exists-docker
 		$(ENTRY_POINT)
 
 
-docker_dev: cmd-exists-docker
+docker-dev: cmd-exists-docker
 	@$(MAKE) docker ENV_FILE=.env.dev ENTRY_POINT="make run" 
 
 
-docker_prod: cmd-exists-docker
+docker-prod: cmd-exists-docker
 	@$(MAKE) docker ENV_FILE=.env.prod ENTRY_POINT="make run" 
 
 
-docker_test: cmd-exists-docker
+docker-test: cmd-exists-docker
 	@$(MAKE) docker ENV_FILE=.env.test ENTRY_POINT="make test"
 
 
-docker_test_integration: cmd-exists-docker
-	@$(MAKE) docker ENV_FILE=.env.test ENTRY_POINT="make test_integration" 
+docker-test-integration: cmd-exists-docker
+	@$(MAKE) docker ENV_FILE=.env.test ENTRY_POINT="make test-integration" 
 
 
-docker_cover: cmd-exists-docker
+docker-cover: cmd-exists-docker
 	@$(MAKE) docker ENV_FILE=.env.test ENTRY_POINT="make cover" 
 
 
-docker_cover_html: cmd-exists-docker
+docker-cover-html: cmd-exists-docker
 	@$(MAKE) docker ENV_FILE=.env.test ENTRY_POINT="make cover-html"
 
 
-docker_down: cmd-exists-docker
+docker-down: cmd-exists-docker
 	@docker compose --env-file ".env.dev" down 
 
 
-docker_kill: cmd-exists-docker
+docker-kill: cmd-exists-docker
 	@docker kill $(APP_NAME) 
 
 
-docker_rebuild:
+docker-rebuild:
 	@docker compose --env-file ".env.dev" build
 
 

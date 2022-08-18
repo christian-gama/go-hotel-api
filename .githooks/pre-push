@@ -9,5 +9,5 @@
 const run = require("./core/run");
 
 (async () => {
-  await run("test_integration", "make docker_test_integration");
+  await run("test-integration", "make docker-test-integration");
 })();
