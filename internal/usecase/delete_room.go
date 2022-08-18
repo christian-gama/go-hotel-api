@@ -6,14 +6,14 @@ import (
 )
 
 type (
-	// DeleteRoom is the interface for deleting a room.
-	DeleteRoom interface {
+	// DeleteRoomUsecase is the interface for deleting a room.
+	DeleteRoomUsecase interface {
 		Handle(uuid string) (bool, []*errorutil.Error)
 	}
 
 	// deleteRoomImpl is the implementation of DeleteRoom.
 	deleteRoomImpl struct {
-		repo repo.DeleteRoom
+		repo repo.DeleteRoomRepo
 	}
 )
 
@@ -28,7 +28,7 @@ func (d *deleteRoomImpl) Handle(uuid string) (bool, []*errorutil.Error) {
 }
 
 // NewDeleteRoom creates a new DeleteRoom.
-func NewDeleteRoom(repo repo.DeleteRoom) DeleteRoom {
+func NewDeleteRoom(repo repo.DeleteRoomRepo) DeleteRoomUsecase {
 	return &deleteRoomImpl{
 		repo,
 	}

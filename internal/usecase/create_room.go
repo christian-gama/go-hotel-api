@@ -16,14 +16,14 @@ type (
 		Price       float32 `json:"price"`
 	}
 
-	// CreateRoom is the interface that defines the creation of a room.
-	CreateRoom interface {
+	// CreateRoomUsecase is the interface that defines the creation of a room.
+	CreateRoomUsecase interface {
 		Handle(input *CreateRoomInput) (*entity.Room, []*errorutil.Error)
 	}
 
 	// createRoomImpl is a concrete implementation of the CreateRoom.
 	createRoomImpl struct {
-		repo repo.SaveRoom
+		repo repo.SaveRoomRepo
 		uuid uuid.UUID
 	}
 )
@@ -46,7 +46,7 @@ func (c *createRoomImpl) Handle(input *CreateRoomInput) (*entity.Room, []*erroru
 }
 
 // NewCreateRoom creates a new CreateRoom.
-func NewCreateRoom(repo repo.SaveRoom, uuid uuid.UUID) CreateRoom {
+func NewCreateRoom(repo repo.SaveRoomRepo, uuid uuid.UUID) CreateRoomUsecase {
 	return &createRoomImpl{
 		repo,
 		uuid,

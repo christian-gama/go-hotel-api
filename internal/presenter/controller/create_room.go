@@ -7,7 +7,7 @@ import (
 )
 
 type createRoom struct {
-	createRoomUsecase usecase.CreateRoom
+	createRoomUsecase usecase.CreateRoomUsecase
 }
 
 // Handle is a function that handles the room's creation request.
@@ -27,6 +27,6 @@ func (c *createRoom) Handle(req *request.Request) *response.Response {
 }
 
 // NewCreateRoom returns a new instance of a controller that handles the room's creation.
-func NewCreateRoom(createRoomUsecase usecase.CreateRoom) Controller {
+func NewCreateRoom(createRoomUsecase usecase.CreateRoomUsecase) Controller {
 	return &createRoom{createRoomUsecase}
 }

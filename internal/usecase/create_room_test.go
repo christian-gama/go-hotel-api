@@ -15,7 +15,7 @@ import (
 type CreateRoomTestSuite struct {
 	suite.Suite
 
-	createRoom usecase.CreateRoom
+	createRoom usecase.CreateRoomUsecase
 	repo       *mocks.SaveRoomRepo
 	uuid       *mocks.UUID
 

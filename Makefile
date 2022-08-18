@@ -75,12 +75,13 @@ migrate: cmd-exists-docker
 
 	
 mock: cmd-exists-docker
-	docker run -v "$(PWD)":/src -w /src vektra/mockery --all --exported --dir ./internal
+	docker run -v "$(PWD)":/src -w /src vektra/mockery --all --case underscore --exported --dir ./internal
 
 
 clear:
 	@rm -rf $(GENERATED_DIR)
 	@rm -rf $(CACHE_DIR)
+	@rm -rf $(PWD)/mocks
 
 
 docker: cmd-exists-docker

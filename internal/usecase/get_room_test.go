@@ -15,7 +15,7 @@ import (
 type GetRoomTestSuite struct {
 	suite.Suite
 
-	getRoom usecase.GetRoom
+	getRoom usecase.GetRoomUsecase
 	repo    *mocks.GetRoomRepo
 }
 

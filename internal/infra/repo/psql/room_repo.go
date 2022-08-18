@@ -12,10 +12,10 @@ import (
 )
 
 type roomRepo interface {
-	repo.SaveRoom
-	repo.GetRoom
-	repo.ListRooms
-	repo.DeleteRoom
+	repo.SaveRoomRepo
+	repo.GetRoomRepo
+	repo.ListRoomsRepo
+	repo.DeleteRoomRepo
 }
 
 // roomRepoImpl is concrete implementation of the Room repository.

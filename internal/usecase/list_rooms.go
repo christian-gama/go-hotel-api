@@ -7,14 +7,14 @@ import (
 )
 
 type (
-	// ListRooms is the interface that defines the retrieval of multiple rooms.
-	ListRooms interface {
+	// ListRoomsUsecase is the interface that defines the retrieval of multiple rooms.
+	ListRoomsUsecase interface {
 		Handle() ([]*entity.Room, []*errorutil.Error)
 	}
 
 	// listRoomsImpl is a concrete implementation of the ListRooms.
 	listRoomsImpl struct {
-		repo repo.ListRooms
+		repo repo.ListRoomsRepo
 	}
 )
 
@@ -30,7 +30,7 @@ func (l *listRoomsImpl) Handle() ([]*entity.Room, []*errorutil.Error) {
 }
 
 // NewListRooms creates a new ListRooms.
-func NewListRooms(repo repo.ListRooms) ListRooms {
+func NewListRooms(repo repo.ListRoomsRepo) ListRoomsUsecase {
 	return &listRoomsImpl{
 		repo,
 	}

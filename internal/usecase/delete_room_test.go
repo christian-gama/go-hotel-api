@@ -14,7 +14,7 @@ import (
 type DeleteRoomTestSuite struct {
 	suite.Suite
 
-	deleteRoom usecase.DeleteRoom
+	deleteRoom usecase.DeleteRoomUsecase
 	repo       *mocks.DeleteRoomRepo
 }
 

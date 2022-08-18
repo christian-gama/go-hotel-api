@@ -7,14 +7,14 @@ import (
 )
 
 type (
-	// GetRoom is the interface that defines the retrieval of a room.
-	GetRoom interface {
+	// GetRoomUsecase is the interface that defines the retrieval of a room.
+	GetRoomUsecase interface {
 		Handle(uuid string) (*entity.Room, []*errorutil.Error)
 	}
 
 	// getRoomImpl is a concrete implementation of the GetRoom.
 	getRoomImpl struct {
-		repo repo.GetRoom
+		repo repo.GetRoomRepo
 	}
 )
 
@@ -30,7 +30,7 @@ func (g *getRoomImpl) Handle(uuid string) (*entity.Room, []*errorutil.Error) {
 }
 
 // NewGetRoom creates a new GetRoom.
-func NewGetRoom(repo repo.GetRoom) GetRoom {
+func NewGetRoom(repo repo.GetRoomRepo) GetRoomUsecase {
 	return &getRoomImpl{
 		repo,
 	}

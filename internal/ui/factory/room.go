@@ -8,7 +8,7 @@ import (
 )
 
 // CreateRoomRepo is a factory function that returns a new room repository.
-func CreateRoomRepo() repo.SaveRoom {
+func CreateRoomRepo() repo.SaveRoomRepo {
 	conn := PsqlConn()
 	dbConfig := DbConfig()
 
@@ -16,7 +16,7 @@ func CreateRoomRepo() repo.SaveRoom {
 }
 
 // CreateRoomUsecase is a factory function that returns a new room usecase.
-func CreateRoomUsecase() usecase.CreateRoom {
+func CreateRoomUsecase() usecase.CreateRoomUsecase {
 	repo := CreateRoomRepo()
 	return usecase.NewCreateRoom(repo, UUID())
 }
