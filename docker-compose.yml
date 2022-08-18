@@ -13,6 +13,11 @@ services:
       - ./.generated/db_data/:/var/lib/postgresql/data
     ports:
       - "${DB_EXPOSED_PORT}:${DB_PORT}"
+    healthcheck:
+      test: ["CMD", "pg_isready", "-h", "${DB_HOST}", "-p", "${DB_PORT}"]
+      interval: 15s
+      timeout: 3s
+      retries: 3
 
   api:
     container_name: go_booking_api

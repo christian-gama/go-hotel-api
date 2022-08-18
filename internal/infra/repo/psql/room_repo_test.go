@@ -162,7 +162,7 @@ func (s *RoomRepoTestSuite) TestRoomRepo_DeleteRoom_Success() {
 	dbConfigMock.On("Timeout").Return(2 * time.Second)
 	roomRepo.SaveRoom(room)
 
-	err := roomRepo.DeleteRoom(room.UUID)
+	_, err := roomRepo.DeleteRoom(room.UUID)
 
 	s.Nil(err)
 }
@@ -180,9 +180,28 @@ func (s *RoomRepoTestSuite) TestRoomRepo_DeleteRoom_Error() {
 	dbConfigMock.On("Timeout").Return(1 * time.Microsecond)
 	roomRepo.SaveRoom(room)
 
-	err := roomRepo.DeleteRoom(room.UUID)
+	_, err := roomRepo.DeleteRoom(room.UUID)
 
 	s.Equal(errorutil.RepositoryError, err[0].Code)
+}
+
+func (s *RoomRepoTestSuite) TestRoomRepo_DeleteRoom_InvalidUUIDError() {
+	room, _ := entity.NewRoom(
+		"invalid uuid",
+		"Test Room",
+		"This is a test room",
+		1,
+		1,
+	)
+	dbConfigMock := mocks.NewDb(s.T())
+	roomRepo := psql.NewRoomRepo(s.db, dbConfigMock)
+	dbConfigMock.On("Timeout").Return(2 * time.Second)
+	roomRepo.SaveRoom(room)
+
+	_, err := roomRepo.DeleteRoom(room.UUID)
+
+	s.Equal(errorutil.RepositoryError, err[0].Code)
+	s.Equal("invalid uuid", err[0].Message)
 }
 
 func TestRoomRepoTestSuite(t *testing.T) {

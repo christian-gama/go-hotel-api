@@ -13,7 +13,7 @@ type (
 
 	// DeleteRoomRepo is the interface for deleting a room.
 	DeleteRoomRepo interface {
-		DeleteRoom(uuid string) []*errorutil.Error
+		DeleteRoom(uuid string) (bool, []*errorutil.Error)
 	}
 
 	// GetRoomRepo is the interface for getting a room.

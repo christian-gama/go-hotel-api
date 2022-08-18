@@ -11,7 +11,7 @@ import (
 	"github.com/christian-gama/go-booking-api/internal/util"
 )
 
-type roomRepo interface {
+type RoomRepo interface {
 	repo.SaveRoomRepo
 	repo.GetRoomRepo
 	repo.ListRoomsRepo
@@ -67,12 +67,7 @@ func (r *roomRepoImpl) GetRoom(uuid string) (*entity.Room, []*errorutil.Error) {
 		&room.Price,
 	)
 	if err != nil {
-		return nil, []*errorutil.Error{{
-			Code:    errorutil.RepositoryError,
-			Message: "could not get a room using the provided uuid",
-			Context: util.StructName(entity.Room{}),
-			Param:   "uuid",
-		}}
+		return nil, Error(err)
 	}
 
 	return room, nil
@@ -86,12 +81,7 @@ func (r *roomRepoImpl) ListRooms() ([]*entity.Room, []*errorutil.Error) {
 	stmt := `SELECT uuid, name, description, bed_count, price FROM room`
 	rows, err := r.db.QueryContext(ctx, stmt)
 	if err != nil {
-		return nil, []*errorutil.Error{{
-			Code:    errorutil.RepositoryError,
-			Message: "could not find any rooms",
-			Context: util.StructName(entity.Room{}),
-			Param:   "",
-		}}
+		return nil, Error(err)
 	}
 	defer rows.Close()
 
@@ -106,12 +96,7 @@ func (r *roomRepoImpl) ListRooms() ([]*entity.Room, []*errorutil.Error) {
 			&room.Price,
 		)
 		if err != nil {
-			return nil, []*errorutil.Error{{
-				Code:    errorutil.RepositoryError,
-				Message: "failed to scan room",
-				Context: util.StructName(entity.Room{}),
-				Param:   "",
-			}}
+			return nil, Error(err)
 		}
 		rooms = append(rooms, room)
 	}
@@ -120,26 +105,31 @@ func (r *roomRepoImpl) ListRooms() ([]*entity.Room, []*errorutil.Error) {
 }
 
 // DeleteRoom is the method that will delete a room from the database.
-func (r *roomRepoImpl) DeleteRoom(uuid string) []*errorutil.Error {
+func (r *roomRepoImpl) DeleteRoom(uuid string) (bool, []*errorutil.Error) {
 	ctx, cancel := context.WithTimeout(context.Background(), r.dbConfigger.Timeout())
 	defer cancel()
 
 	stmt := `DELETE FROM room WHERE uuid = $1`
-	_, err := r.db.ExecContext(ctx, stmt, uuid)
+	result, err := r.db.ExecContext(ctx, stmt, uuid)
 	if err != nil {
-		return []*errorutil.Error{{
+		return false, Error(err)
+	}
+
+	rowsAffected, err := result.RowsAffected()
+	if err != nil {
+		return false, []*errorutil.Error{{
 			Code:    errorutil.RepositoryError,
-			Message: "could not delete a room using the provided uuid",
+			Message: "could not get the number of rows affected",
 			Context: util.StructName(entity.Room{}),
-			Param:   "uuid",
+			Param:   "rows",
 		}}
 	}
 
-	return nil
+	return rowsAffected > 0, nil
 }
 
 // NewRoomRepo creates a new instance of the Room repository.
-func NewRoomRepo(db *sql.DB, dbConfig config.Db) roomRepo {
+func NewRoomRepo(db *sql.DB, dbConfig config.Db) RoomRepo {
 	return &roomRepoImpl{
 		db,
 		dbConfig,

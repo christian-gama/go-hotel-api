@@ -14,21 +14,35 @@ type ErrorTestSuite struct {
 	suite.Suite
 }
 
-func (s *ErrorTestSuite) TestSqlError() {
+func (s *ErrorTestSuite) TestErrIs_Nil() {
+	result := psql.Error(nil)
+
+	s.Nil(result)
+}
+
+func (s *ErrorTestSuite) TestSqlError_AnyError() {
 	result := psql.Error(errors.New("any error"))
 
 	s.Equal("any error", result[0].Message)
 	s.Equal(errorutil.RepositoryError, result[0].Code)
+}
 
-	result = psql.Error(errors.New(
+func (s *ErrorTestSuite) TestErrIs_UniqueViolation() {
+	result := psql.Error(errors.New(
 		"ERROR: duplicate key value violates unique constraint \"room_name_key\" (SQLSTATE 23505)"),
 	)
 
 	s.Equal("unique constraint violation", result[0].Message)
 	s.Equal(errorutil.RepositoryError, result[0].Code)
+}
 
-	result = psql.Error(nil)
-	s.Nil(result)
+func (s *ErrorTestSuite) TestErrIs_InvalidUUID() {
+	result := psql.Error(errors.New(
+		"ERROR: invalid input syntax for type uuid: \"invalid-uuid\" (SQLSTATE 22P02)"),
+	)
+
+	s.Equal("invalid uuid", result[0].Message)
+	s.Equal(errorutil.RepositoryError, result[0].Code)
 }
 
 func TestErrorTestSuite(t *testing.T) {

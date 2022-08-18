@@ -7,12 +7,17 @@ import (
 	"github.com/christian-gama/go-booking-api/internal/domain/errorutil"
 )
 
+type ErrorCode string
+
 const (
-	// ErrUniqueViolation is the error code for unique constraint violation from postgres.
-	ErrUniqueViolation = "23505"
+	// ErrUniqueViolation is the error code for unique constraint violation.
+	ErrUniqueViolation ErrorCode = "23505"
+
+	// ErrInvalidUUID is the error code for invalid uuid.
+	ErrInvalidUUID ErrorCode = "22P02"
 )
 
-func errIs(err error, code string) bool {
+func errIs(err error, code ErrorCode) bool {
 	return strings.Contains(err.Error(), fmt.Sprintf("SQLSTATE %s", code))
 }
 
@@ -33,6 +38,17 @@ func Error(err error) []*errorutil.Error {
 				Message: "unique constraint violation",
 				Context: context,
 				Param:   param,
+			},
+		}
+	}
+
+	if errIs(err, ErrInvalidUUID) {
+		return []*errorutil.Error{
+			{
+				Code:    errorutil.RepositoryError,
+				Message: "invalid uuid",
+				Context: "uuid",
+				Param:   "uuid",
 			},
 		}
 	}

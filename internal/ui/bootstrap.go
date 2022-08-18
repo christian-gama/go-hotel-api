@@ -25,7 +25,6 @@ func Bootstrap() {
 
 func setupRouter() *router.Router {
 	router := factory.Router()
-	defer router.Load()
 
 	routes.Register(router)
 

@@ -28,7 +28,7 @@ func (s *DeleteRoomTestSuite) TestNewDeleteRoom_NotNil() {
 }
 
 func (s *DeleteRoomTestSuite) TestDeleteRoom_Handle_Success() {
-	s.repo.On("DeleteRoom", mock.Anything).Return(nil)
+	s.repo.On("DeleteRoom", mock.Anything).Return(true, nil)
 
 	result, err := s.deleteRoom.Handle("12345678-1234-1234-1234-123456789012")
 
@@ -37,7 +37,7 @@ func (s *DeleteRoomTestSuite) TestDeleteRoom_Handle_Success() {
 }
 
 func (s *DeleteRoomTestSuite) TestDeleteRoom_Handle_DeleteRoomError() {
-	s.repo.On("DeleteRoom", mock.Anything).Return([]*errorutil.Error{{}})
+	s.repo.On("DeleteRoom", mock.Anything).Return(false, []*errorutil.Error{{}})
 
 	result, err := s.deleteRoom.Handle("12345678-1234-1234-1234-123456789012")
 
@@ -46,5 +46,5 @@ func (s *DeleteRoomTestSuite) TestDeleteRoom_Handle_DeleteRoomError() {
 }
 
 func TestDeleteRoomTestSuite(t *testing.T) {
-	test.RunIntegrationTest(t, new(DeleteRoomTestSuite))
+	test.RunUnitTest(t, new(DeleteRoomTestSuite))
 }

@@ -13,19 +13,26 @@ type DeleteRoomRepo struct {
 }
 
 // DeleteRoom provides a mock function with given fields: uuid
-func (_m *DeleteRoomRepo) DeleteRoom(uuid string) []*errorutil.Error {
+func (_m *DeleteRoomRepo) DeleteRoom(uuid string) (bool, []*errorutil.Error) {
 	ret := _m.Called(uuid)
 
-	var r0 []*errorutil.Error
-	if rf, ok := ret.Get(0).(func(string) []*errorutil.Error); ok {
+	var r0 bool
+	if rf, ok := ret.Get(0).(func(string) bool); ok {
 		r0 = rf(uuid)
 	} else {
-		if ret.Get(0) != nil {
-			r0 = ret.Get(0).([]*errorutil.Error)
+		r0 = ret.Get(0).(bool)
+	}
+
+	var r1 []*errorutil.Error
+	if rf, ok := ret.Get(1).(func(string) []*errorutil.Error); ok {
+		r1 = rf(uuid)
+	} else {
+		if ret.Get(1) != nil {
+			r1 = ret.Get(1).([]*errorutil.Error)
 		}
 	}
 
-	return r0
+	return r0, r1
 }
 
 type mockConstructorTestingTNewDeleteRoomRepo interface {

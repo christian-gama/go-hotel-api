@@ -60,9 +60,7 @@ migrate-%: cmd-exists-docker
 
 
 migrate: cmd-exists-docker
-	@if [ ! "$( docker container inspect -f '{{.State.Running}}' psql )" == "true" ]; then \
-		docker compose --env-file "$(ENV_FILE)" up -d psql; \
-	fi;
+	@until docker exec go_booking_psql pg_isready ; do sleep 1 ; done
 
 	@mkdir -p $(PWD)/$(MIG_DIR)
 	@docker run -it \
@@ -82,6 +80,9 @@ clear:
 	@rm -rf $(GENERATED_DIR)
 	@rm -rf $(CACHE_DIR)
 	@rm -rf $(PWD)/mocks
+
+	@docker compose --env-file .env.dev restart
+	@make migrate-up
 
 
 docker: cmd-exists-docker

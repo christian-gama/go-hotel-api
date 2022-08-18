@@ -20,11 +20,12 @@ type (
 // Handle received a uuid and deletes the room based on the uuid. Returns true if the room was deleted,
 // false otherwise. It will return an error if something goes wrong with room deletion.
 func (d *deleteRoomImpl) Handle(uuid string) (bool, []*errorutil.Error) {
-	if err := d.repo.DeleteRoom(uuid); err != nil {
+	didDelete, err := d.repo.DeleteRoom(uuid)
+	if err != nil {
 		return false, err
 	}
 
-	return true, nil
+	return didDelete, nil
 }
 
 // NewDeleteRoom creates a new DeleteRoom.
