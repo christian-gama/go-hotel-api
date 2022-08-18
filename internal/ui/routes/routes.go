@@ -12,6 +12,7 @@ func Register(router *router.Router) {
 	router.Mux.Route("/room", func(r chi.Router) {
 		r.Post("/", router.Handler(factory.CreateRoomController()))
 		r.Get("/", router.Handler(factory.ListRoomsController()))
+		r.Get("/{uuid}", router.Handler(factory.GetRoomController()))
 		r.Delete("/{uuid}", router.Handler(factory.DeleteRoomController()))
 	})
 

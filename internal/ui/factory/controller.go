@@ -22,6 +22,12 @@ func DeleteRoomController() controller.Controller {
 	return controller.NewDeleteRoom(deleteRoomUsecase)
 }
 
+// DeleteRoomController is a factory function that returns a new room controller.
+func GetRoomController() controller.Controller {
+	getRoomUsecase := GetRoomUsecase()
+	return controller.NewGetRoom(getRoomUsecase)
+}
+
 // NotFoundController is a factory function that returns a generic not found controller.
 func NotFoundController() controller.Controller {
 	return controller.NewNotFound()

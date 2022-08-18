@@ -45,6 +45,15 @@ func (s *ErrorTestSuite) TestErrIs_InvalidUUID() {
 	s.Equal(errorutil.RepositoryError, result[0].Code)
 }
 
+func (s *ErrorTestSuite) TestErrIs_NoRows() {
+	result := psql.Error(errors.New(
+		"sql: no rows in result set",
+	))
+
+	s.Equal("could not find any result", result[0].Message)
+	s.Equal(errorutil.RepositoryError, result[0].Code)
+}
+
 func TestErrorTestSuite(t *testing.T) {
 	test.RunUnitTest(t, new(ErrorTestSuite))
 }

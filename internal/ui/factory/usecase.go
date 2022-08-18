@@ -19,3 +19,9 @@ func DeleteRoomUsecase() usecase.DeleteRoomUsecase {
 	repo := RoomRepo()
 	return usecase.NewDeleteRoom(repo)
 }
+
+// GetRoomUsecase is a factory function that returns a new room usecase.
+func GetRoomUsecase() usecase.GetRoomUsecase {
+	repo := RoomRepo()
+	return usecase.NewGetRoom(repo)
+}
