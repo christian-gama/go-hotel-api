@@ -6,7 +6,7 @@ import (
 	"github.com/christian-gama/go-booking-api/internal/presenter/http/request"
 	"github.com/christian-gama/go-booking-api/internal/presenter/http/response"
 	"github.com/christian-gama/go-booking-api/internal/usecase"
-	"github.com/christian-gama/go-booking-api/internal/util"
+	"github.com/christian-gama/go-booking-api/pkg/util"
 )
 
 type deleteRoom struct {

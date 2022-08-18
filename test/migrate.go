@@ -5,7 +5,7 @@ import (
 	"fmt"
 
 	"github.com/christian-gama/go-booking-api/internal/infra/config"
-	"github.com/christian-gama/go-booking-api/internal/util"
+	"github.com/christian-gama/go-booking-api/pkg/util"
 	"github.com/golang-migrate/migrate/v4"
 	"github.com/golang-migrate/migrate/v4/database/postgres"
 	_ "github.com/golang-migrate/migrate/v4/source/file"

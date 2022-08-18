@@ -3,7 +3,7 @@ package util_test
 import (
 	"testing"
 
-	"github.com/christian-gama/go-booking-api/internal/util"
+	"github.com/christian-gama/go-booking-api/pkg/util"
 	"github.com/christian-gama/go-booking-api/test"
 	"github.com/stretchr/testify/suite"
 )

@@ -5,7 +5,7 @@ import (
 
 	"github.com/christian-gama/go-booking-api/internal/domain/errorutil"
 	"github.com/christian-gama/go-booking-api/internal/domain/notification"
-	"github.com/christian-gama/go-booking-api/internal/util"
+	"github.com/christian-gama/go-booking-api/pkg/util"
 )
 
 const (

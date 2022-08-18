@@ -44,6 +44,7 @@ services:
       - ./.env.prod:/go/src/github.com/christian-gama/go-booking-api/.env.prod
       - ./.env.test:/go/src/github.com/christian-gama/go-booking-api/.env.test
       - ./.golangci.yml:/go/src/github.com/christian-gama/go-booking-api/.golangci.yml
+      - ./pkg:/go/src/github.com/christian-gama/go-booking-api/pkg
       - ./go.mod:/go/src/github.com/christian-gama/go-booking-api/go.mod
       - ./go.sum:/go/src/github.com/christian-gama/go-booking-api/go.sum
       - ./Makefile:/go/src/github.com/christian-gama/go-booking-api/Makefile

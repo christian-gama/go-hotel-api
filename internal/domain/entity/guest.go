@@ -3,7 +3,7 @@ package entity
 import (
 	"github.com/christian-gama/go-booking-api/internal/domain/errorutil"
 	"github.com/christian-gama/go-booking-api/internal/domain/notification"
-	"github.com/christian-gama/go-booking-api/internal/util"
+	"github.com/christian-gama/go-booking-api/pkg/util"
 )
 
 // Guest represents a guest in the hotel. He is able to make checkins and checkouts of rooms and are allowed to
