@@ -14,14 +14,14 @@ type ResponseTestSuite struct {
 }
 
 func (s *ResponseTestSuite) TestError() {
-	result := response.Error([]*error.Error{
-		{
-			Code:    error.InvalidArgument,
-			Param:   "param",
-			Message: "message",
-			Context: "context",
-		},
-	})
+	result := response.Exception(error.Add(
+		error.New(
+			error.InvalidArgument,
+			"message",
+			"context",
+			"param",
+		),
+	))
 
 	s.Equal(error.InvalidArgument, result.Errors[0].Code)
 	s.Equal("message", result.Errors[0].Message)

@@ -49,7 +49,7 @@ func (s *GetRoomTestSuite) TestGetRoom_Handle_UsecaseError() {
 	s.paramReader.On("Read", mock.Anything, "uuid").Return("any_uuid", nil)
 	s.getRoomUsecase.
 		On("Handle", mock.Anything).
-		Return(nil, error.Append(error.New("any_code", "any_message", "any_param", "any_context")))
+		Return(nil, error.Add(error.New("any_code", "any_message", "any_param", "any_context")))
 	req := request.New(httptest.NewRequest(http.MethodGet, "/any_url", nil), s.paramReader)
 
 	result := s.ctrl.Handle(req)

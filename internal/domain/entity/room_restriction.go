@@ -82,7 +82,7 @@ func NewRoomRestriction(
 	restriction *Restriction,
 	startDate time.Time,
 	endDate time.Time,
-) (*RoomRestriction, []*error.Error) {
+) (*RoomRestriction, error.Errors) {
 	roomRestriction := &RoomRestriction{
 		notification.New(util.StructName(RoomRestriction{})),
 

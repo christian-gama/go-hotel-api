@@ -52,7 +52,7 @@ func NewGuest(
 	uuid string,
 	credits float32,
 	personId uint32,
-) (*Guest, []*error.Error) {
+) (*Guest, error.Errors) {
 	guest := &Guest{
 		notification.New(util.StructName(Guest{})),
 

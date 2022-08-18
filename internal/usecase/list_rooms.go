@@ -9,7 +9,7 @@ import (
 type (
 	// ListRoomsUsecase is the interface that defines the retrieval of multiple rooms.
 	ListRoomsUsecase interface {
-		Handle() ([]*entity.Room, []*error.Error)
+		Handle() ([]*entity.Room, error.Errors)
 	}
 
 	// listRoomsImpl is a concrete implementation of the ListRooms.
@@ -20,7 +20,7 @@ type (
 
 // Handle retrieves multiple room. It will return an error if something
 // goes wrong with room retrieval or if the room repo return an error.
-func (l *listRoomsImpl) Handle() ([]*entity.Room, []*error.Error) {
+func (l *listRoomsImpl) Handle() ([]*entity.Room, error.Errors) {
 	room, err := l.repo.ListRooms()
 	if err != nil {
 		return nil, err

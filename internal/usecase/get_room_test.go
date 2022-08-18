@@ -38,7 +38,7 @@ func (s *GetRoomTestSuite) TestGetRoom_Handle_Success() {
 }
 
 func (s *GetRoomTestSuite) TestGetRoom_Handle_GetRoomError() {
-	s.repo.On("GetRoom", mock.Anything).Return(nil, []*error.Error{{}})
+	s.repo.On("GetRoom", mock.Anything).Return(nil, error.Add(error.New("", "", "", "")))
 
 	result, err := s.getRoom.Handle("12345678-1234-1234-1234-1234567890ab")
 

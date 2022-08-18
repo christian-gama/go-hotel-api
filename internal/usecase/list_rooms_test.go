@@ -37,7 +37,7 @@ func (s *ListRoomsTestSuite) TestListRooms_Handle_Success() {
 }
 
 func (s *ListRoomsTestSuite) TestListRooms_Handle_ListRoomsError() {
-	s.repo.On("ListRooms").Return(nil, []*error.Error{{}})
+	s.repo.On("ListRooms").Return(nil, error.Add(error.New("", "", "", "")))
 
 	result, err := s.listRooms.Handle()
 

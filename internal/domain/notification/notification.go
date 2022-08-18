@@ -16,19 +16,14 @@ type Error struct {
 // Notification represents the notification of a domain, which is a collection of errors.
 type Notification struct {
 	context string
-	errors  []*error.Error
+	errors  error.Errors
 }
 
 // AddErrorf adds an error to the notification.
 func (n *Notification) AddError(err *Error) {
 	n.errors = append(
 		n.errors,
-		&error.Error{
-			Code:    err.Code,
-			Message: err.Message,
-			Context: n.context,
-			Param:   err.Param,
-		},
+		error.New(err.Code, err.Message, err.Param, n.context),
 	)
 }
 

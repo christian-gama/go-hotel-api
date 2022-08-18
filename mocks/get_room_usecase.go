@@ -15,7 +15,7 @@ type GetRoomUsecase struct {
 }
 
 // Handle provides a mock function with given fields: uuid
-func (_m *GetRoomUsecase) Handle(uuid string) (*entity.Room, []*error.Error) {
+func (_m *GetRoomUsecase) Handle(uuid string) (*entity.Room, error.Errors) {
 	ret := _m.Called(uuid)
 
 	var r0 *entity.Room
@@ -27,12 +27,12 @@ func (_m *GetRoomUsecase) Handle(uuid string) (*entity.Room, []*error.Error) {
 		}
 	}
 
-	var r1 []*error.Error
-	if rf, ok := ret.Get(1).(func(string) []*error.Error); ok {
+	var r1 error.Errors
+	if rf, ok := ret.Get(1).(func(string) error.Errors); ok {
 		r1 = rf(uuid)
 	} else {
 		if ret.Get(1) != nil {
-			r1 = ret.Get(1).([]*error.Error)
+			r1 = ret.Get(1).(error.Errors)
 		}
 	}
 

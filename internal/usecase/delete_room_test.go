@@ -37,7 +37,7 @@ func (s *DeleteRoomTestSuite) TestDeleteRoom_Handle_Success() {
 }
 
 func (s *DeleteRoomTestSuite) TestDeleteRoom_Handle_DeleteRoomError() {
-	s.repo.On("DeleteRoom", mock.Anything).Return(false, []*error.Error{{}})
+	s.repo.On("DeleteRoom", mock.Anything).Return(false, error.Add(error.New("", "", "", "")))
 
 	result, err := s.deleteRoom.Handle("12345678-1234-1234-1234-123456789012")
 

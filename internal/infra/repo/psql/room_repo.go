@@ -25,7 +25,7 @@ type roomRepoImpl struct {
 }
 
 // SaveRoom is the method that will save a room in the database.
-func (r *roomRepoImpl) SaveRoom(room *entity.Room) (*entity.Room, []*error.Error) {
+func (r *roomRepoImpl) SaveRoom(room *entity.Room) (*entity.Room, error.Errors) {
 	ctx, cancel := context.WithTimeout(context.Background(), r.dbConfigger.Timeout())
 	defer cancel()
 
@@ -51,7 +51,7 @@ func (r *roomRepoImpl) SaveRoom(room *entity.Room) (*entity.Room, []*error.Error
 }
 
 // GetRoom is the method that will get a room from the database.
-func (r *roomRepoImpl) GetRoom(uuid string) (*entity.Room, []*error.Error) {
+func (r *roomRepoImpl) GetRoom(uuid string) (*entity.Room, error.Errors) {
 	ctx, cancel := context.WithTimeout(context.Background(), r.dbConfigger.Timeout())
 	defer cancel()
 
@@ -74,7 +74,7 @@ func (r *roomRepoImpl) GetRoom(uuid string) (*entity.Room, []*error.Error) {
 }
 
 // ListRooms is the method that will list all the rooms from the database.
-func (r *roomRepoImpl) ListRooms() ([]*entity.Room, []*error.Error) {
+func (r *roomRepoImpl) ListRooms() ([]*entity.Room, error.Errors) {
 	ctx, cancel := context.WithTimeout(context.Background(), r.dbConfigger.Timeout())
 	defer cancel()
 
@@ -105,7 +105,7 @@ func (r *roomRepoImpl) ListRooms() ([]*entity.Room, []*error.Error) {
 }
 
 // DeleteRoom is the method that will delete a room from the database.
-func (r *roomRepoImpl) DeleteRoom(uuid string) (bool, []*error.Error) {
+func (r *roomRepoImpl) DeleteRoom(uuid string) (bool, error.Errors) {
 	ctx, cancel := context.WithTimeout(context.Background(), r.dbConfigger.Timeout())
 	defer cancel()
 
@@ -117,12 +117,12 @@ func (r *roomRepoImpl) DeleteRoom(uuid string) (bool, []*error.Error) {
 
 	rowsAffected, err := result.RowsAffected()
 	if err != nil {
-		return false, []*error.Error{{
-			Code:    error.RepositoryError,
-			Message: "could not get the number of rows affected",
-			Context: util.StructName(entity.Room{}),
-			Param:   "rows",
-		}}
+		return false, error.Add(error.New(
+			error.RepositoryError,
+			"could not get the number of rows affected",
+			"rows",
+			util.StructName(entity.Room{}),
+		))
 	}
 
 	return rowsAffected > 0, nil

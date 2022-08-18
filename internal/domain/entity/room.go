@@ -136,7 +136,7 @@ func NewRoom(
 	description string,
 	bedCount uint8,
 	price float32,
-) (*Room, []*error.Error) {
+) (*Room, error.Errors) {
 	room := &Room{
 		notification.New(util.StructName(Room{})),
 

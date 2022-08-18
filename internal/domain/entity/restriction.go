@@ -80,7 +80,7 @@ func (r *Restriction) validate() error.Errors {
 	return nil
 }
 
-func NewRestriction(uuid string, name string, description string) (*Restriction, []*error.Error) {
+func NewRestriction(uuid string, name string, description string) (*Restriction, error.Errors) {
 	room := &Restriction{
 		notification: *notification.New(util.StructName(Restriction{})),
 

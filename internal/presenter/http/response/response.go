@@ -11,7 +11,7 @@ type Response struct {
 	Data any `json:"data,omitempty"`
 
 	// Errors contains all the errors of the response.
-	Errors []*error.Error `json:"errors,omitempty"`
+	Errors error.Errors `json:"errors,omitempty"`
 }
 
 const (
@@ -19,8 +19,8 @@ const (
 	failure = "failure"
 )
 
-// Error returns a response with a status code corresponding to the error.
-func Error(errs []*error.Error) *Response {
+// Exception returns a response with an array of errors.
+func Exception(errs error.Errors) *Response {
 	return &Response{
 		Status: failure,
 		Errors: errs,

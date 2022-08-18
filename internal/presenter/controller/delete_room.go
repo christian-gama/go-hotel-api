@@ -19,18 +19,18 @@ func (d *deleteRoom) Handle(req *request.Request) *response.Response {
 
 	didDelete, errs := d.deleteRoomUsecase.Handle(uuid)
 	if errs != nil {
-		return response.Error(errs)
+		return response.Exception(errs)
 	}
 
 	if !didDelete {
-		return response.Error([]*error.Error{
-			{
-				Code:    error.NotFound,
-				Message: "could not find room with uuid",
-				Context: util.StructName(entity.Room{}),
-				Param:   "uuid",
-			},
-		})
+		return response.Exception(error.Add(
+			error.New(
+				error.NotFound,
+				"could not find room with uuid",
+				"uuid",
+				util.StructName(entity.Room{}),
+			),
+		))
 	}
 
 	return response.OK(nil)

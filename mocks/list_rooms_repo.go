@@ -15,7 +15,7 @@ type ListRoomsRepo struct {
 }
 
 // ListRooms provides a mock function with given fields:
-func (_m *ListRoomsRepo) ListRooms() ([]*entity.Room, []*error.Error) {
+func (_m *ListRoomsRepo) ListRooms() ([]*entity.Room, error.Errors) {
 	ret := _m.Called()
 
 	var r0 []*entity.Room
@@ -27,12 +27,12 @@ func (_m *ListRoomsRepo) ListRooms() ([]*entity.Room, []*error.Error) {
 		}
 	}
 
-	var r1 []*error.Error
-	if rf, ok := ret.Get(1).(func() []*error.Error); ok {
+	var r1 error.Errors
+	if rf, ok := ret.Get(1).(func() error.Errors); ok {
 		r1 = rf()
 	} else {
 		if ret.Get(1) != nil {
-			r1 = ret.Get(1).([]*error.Error)
+			r1 = ret.Get(1).(error.Errors)
 		}
 	}
 

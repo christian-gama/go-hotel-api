@@ -134,7 +134,7 @@ func NewAddress(uuid string,
 	city string,
 	country string,
 	state string,
-) (*Address, []*error.Error) {
+) (*Address, error.Errors) {
 	address := &Address{
 		notification: notification.New(util.StructName(Address{})),
 

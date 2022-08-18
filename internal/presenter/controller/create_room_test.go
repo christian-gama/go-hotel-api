@@ -61,7 +61,7 @@ func (s *CreateRoomTestSuite) TestCreateRoom_Handle_Failure() {
 		},
 	)
 	req := &request.Request{Request: httptest.NewRequest(http.MethodPost, "/", bytes.NewReader(inputByte))}
-	s.createRoomUsecase.On("Handle", mock.Anything).Return(nil, []*error.Error{{}})
+	s.createRoomUsecase.On("Handle", mock.Anything).Return(nil, error.Add(error.New("", "", "", "")))
 
 	result := s.ctrl.Handle(req)
 

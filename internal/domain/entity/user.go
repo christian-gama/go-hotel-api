@@ -69,7 +69,7 @@ func (u *User) validate() error.Errors {
 	return nil
 }
 
-func NewUser(uuid, email, password string) (*User, []*error.Error) {
+func NewUser(uuid, email, password string) (*User, error.Errors) {
 	user := &User{
 		notification: notification.New(util.StructName(User{})),
 

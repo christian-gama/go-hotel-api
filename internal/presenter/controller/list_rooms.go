@@ -14,7 +14,7 @@ type listRooms struct {
 func (l *listRooms) Handle(req *request.Request) *response.Response {
 	room, errs := l.listRoomsUsecase.Handle()
 	if errs != nil {
-		return response.Error(errs)
+		return response.Exception(errs)
 	}
 
 	return response.OK(room)

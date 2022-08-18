@@ -9,7 +9,7 @@ import (
 type (
 	// GetRoomUsecase is the interface that defines the retrieval of a room.
 	GetRoomUsecase interface {
-		Handle(uuid string) (*entity.Room, []*error.Error)
+		Handle(uuid string) (*entity.Room, error.Errors)
 	}
 
 	// getRoomImpl is a concrete implementation of the GetRoom.
@@ -20,7 +20,7 @@ type (
 
 // Handle receives a uuid and retrieves a room. It will return an error if something
 // goes wrong with room retrieval or if the room repo return an error.
-func (g *getRoomImpl) Handle(uuid string) (*entity.Room, []*error.Error) {
+func (g *getRoomImpl) Handle(uuid string) (*entity.Room, error.Errors) {
 	room, err := g.repo.GetRoom(uuid)
 	if err != nil {
 		return nil, err

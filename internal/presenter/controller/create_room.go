@@ -20,7 +20,7 @@ func (c *createRoom) Handle(req *request.Request) *response.Response {
 
 	room, errs := c.createRoomUsecase.Handle(input)
 	if errs != nil {
-		return response.Error(errs)
+		return response.Exception(errs)
 	}
 
 	return response.OK(room)

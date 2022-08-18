@@ -99,7 +99,7 @@ func NewCheckin(
 	roomId uint8,
 	checkinDate time.Time,
 	checkoutDate time.Time,
-) (*Checkin, []*error.Error) {
+) (*Checkin, error.Errors) {
 	checkin := &Checkin{
 		notification.New(util.StructName(Checkin{})),
 

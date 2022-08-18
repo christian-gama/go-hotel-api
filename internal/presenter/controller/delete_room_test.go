@@ -56,7 +56,7 @@ func (s *DeleteRoomTestSuite) TestDeleteRoom_Handle_UsecaseError() {
 	s.paramReader.On("Read", mock.Anything, "uuid").Return("any_uuid", nil)
 	s.deleteRoomUsecase.
 		On("Handle", mock.Anything).
-		Return(false, []*error.Error{{Code: "any_code", Param: "any_param", Context: "any_context"}})
+		Return(false, error.Add(error.New("any_code", "any_message", "any_param", "any_context")))
 	req := request.New(httptest.NewRequest(http.MethodGet, "/any_url", nil), s.paramReader)
 
 	result := s.ctrl.Handle(req)

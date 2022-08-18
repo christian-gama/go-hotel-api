@@ -123,7 +123,7 @@ func NewPerson(
 	isActive bool,
 	user *User,
 	address *Address,
-) (*Person, []*error.Error) {
+) (*Person, error.Errors) {
 	person := &Person{
 		notification: notification.New(util.StructName(Person{})),
 

@@ -8,7 +8,7 @@ import (
 type (
 	// DeleteRoomUsecase is the interface for deleting a room.
 	DeleteRoomUsecase interface {
-		Handle(uuid string) (bool, []*error.Error)
+		Handle(uuid string) (bool, error.Errors)
 	}
 
 	// deleteRoomImpl is the implementation of DeleteRoom.
@@ -19,7 +19,7 @@ type (
 
 // Handle received a uuid and deletes the room based on the uuid. Returns true if the room was deleted,
 // false otherwise. It will return an error if something goes wrong with room deletion.
-func (d *deleteRoomImpl) Handle(uuid string) (bool, []*error.Error) {
+func (d *deleteRoomImpl) Handle(uuid string) (bool, error.Errors) {
 	didDelete, err := d.repo.DeleteRoom(uuid)
 	if err != nil {
 		return false, err

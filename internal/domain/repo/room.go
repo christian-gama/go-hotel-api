@@ -8,21 +8,21 @@ import (
 type (
 	// SaveRoomRepo is the interface for saving a room.
 	SaveRoomRepo interface {
-		SaveRoom(room *entity.Room) (*entity.Room, []*error.Error)
+		SaveRoom(room *entity.Room) (*entity.Room, error.Errors)
 	}
 
 	// DeleteRoomRepo is the interface for deleting a room.
 	DeleteRoomRepo interface {
-		DeleteRoom(uuid string) (bool, []*error.Error)
+		DeleteRoom(uuid string) (bool, error.Errors)
 	}
 
 	// GetRoomRepo is the interface for getting a room.
 	GetRoomRepo interface {
-		GetRoom(uuid string) (*entity.Room, []*error.Error)
+		GetRoom(uuid string) (*entity.Room, error.Errors)
 	}
 
 	// ListRoomsRepo is the interface for listing all rooms.
 	ListRoomsRepo interface {
-		ListRooms() ([]*entity.Room, []*error.Error)
+		ListRooms() ([]*entity.Room, error.Errors)
 	}
 )

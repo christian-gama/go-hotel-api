@@ -12,14 +12,14 @@ type notFound struct{}
 func (n *notFound) Handle(req *request.Request) *response.Response {
 	url := req.URL.Path
 
-	return response.Error([]*error.Error{
-		{
-			Code:    error.NotFound,
-			Message: "url not found",
-			Context: "url",
-			Param:   url,
-		},
-	})
+	return response.Exception(error.Add(
+		error.New(
+			error.NotFound,
+			"url not found",
+			url,
+			"url",
+		),
+	))
 }
 
 // NewNotFound returns a new instance of a controller that handles a request to a not found resource.

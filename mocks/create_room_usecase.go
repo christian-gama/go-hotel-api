@@ -17,7 +17,7 @@ type CreateRoomUsecase struct {
 }
 
 // Handle provides a mock function with given fields: input
-func (_m *CreateRoomUsecase) Handle(input *usecase.CreateRoomInput) (*entity.Room, []*error.Error) {
+func (_m *CreateRoomUsecase) Handle(input *usecase.CreateRoomInput) (*entity.Room, error.Errors) {
 	ret := _m.Called(input)
 
 	var r0 *entity.Room
@@ -29,12 +29,12 @@ func (_m *CreateRoomUsecase) Handle(input *usecase.CreateRoomInput) (*entity.Roo
 		}
 	}
 
-	var r1 []*error.Error
-	if rf, ok := ret.Get(1).(func(*usecase.CreateRoomInput) []*error.Error); ok {
+	var r1 error.Errors
+	if rf, ok := ret.Get(1).(func(*usecase.CreateRoomInput) error.Errors); ok {
 		r1 = rf(input)
 	} else {
 		if ret.Get(1) != nil {
-			r1 = ret.Get(1).([]*error.Error)
+			r1 = ret.Get(1).(error.Errors)
 		}
 	}
 

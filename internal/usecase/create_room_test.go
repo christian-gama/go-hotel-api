@@ -59,7 +59,7 @@ func (s *CreateRoomTestSuite) TestCreateRoom_Handle_InvalidInput() {
 
 func (s *CreateRoomTestSuite) TestCreateRoom_Handle_SaveRoomError() {
 	s.uuid.On("Generate").Return("uuid")
-	s.repo.On("SaveRoom", mock.Anything).Return(nil, []*error.Error{{}})
+	s.repo.On("SaveRoom", mock.Anything).Return(nil, error.Add(error.New("", "", "", "")))
 
 	result, err := s.createRoom.Handle(s.input)
 

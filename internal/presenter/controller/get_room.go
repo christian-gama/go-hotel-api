@@ -16,7 +16,7 @@ func (g *getRoom) Handle(req *request.Request) *response.Response {
 
 	room, errs := g.getRoomUsecase.Handle(uuid)
 	if errs != nil {
-		return response.Error(errs)
+		return response.Exception(errs)
 	}
 
 	return response.OK(room)

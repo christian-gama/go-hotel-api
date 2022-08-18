@@ -12,26 +12,26 @@ import (
 func Unmarshal(req *request.Request, v any) *Response {
 	body, err := req.ReadBody()
 	if err != nil {
-		return Error([]*error.Error{
-			{
-				Code:    error.InternalError,
-				Message: "failed to read request body",
-				Context: "internalServerError",
-				Param:   "internalServerError",
-			},
-		})
+		return Exception(error.Add(
+			error.New(
+				error.InternalError,
+				"failed to read request body",
+				"internalServerError",
+				"internalServerError",
+			),
+		))
 	}
 
 	err = json.Unmarshal(body, v)
 	if err != nil {
-		return Error([]*error.Error{
-			{
-				Code:    error.InternalError,
-				Message: "failed to unmarshal request body",
-				Context: "internalServerError",
-				Param:   "internalServerError",
-			},
-		})
+		return Exception(error.Add(
+			error.New(
+				error.InternalError,
+				"failed to unmarshal body",
+				"internalServerError",
+				"internalServerError",
+			),
+		))
 	}
 
 	return nil

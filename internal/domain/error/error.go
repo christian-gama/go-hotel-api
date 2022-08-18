@@ -27,7 +27,7 @@ func New(code ErrorCode, message, param, context string) *Error {
 	}
 }
 
-// Append appends multiple errors into an array.
-func Append(err ...*Error) []*Error {
+// Add appends multiple errors into an array.
+func Add(err ...*Error) Errors {
 	return err
 }

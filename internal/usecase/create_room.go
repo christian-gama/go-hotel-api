@@ -18,7 +18,7 @@ type (
 
 	// CreateRoomUsecase is the interface that defines the creation of a room.
 	CreateRoomUsecase interface {
-		Handle(input *CreateRoomInput) (*entity.Room, []*error.Error)
+		Handle(input *CreateRoomInput) (*entity.Room, error.Errors)
 	}
 
 	// createRoomImpl is a concrete implementation of the CreateRoom.
@@ -30,7 +30,7 @@ type (
 
 // Handle receives an input and creates a room. It will return an error if something
 // goes wrong with room creation or if the room repo return an error.
-func (c *createRoomImpl) Handle(input *CreateRoomInput) (*entity.Room, []*error.Error) {
+func (c *createRoomImpl) Handle(input *CreateRoomInput) (*entity.Room, error.Errors) {
 	uuid := c.uuid.Generate()
 	room, err := entity.NewRoom(uuid, input.Name, input.Description, input.BedCount, input.Price)
 	if err != nil {

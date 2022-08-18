@@ -34,44 +34,44 @@ func Error(err error) []*apperror.Error {
 		context := strings.Split(detail, "_")[0]
 		param := strings.Split(detail, "_")[1]
 
-		return []*apperror.Error{
-			{
-				Code:    apperror.RepositoryError,
-				Message: "unique constraint violation",
-				Context: context,
-				Param:   param,
-			},
-		}
+		return apperror.Add(
+			apperror.New(
+				apperror.RepositoryError,
+				"unique constraint violation",
+				param,
+				context,
+			),
+		)
 	}
 
 	if errIs(err, ErrInvalidUUID) {
-		return []*apperror.Error{
-			{
-				Code:    apperror.RepositoryError,
-				Message: "invalid uuid",
-				Context: "uuid",
-				Param:   "uuid",
-			},
-		}
+		return apperror.Add(
+			apperror.New(
+				apperror.RepositoryError,
+				"invalid uuid",
+				"uuid",
+				"uuid",
+			),
+		)
 	}
 
 	if errIs(err, ErrNoRows) {
-		return []*apperror.Error{
-			{
-				Code:    apperror.RepositoryError,
-				Message: "could not find any result",
-				Context: "rows",
-				Param:   "rows",
-			},
-		}
+		return apperror.Add(
+			apperror.New(
+				apperror.RepositoryError,
+				"could not find any result",
+				"rows",
+				"rows",
+			),
+		)
 	}
 
-	return []*apperror.Error{
-		{
-			Code:    apperror.RepositoryError,
-			Message: err.Error(),
-			Context: "repositoryError",
-			Param:   "repositoryError",
-		},
-	}
+	return apperror.Add(
+		apperror.New(
+			apperror.RepositoryError,
+			err.Error(),
+			"repository",
+			"repository",
+		),
+	)
 }
