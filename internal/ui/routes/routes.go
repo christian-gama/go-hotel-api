@@ -9,4 +9,5 @@ import (
 func Register(router *router.Router) {
 	// Room routes
 	router.AddPost("/room", factory.CreateRoomController())
+	router.AddGet("/room", factory.ListRoomsController())
 }
