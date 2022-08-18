@@ -10,10 +10,10 @@ const childProcess = require("child_process");
 const exec = util.promisify(childProcess.exec);
 
 const log = require("./log");
-const Bench = require("./bench");
+const Benchmark = require("./benchmark");
 
 module.exports = async function (hook, script) {
-  const bench = new Bench();
+  const bench = new Benchmark();
   log.info(hook, "Running...");
 
   try {
