@@ -4,17 +4,19 @@ CACHE_DIR ?= $(PWD)/.cache
 COVERAGE_DIR ?= $(GENERATED_DIR)/coverage
 BUILD_DIR ?= $(GENERATED_DIR)/build
 APP_NAME ?= go_booking
+MAKE = make --no-print-directory
 
 -include $(ENV_FILE)
 
-init: cmd-exists-git cmd-exists-node
+init: cmd-exists-git
 	@git config core.hooksPath .githooks
 	@chmod +x .githooks/*
-	@echo "Initialized git hooks"
+	@echo "Initialized git hooks" 
+	@$(MAKE) remake
 
 
 run: cmd-exists-go
-	@make build
+	@$(MAKE) build
 	@$(BUILD_DIR)/$(APP_NAME) -env $(ENV_FILE)
 
 
@@ -41,6 +43,7 @@ cover: cmd-exists-go
 		mkdir -p $(COVERAGE_DIR); \
 	fi
 	@TEST_MODE=both gotestsum --format pkgname -- -coverprofile=$(COVERAGE_DIR)/coverage.out -p 1 ./...
+	@$(MAKE) cover-html
 
 
 cover-html: cmd-exists-go
@@ -73,16 +76,29 @@ migrate: cmd-exists-docker
 
 	
 mock: cmd-exists-docker
-	docker run -v "$(PWD)":/src -w /src vektra/mockery --all --case underscore --exported --dir ./internal
+	@docker run \
+		-v "$(PWD)":/src \
+		-w /src vektra/mockery --all --case underscore --exported --dir ./internal
+	@docker run \
+		-v "$(PWD)":/src \
+		-w /src vektra/mockery --all --case underscore --exported --dir ./pkg
 
 
 clear:
+	@docker compose --env-file .env.dev down
 	@rm -rf $(GENERATED_DIR)
 	@rm -rf $(CACHE_DIR)
 	@rm -rf $(PWD)/mocks
 
-	@docker compose --env-file .env.dev restart
-	@make migrate-up
+
+remake:
+	@$(MAKE) clear
+	@docker compose --env-file .env.dev down
+	@docker compose --env-file .env.dev up api -d
+	@$(MAKE) migrate-up
+
+	@$(MAKE) docker ENV_FILE=.env.dev ENTRY_POINT="make build"
+	@$(MAKE) mock
 
 
 docker: cmd-exists-docker
@@ -96,27 +112,27 @@ docker: cmd-exists-docker
 
 
 docker_dev: cmd-exists-docker
-	@make docker ENV_FILE=.env.dev ENTRY_POINT="make run" 
+	@$(MAKE) docker ENV_FILE=.env.dev ENTRY_POINT="make run" 
 
 
 docker_prod: cmd-exists-docker
-	@make docker ENV_FILE=.env.prod ENTRY_POINT="make run" 
+	@$(MAKE) docker ENV_FILE=.env.prod ENTRY_POINT="make run" 
 
 
 docker_test: cmd-exists-docker
-	@make docker ENV_FILE=.env.test ENTRY_POINT="make test"
+	@$(MAKE) docker ENV_FILE=.env.test ENTRY_POINT="make test"
 
 
 docker_test_integration: cmd-exists-docker
-	@make docker ENV_FILE=.env.test ENTRY_POINT="make test_integration" 
+	@$(MAKE) docker ENV_FILE=.env.test ENTRY_POINT="make test_integration" 
 
 
 docker_cover: cmd-exists-docker
-	@make docker ENV_FILE=.env.test ENTRY_POINT="make cover" 
+	@$(MAKE) docker ENV_FILE=.env.test ENTRY_POINT="make cover" 
 
 
 docker_cover_html: cmd-exists-docker
-	@make docker ENV_FILE=.env.test ENTRY_POINT="make cover-html"
+	@$(MAKE) docker ENV_FILE=.env.test ENTRY_POINT="make cover-html"
 
 
 docker_down: cmd-exists-docker
