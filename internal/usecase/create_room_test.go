@@ -4,7 +4,7 @@ import (
 	"testing"
 
 	"github.com/christian-gama/go-booking-api/internal/domain/entity"
-	"github.com/christian-gama/go-booking-api/internal/domain/errorutil"
+	"github.com/christian-gama/go-booking-api/internal/domain/error"
 	"github.com/christian-gama/go-booking-api/internal/usecase"
 	"github.com/christian-gama/go-booking-api/mocks"
 	"github.com/christian-gama/go-booking-api/test"
@@ -54,12 +54,12 @@ func (s *CreateRoomTestSuite) TestCreateRoom_Handle_InvalidInput() {
 	result, err := s.createRoom.Handle(s.input)
 
 	s.Nil(result)
-	s.NotNil(err[0].Code, errorutil.InvalidArgument)
+	s.NotNil(err[0].Code, error.InvalidArgument)
 }
 
 func (s *CreateRoomTestSuite) TestCreateRoom_Handle_SaveRoomError() {
 	s.uuid.On("Generate").Return("uuid")
-	s.repo.On("SaveRoom", mock.Anything).Return(nil, []*errorutil.Error{{}})
+	s.repo.On("SaveRoom", mock.Anything).Return(nil, []*error.Error{{}})
 
 	result, err := s.createRoom.Handle(s.input)
 

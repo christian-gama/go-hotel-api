@@ -3,7 +3,7 @@ package response
 import (
 	"encoding/json"
 
-	"github.com/christian-gama/go-booking-api/internal/domain/errorutil"
+	"github.com/christian-gama/go-booking-api/internal/domain/error"
 	"github.com/christian-gama/go-booking-api/internal/presenter/http/request"
 )
 
@@ -12,9 +12,9 @@ import (
 func Unmarshal(req *request.Request, v any) *Response {
 	body, err := req.ReadBody()
 	if err != nil {
-		return Error([]*errorutil.Error{
+		return Error([]*error.Error{
 			{
-				Code:    errorutil.InternalError,
+				Code:    error.InternalError,
 				Message: "failed to read request body",
 				Context: "internalServerError",
 				Param:   "internalServerError",
@@ -24,9 +24,9 @@ func Unmarshal(req *request.Request, v any) *Response {
 
 	err = json.Unmarshal(body, v)
 	if err != nil {
-		return Error([]*errorutil.Error{
+		return Error([]*error.Error{
 			{
-				Code:    errorutil.InternalError,
+				Code:    error.InternalError,
 				Message: "failed to unmarshal request body",
 				Context: "internalServerError",
 				Param:   "internalServerError",

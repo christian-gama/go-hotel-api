@@ -1,8 +1,6 @@
 package response
 
-import (
-	"github.com/christian-gama/go-booking-api/internal/domain/errorutil"
-)
+import "github.com/christian-gama/go-booking-api/internal/domain/error"
 
 // Response represents the response of the HTTP request.
 type Response struct {
@@ -13,7 +11,7 @@ type Response struct {
 	Data any `json:"data,omitempty"`
 
 	// Errors contains all the errors of the response.
-	Errors []*errorutil.Error `json:"errors,omitempty"`
+	Errors []*error.Error `json:"errors,omitempty"`
 }
 
 const (
@@ -22,7 +20,7 @@ const (
 )
 
 // Error returns a response with a status code corresponding to the error.
-func Error(errs []*errorutil.Error) *Response {
+func Error(errs []*error.Error) *Response {
 	return &Response{
 		Status: failure,
 		Errors: errs,

@@ -3,7 +3,7 @@ package entity
 import (
 	"fmt"
 
-	"github.com/christian-gama/go-booking-api/internal/domain/errorutil"
+	"github.com/christian-gama/go-booking-api/internal/domain/error"
 	"github.com/christian-gama/go-booking-api/internal/domain/notification"
 	"github.com/christian-gama/go-booking-api/pkg/util"
 )
@@ -41,11 +41,11 @@ type Room struct {
 
 // validate ensure the entity is valid. It will add an error to notification each time
 // it fails a validation. It will return nil if the entity is valid.
-func (r *Room) validate() []*errorutil.Error {
+func (r *Room) validate() error.Errors {
 	if r.UUID == "" {
 		r.notification.AddError(
 			&notification.Error{
-				Code:    errorutil.InvalidArgument,
+				Code:    error.InvalidArgument,
 				Message: "uuid cannot be empty",
 				Param:   "uuid",
 			},
@@ -55,7 +55,7 @@ func (r *Room) validate() []*errorutil.Error {
 	if r.Name == "" {
 		r.notification.AddError(
 			&notification.Error{
-				Code:    errorutil.InvalidArgument,
+				Code:    error.InvalidArgument,
 				Message: "name cannot be empty",
 				Param:   "name",
 			},
@@ -65,7 +65,7 @@ func (r *Room) validate() []*errorutil.Error {
 	if len(r.Description) > MaxRoomDescriptionLen {
 		r.notification.AddError(
 			&notification.Error{
-				Code:    errorutil.InvalidArgument,
+				Code:    error.InvalidArgument,
 				Message: fmt.Sprintf("description cannot be longer than %d characters", MaxRoomDescriptionLen),
 				Param:   "description",
 			},
@@ -75,7 +75,7 @@ func (r *Room) validate() []*errorutil.Error {
 	if len(r.Description) < MinRoomDescriptionLen {
 		r.notification.AddError(
 			&notification.Error{
-				Code:    errorutil.InvalidArgument,
+				Code:    error.InvalidArgument,
 				Message: fmt.Sprintf("description cannot be shorter than %d characters", MinRoomDescriptionLen),
 				Param:   "description",
 			},
@@ -85,7 +85,7 @@ func (r *Room) validate() []*errorutil.Error {
 	if r.BedCount < MinRoomBedCount {
 		r.notification.AddError(
 			&notification.Error{
-				Code:    errorutil.InvalidArgument,
+				Code:    error.InvalidArgument,
 				Message: fmt.Sprintf("bed count cannot be less than %d", MinRoomBedCount),
 				Param:   "bedCount",
 			},
@@ -95,7 +95,7 @@ func (r *Room) validate() []*errorutil.Error {
 	if r.BedCount > MaxRoomBedCount {
 		r.notification.AddError(
 			&notification.Error{
-				Code:    errorutil.InvalidArgument,
+				Code:    error.InvalidArgument,
 				Message: fmt.Sprintf("bed count cannot be greater than %d", MaxRoomBedCount),
 				Param:   "bedCount",
 			},
@@ -105,7 +105,7 @@ func (r *Room) validate() []*errorutil.Error {
 	if r.Price < MinRoomPrice {
 		r.notification.AddError(
 			&notification.Error{
-				Code:    errorutil.InvalidArgument,
+				Code:    error.InvalidArgument,
 				Message: fmt.Sprintf("price cannot be less than %.2f", MinRoomPrice),
 				Param:   "price",
 			},
@@ -115,7 +115,7 @@ func (r *Room) validate() []*errorutil.Error {
 	if r.Price > MaxRoomPrice {
 		r.notification.AddError(
 			&notification.Error{
-				Code:    errorutil.InvalidArgument,
+				Code:    error.InvalidArgument,
 				Message: fmt.Sprintf("price cannot be greater than %.2f", MaxRoomPrice),
 				Param:   "price",
 			},
@@ -136,7 +136,7 @@ func NewRoom(
 	description string,
 	bedCount uint8,
 	price float32,
-) (*Room, []*errorutil.Error) {
+) (*Room, []*error.Error) {
 	room := &Room{
 		notification.New(util.StructName(Room{})),
 

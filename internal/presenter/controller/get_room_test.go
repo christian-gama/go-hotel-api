@@ -6,7 +6,7 @@ import (
 	"testing"
 
 	"github.com/christian-gama/go-booking-api/internal/domain/entity"
-	"github.com/christian-gama/go-booking-api/internal/domain/errorutil"
+	"github.com/christian-gama/go-booking-api/internal/domain/error"
 	"github.com/christian-gama/go-booking-api/internal/presenter/controller"
 	"github.com/christian-gama/go-booking-api/internal/presenter/http/request"
 	"github.com/christian-gama/go-booking-api/mocks"
@@ -49,13 +49,13 @@ func (s *GetRoomTestSuite) TestGetRoom_Handle_UsecaseError() {
 	s.paramReader.On("Read", mock.Anything, "uuid").Return("any_uuid", nil)
 	s.getRoomUsecase.
 		On("Handle", mock.Anything).
-		Return(nil, errorutil.Append(errorutil.New("any_code", "any_message", "any_param", "any_context")))
+		Return(nil, error.Append(error.New("any_code", "any_message", "any_param", "any_context")))
 	req := request.New(httptest.NewRequest(http.MethodGet, "/any_url", nil), s.paramReader)
 
 	result := s.ctrl.Handle(req)
 
 	s.Equal("failure", result.Status)
-	s.Equal(errorutil.ErrorCode("any_code"), result.Errors[0].Code)
+	s.Equal(error.ErrorCode("any_code"), result.Errors[0].Code)
 }
 
 func TestGetRoomTestSuite(t *testing.T) {

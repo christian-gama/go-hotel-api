@@ -6,7 +6,7 @@ import (
 	"time"
 
 	"github.com/christian-gama/go-booking-api/internal/domain/entity"
-	"github.com/christian-gama/go-booking-api/internal/domain/errorutil"
+	"github.com/christian-gama/go-booking-api/internal/domain/error"
 	"github.com/christian-gama/go-booking-api/internal/infra/repo/psql"
 	"github.com/christian-gama/go-booking-api/mocks"
 	"github.com/christian-gama/go-booking-api/test"
@@ -70,7 +70,7 @@ func (s *RoomRepoTestSuite) TestRoomRepo_SaveRoom_Error() {
 
 	_, err := roomRepo.SaveRoom(room)
 
-	s.Equal(errorutil.RepositoryError, err[0].Code)
+	s.Equal(error.RepositoryError, err[0].Code)
 }
 
 func (s *RoomRepoTestSuite) TestRoomRepo_GetRoom_Success() {
@@ -109,7 +109,7 @@ func (s *RoomRepoTestSuite) TestRoomRepo_GetRoom_Error() {
 
 	_, err := roomRepo.GetRoom(room.UUID)
 
-	s.Equal(errorutil.RepositoryError, err[0].Code)
+	s.Equal(error.RepositoryError, err[0].Code)
 }
 
 func (s *RoomRepoTestSuite) TestRoomRepo_ListRooms_Success() {
@@ -146,7 +146,7 @@ func (s *RoomRepoTestSuite) TestRoomRepo_ListRooms_Error() {
 
 	_, err := roomRepo.ListRooms()
 
-	s.Equal(errorutil.RepositoryError, err[0].Code)
+	s.Equal(error.RepositoryError, err[0].Code)
 }
 
 func (s *RoomRepoTestSuite) TestRoomRepo_DeleteRoom_Success() {
@@ -182,7 +182,7 @@ func (s *RoomRepoTestSuite) TestRoomRepo_DeleteRoom_Error() {
 
 	_, err := roomRepo.DeleteRoom(room.UUID)
 
-	s.Equal(errorutil.RepositoryError, err[0].Code)
+	s.Equal(error.RepositoryError, err[0].Code)
 }
 
 func (s *RoomRepoTestSuite) TestRoomRepo_DeleteRoom_InvalidUUIDError() {
@@ -200,7 +200,7 @@ func (s *RoomRepoTestSuite) TestRoomRepo_DeleteRoom_InvalidUUIDError() {
 
 	_, err := roomRepo.DeleteRoom(room.UUID)
 
-	s.Equal(errorutil.RepositoryError, err[0].Code)
+	s.Equal(error.RepositoryError, err[0].Code)
 	s.Equal("invalid uuid", err[0].Message)
 }
 

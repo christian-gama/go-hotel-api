@@ -3,7 +3,7 @@ package entity
 import (
 	"fmt"
 
-	"github.com/christian-gama/go-booking-api/internal/domain/errorutil"
+	"github.com/christian-gama/go-booking-api/internal/domain/error"
 	"github.com/christian-gama/go-booking-api/internal/domain/notification"
 	"github.com/christian-gama/go-booking-api/pkg/util"
 )
@@ -21,11 +21,11 @@ type User struct {
 	Password string `json:"-"`
 }
 
-func (u *User) validate() []*errorutil.Error {
+func (u *User) validate() error.Errors {
 	if u.UUID == "" {
 		u.notification.AddError(
 			&notification.Error{
-				Code:    errorutil.InvalidArgument,
+				Code:    error.InvalidArgument,
 				Message: "uuid cannot be empty",
 				Param:   "uuid",
 			},
@@ -35,7 +35,7 @@ func (u *User) validate() []*errorutil.Error {
 	if u.Email == "" {
 		u.notification.AddError(
 			&notification.Error{
-				Code:    errorutil.InvalidArgument,
+				Code:    error.InvalidArgument,
 				Message: "email cannot be empty",
 				Param:   "email",
 			},
@@ -45,7 +45,7 @@ func (u *User) validate() []*errorutil.Error {
 	if len(u.Password) < MinUserPasswordLen {
 		u.notification.AddError(
 			&notification.Error{
-				Code:    errorutil.InvalidArgument,
+				Code:    error.InvalidArgument,
 				Message: fmt.Sprintf("password cannot be shorter than %d characters", MinUserPasswordLen),
 				Param:   "password",
 			},
@@ -55,7 +55,7 @@ func (u *User) validate() []*errorutil.Error {
 	if len(u.Password) > MaxUserPasswordLen {
 		u.notification.AddError(
 			&notification.Error{
-				Code:    errorutil.InvalidArgument,
+				Code:    error.InvalidArgument,
 				Message: fmt.Sprintf("password cannot be longer than %d characters", MaxUserPasswordLen),
 				Param:   "password",
 			},
@@ -69,7 +69,7 @@ func (u *User) validate() []*errorutil.Error {
 	return nil
 }
 
-func NewUser(uuid, email, password string) (*User, []*errorutil.Error) {
+func NewUser(uuid, email, password string) (*User, []*error.Error) {
 	user := &User{
 		notification: notification.New(util.StructName(User{})),
 

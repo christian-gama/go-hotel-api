@@ -5,7 +5,7 @@ import (
 	"testing"
 
 	"github.com/christian-gama/go-booking-api/internal/domain/entity"
-	"github.com/christian-gama/go-booking-api/internal/domain/errorutil"
+	"github.com/christian-gama/go-booking-api/internal/domain/error"
 	"github.com/christian-gama/go-booking-api/test"
 	"github.com/stretchr/testify/suite"
 )
@@ -35,7 +35,7 @@ func (s *RestrictionTestSuite) TestNewRestriction_UuidEmptyError() {
 	result, err := entity.NewRestriction("", s.name, s.description)
 
 	s.Nil(result)
-	s.Equal(errorutil.InvalidArgument, err[0].Code)
+	s.Equal(error.InvalidArgument, err[0].Code)
 	s.Equal("uuid", err[0].Param)
 }
 
@@ -43,7 +43,7 @@ func (s *RestrictionTestSuite) TestNewRestriction_NameEmptyError() {
 	result, err := entity.NewRestriction(s.uuid, "", s.description)
 
 	s.Nil(result)
-	s.Equal(errorutil.InvalidArgument, err[0].Code)
+	s.Equal(error.InvalidArgument, err[0].Code)
 	s.Equal("name", err[0].Param)
 }
 
@@ -53,7 +53,7 @@ func (s *RestrictionTestSuite) TestNewRestriction_MaxNameLenError() {
 	result, err := entity.NewRestriction(s.uuid, name, s.description)
 
 	s.Nil(result)
-	s.Equal(errorutil.InvalidArgument, err[0].Code)
+	s.Equal(error.InvalidArgument, err[0].Code)
 	s.Equal("name", err[0].Param)
 }
 
@@ -63,7 +63,7 @@ func (s *RestrictionTestSuite) TestNewRestriction_MinDescriptionLenError() {
 	result, err := entity.NewRestriction(s.uuid, s.name, description)
 
 	s.Nil(result)
-	s.Equal(errorutil.InvalidArgument, err[0].Code)
+	s.Equal(error.InvalidArgument, err[0].Code)
 	s.Equal("description", err[0].Param)
 }
 
@@ -73,7 +73,7 @@ func (s *RestrictionTestSuite) TestNewRestriction_MaxDescriptionLenError() {
 	result, err := entity.NewRestriction(s.uuid, s.name, description)
 
 	s.Nil(result)
-	s.Equal(errorutil.InvalidArgument, err[0].Code)
+	s.Equal(error.InvalidArgument, err[0].Code)
 	s.Equal("description", err[0].Param)
 }
 

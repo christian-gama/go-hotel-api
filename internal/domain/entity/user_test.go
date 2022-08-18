@@ -5,7 +5,7 @@ import (
 	"testing"
 
 	"github.com/christian-gama/go-booking-api/internal/domain/entity"
-	"github.com/christian-gama/go-booking-api/internal/domain/errorutil"
+	"github.com/christian-gama/go-booking-api/internal/domain/error"
 	"github.com/christian-gama/go-booking-api/test"
 	"github.com/stretchr/testify/suite"
 )
@@ -35,7 +35,7 @@ func (s *UserTestSuite) TestNewUser_UuidEmptyError() {
 	result, err := entity.NewUser("", s.email, s.password)
 
 	s.Nil(result)
-	s.Equal(errorutil.InvalidArgument, err[0].Code)
+	s.Equal(error.InvalidArgument, err[0].Code)
 	s.Equal("uuid", err[0].Param)
 }
 
@@ -43,7 +43,7 @@ func (s *UserTestSuite) TestNewUser_EmailEmptyError() {
 	result, err := entity.NewUser(s.uuid, "", s.password)
 
 	s.Nil(result)
-	s.Equal(errorutil.InvalidArgument, err[0].Code)
+	s.Equal(error.InvalidArgument, err[0].Code)
 	s.Equal("email", err[0].Param)
 }
 
@@ -53,7 +53,7 @@ func (s *UserTestSuite) TestNewUser_MinPasswordLenError() {
 	result, err := entity.NewUser(s.uuid, s.email, password)
 
 	s.Nil(result)
-	s.Equal(errorutil.InvalidArgument, err[0].Code)
+	s.Equal(error.InvalidArgument, err[0].Code)
 	s.Equal("password", err[0].Param)
 }
 
@@ -63,7 +63,7 @@ func (s *UserTestSuite) TestNewUser_MaxPasswordLenError() {
 	result, err := entity.NewUser(s.uuid, s.email, password)
 
 	s.Nil(result)
-	s.Equal(errorutil.InvalidArgument, err[0].Code)
+	s.Equal(error.InvalidArgument, err[0].Code)
 	s.Equal("password", err[0].Param)
 }
 

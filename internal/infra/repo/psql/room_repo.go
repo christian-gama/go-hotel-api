@@ -5,7 +5,7 @@ import (
 	"database/sql"
 
 	"github.com/christian-gama/go-booking-api/internal/domain/entity"
-	"github.com/christian-gama/go-booking-api/internal/domain/errorutil"
+	"github.com/christian-gama/go-booking-api/internal/domain/error"
 	"github.com/christian-gama/go-booking-api/internal/domain/repo"
 	"github.com/christian-gama/go-booking-api/internal/infra/config"
 	"github.com/christian-gama/go-booking-api/pkg/util"
@@ -25,7 +25,7 @@ type roomRepoImpl struct {
 }
 
 // SaveRoom is the method that will save a room in the database.
-func (r *roomRepoImpl) SaveRoom(room *entity.Room) (*entity.Room, []*errorutil.Error) {
+func (r *roomRepoImpl) SaveRoom(room *entity.Room) (*entity.Room, []*error.Error) {
 	ctx, cancel := context.WithTimeout(context.Background(), r.dbConfigger.Timeout())
 	defer cancel()
 
@@ -51,7 +51,7 @@ func (r *roomRepoImpl) SaveRoom(room *entity.Room) (*entity.Room, []*errorutil.E
 }
 
 // GetRoom is the method that will get a room from the database.
-func (r *roomRepoImpl) GetRoom(uuid string) (*entity.Room, []*errorutil.Error) {
+func (r *roomRepoImpl) GetRoom(uuid string) (*entity.Room, []*error.Error) {
 	ctx, cancel := context.WithTimeout(context.Background(), r.dbConfigger.Timeout())
 	defer cancel()
 
@@ -74,7 +74,7 @@ func (r *roomRepoImpl) GetRoom(uuid string) (*entity.Room, []*errorutil.Error) {
 }
 
 // ListRooms is the method that will list all the rooms from the database.
-func (r *roomRepoImpl) ListRooms() ([]*entity.Room, []*errorutil.Error) {
+func (r *roomRepoImpl) ListRooms() ([]*entity.Room, []*error.Error) {
 	ctx, cancel := context.WithTimeout(context.Background(), r.dbConfigger.Timeout())
 	defer cancel()
 
@@ -105,7 +105,7 @@ func (r *roomRepoImpl) ListRooms() ([]*entity.Room, []*errorutil.Error) {
 }
 
 // DeleteRoom is the method that will delete a room from the database.
-func (r *roomRepoImpl) DeleteRoom(uuid string) (bool, []*errorutil.Error) {
+func (r *roomRepoImpl) DeleteRoom(uuid string) (bool, []*error.Error) {
 	ctx, cancel := context.WithTimeout(context.Background(), r.dbConfigger.Timeout())
 	defer cancel()
 
@@ -117,8 +117,8 @@ func (r *roomRepoImpl) DeleteRoom(uuid string) (bool, []*errorutil.Error) {
 
 	rowsAffected, err := result.RowsAffected()
 	if err != nil {
-		return false, []*errorutil.Error{{
-			Code:    errorutil.RepositoryError,
+		return false, []*error.Error{{
+			Code:    error.RepositoryError,
 			Message: "could not get the number of rows affected",
 			Context: util.StructName(entity.Room{}),
 			Param:   "rows",

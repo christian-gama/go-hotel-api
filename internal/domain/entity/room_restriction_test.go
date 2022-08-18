@@ -5,7 +5,7 @@ import (
 	"time"
 
 	"github.com/christian-gama/go-booking-api/internal/domain/entity"
-	"github.com/christian-gama/go-booking-api/internal/domain/errorutil"
+	"github.com/christian-gama/go-booking-api/internal/domain/error"
 	"github.com/christian-gama/go-booking-api/test"
 	"github.com/stretchr/testify/suite"
 )
@@ -54,7 +54,7 @@ func (s *RoomRestrictionTestSuite) TestNewRestriction_UuidEmptyError() {
 	result, err := entity.NewRoomRestriction("", s.room, s.restriction, s.startDate, s.endDate)
 
 	s.Nil(result)
-	s.Equal(errorutil.InvalidArgument, err[0].Code)
+	s.Equal(error.InvalidArgument, err[0].Code)
 	s.Equal("uuid", err[0].Param)
 }
 
@@ -62,7 +62,7 @@ func (s *RoomRestrictionTestSuite) TestNewRestriction_RoomNilError() {
 	result, err := entity.NewRoomRestriction(s.uuid, nil, s.restriction, s.startDate, s.endDate)
 
 	s.Nil(result)
-	s.Equal(errorutil.InvalidArgument, err[0].Code)
+	s.Equal(error.InvalidArgument, err[0].Code)
 	s.Equal("room", err[0].Param)
 }
 
@@ -70,7 +70,7 @@ func (s *RoomRestrictionTestSuite) TestNewRestriction_RestrictionNilError() {
 	result, err := entity.NewRoomRestriction(s.uuid, s.room, nil, s.startDate, s.endDate)
 
 	s.Nil(result)
-	s.Equal(errorutil.InvalidArgument, err[0].Code)
+	s.Equal(error.InvalidArgument, err[0].Code)
 	s.Equal("restriction", err[0].Param)
 }
 
@@ -78,7 +78,7 @@ func (s *RoomRestrictionTestSuite) TestNewRestriction_StartDateCurrentTimeError(
 	result, err := entity.NewRoomRestriction(s.uuid, s.room, s.restriction, time.Now(), s.endDate)
 
 	s.Nil(result)
-	s.Equal(errorutil.ConditionNotMet, err[0].Code)
+	s.Equal(error.ConditionNotMet, err[0].Code)
 	s.Equal("startDate", err[0].Param)
 }
 
@@ -86,7 +86,7 @@ func (s *RoomRestrictionTestSuite) TestNewRestriction_StartDateAfterEndTimeError
 	result, err := entity.NewRoomRestriction(s.uuid, s.room, s.restriction, s.endDate, s.startDate)
 
 	s.Nil(result)
-	s.Equal(errorutil.ConditionNotMet, err[0].Code)
+	s.Equal(error.ConditionNotMet, err[0].Code)
 	s.Equal("startDate", err[0].Param)
 }
 

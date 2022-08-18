@@ -5,7 +5,7 @@ import (
 	"net/http/httptest"
 	"testing"
 
-	"github.com/christian-gama/go-booking-api/internal/domain/errorutil"
+	"github.com/christian-gama/go-booking-api/internal/domain/error"
 	"github.com/christian-gama/go-booking-api/internal/presenter/controller"
 	"github.com/christian-gama/go-booking-api/internal/presenter/http/request"
 	"github.com/christian-gama/go-booking-api/mocks"
@@ -34,7 +34,7 @@ func (s *NotFoundTestSuite) TestNotFound_Handle() {
 
 	result := s.ctrl.Handle(req)
 
-	s.Equal(errorutil.NotFound, result.Errors[0].Code)
+	s.Equal(error.NotFound, result.Errors[0].Code)
 	s.Equal("/any_url", result.Errors[0].Param)
 }
 

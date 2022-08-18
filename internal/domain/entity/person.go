@@ -3,7 +3,7 @@ package entity
 import (
 	"fmt"
 
-	"github.com/christian-gama/go-booking-api/internal/domain/errorutil"
+	"github.com/christian-gama/go-booking-api/internal/domain/error"
 	"github.com/christian-gama/go-booking-api/internal/domain/notification"
 	"github.com/christian-gama/go-booking-api/pkg/util"
 )
@@ -26,11 +26,11 @@ type Person struct {
 	Address   *Address `json:"address"`
 }
 
-func (p *Person) validate() []*errorutil.Error {
+func (p *Person) validate() error.Errors {
 	if p.UUID == "" {
 		p.notification.AddError(
 			&notification.Error{
-				Code:    errorutil.InvalidArgument,
+				Code:    error.InvalidArgument,
 				Message: "uuid cannot be empty",
 				Param:   "uuid",
 			},
@@ -40,7 +40,7 @@ func (p *Person) validate() []*errorutil.Error {
 	if p.FirstName == "" {
 		p.notification.AddError(
 			&notification.Error{
-				Code:    errorutil.InvalidArgument,
+				Code:    error.InvalidArgument,
 				Message: "name cannot be empty",
 				Param:   "name",
 			},
@@ -50,7 +50,7 @@ func (p *Person) validate() []*errorutil.Error {
 	if len(p.FirstName) > MaxPersonNameLen {
 		p.notification.AddError(
 			&notification.Error{
-				Code:    errorutil.InvalidArgument,
+				Code:    error.InvalidArgument,
 				Message: fmt.Sprintf("name cannot be longer than %d characters", MaxPersonNameLen),
 				Param:   "name",
 			},
@@ -60,7 +60,7 @@ func (p *Person) validate() []*errorutil.Error {
 	if len(p.LastName) > MaxPersonLastNameLen {
 		p.notification.AddError(
 			&notification.Error{
-				Code:    errorutil.InvalidArgument,
+				Code:    error.InvalidArgument,
 				Message: fmt.Sprintf("last name cannot be longer than %d characters", MaxPersonLastNameLen),
 				Param:   "lastName",
 			},
@@ -70,7 +70,7 @@ func (p *Person) validate() []*errorutil.Error {
 	if p.LastName == "" {
 		p.notification.AddError(
 			&notification.Error{
-				Code:    errorutil.InvalidArgument,
+				Code:    error.InvalidArgument,
 				Message: "last name cannot be empty",
 				Param:   "lastName",
 			},
@@ -80,7 +80,7 @@ func (p *Person) validate() []*errorutil.Error {
 	if p.Phone == "" {
 		p.notification.AddError(
 			&notification.Error{
-				Code:    errorutil.InvalidArgument,
+				Code:    error.InvalidArgument,
 				Message: "phone cannot be empty",
 				Param:   "phone",
 			},
@@ -90,7 +90,7 @@ func (p *Person) validate() []*errorutil.Error {
 	if p.Ssn == "" {
 		p.notification.AddError(
 			&notification.Error{
-				Code:    errorutil.InvalidArgument,
+				Code:    error.InvalidArgument,
 				Message: "ssn cannot be empty",
 				Param:   "ssn",
 			},
@@ -100,7 +100,7 @@ func (p *Person) validate() []*errorutil.Error {
 	if p.Address == nil {
 		p.notification.AddError(
 			&notification.Error{
-				Code:    errorutil.InvalidArgument,
+				Code:    error.InvalidArgument,
 				Message: "address cannot be empty",
 				Param:   "address",
 			},
@@ -123,7 +123,7 @@ func NewPerson(
 	isActive bool,
 	user *User,
 	address *Address,
-) (*Person, []*errorutil.Error) {
+) (*Person, []*error.Error) {
 	person := &Person{
 		notification: notification.New(util.StructName(Person{})),
 

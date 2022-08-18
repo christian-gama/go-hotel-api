@@ -3,7 +3,7 @@ package psql
 import (
 	"strings"
 
-	"github.com/christian-gama/go-booking-api/internal/domain/errorutil"
+	apperror "github.com/christian-gama/go-booking-api/internal/domain/error"
 )
 
 type ErrorCode string
@@ -24,7 +24,7 @@ func errIs(err error, code ErrorCode) bool {
 }
 
 // Error handles the error from postgres.
-func Error(err error) []*errorutil.Error {
+func Error(err error) []*apperror.Error {
 	if err == nil {
 		return nil
 	}
@@ -34,9 +34,9 @@ func Error(err error) []*errorutil.Error {
 		context := strings.Split(detail, "_")[0]
 		param := strings.Split(detail, "_")[1]
 
-		return []*errorutil.Error{
+		return []*apperror.Error{
 			{
-				Code:    errorutil.RepositoryError,
+				Code:    apperror.RepositoryError,
 				Message: "unique constraint violation",
 				Context: context,
 				Param:   param,
@@ -45,9 +45,9 @@ func Error(err error) []*errorutil.Error {
 	}
 
 	if errIs(err, ErrInvalidUUID) {
-		return []*errorutil.Error{
+		return []*apperror.Error{
 			{
-				Code:    errorutil.RepositoryError,
+				Code:    apperror.RepositoryError,
 				Message: "invalid uuid",
 				Context: "uuid",
 				Param:   "uuid",
@@ -56,9 +56,9 @@ func Error(err error) []*errorutil.Error {
 	}
 
 	if errIs(err, ErrNoRows) {
-		return []*errorutil.Error{
+		return []*apperror.Error{
 			{
-				Code:    errorutil.RepositoryError,
+				Code:    apperror.RepositoryError,
 				Message: "could not find any result",
 				Context: "rows",
 				Param:   "rows",
@@ -66,9 +66,9 @@ func Error(err error) []*errorutil.Error {
 		}
 	}
 
-	return []*errorutil.Error{
+	return []*apperror.Error{
 		{
-			Code:    errorutil.RepositoryError,
+			Code:    apperror.RepositoryError,
 			Message: err.Error(),
 			Context: "repositoryError",
 			Param:   "repositoryError",

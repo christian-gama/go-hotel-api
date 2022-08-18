@@ -1,4 +1,4 @@
-package errorutil
+package error
 
 // Error is a struct that represents an error.
 type Error struct {
@@ -14,6 +14,8 @@ type Error struct {
 	// Param is the name of the parameter that caused the error.
 	Param string
 }
+
+type Errors []*Error
 
 // New creates a new instance of Error.
 func New(code ErrorCode, message, param, context string) *Error {

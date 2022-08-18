@@ -3,12 +3,12 @@ package notification
 import (
 	"strings"
 
-	"github.com/christian-gama/go-booking-api/internal/domain/errorutil"
+	"github.com/christian-gama/go-booking-api/internal/domain/error"
 )
 
 // Error is a notification error.
 type Error struct {
-	Code    errorutil.ErrorCode
+	Code    error.ErrorCode
 	Message string
 	Param   string
 }
@@ -16,14 +16,14 @@ type Error struct {
 // Notification represents the notification of a domain, which is a collection of errors.
 type Notification struct {
 	context string
-	errors  []*errorutil.Error
+	errors  []*error.Error
 }
 
 // AddErrorf adds an error to the notification.
 func (n *Notification) AddError(err *Error) {
 	n.errors = append(
 		n.errors,
-		&errorutil.Error{
+		&error.Error{
 			Code:    err.Code,
 			Message: err.Message,
 			Context: n.context,
@@ -38,7 +38,7 @@ func (n *Notification) HasErrors() bool {
 }
 
 // Errors returns a slice of the errors of the notification.
-func (n *Notification) Errors() []*errorutil.Error {
+func (n *Notification) Errors() error.Errors {
 	return n.errors
 }
 

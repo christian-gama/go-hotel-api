@@ -2,7 +2,7 @@ package controller
 
 import (
 	"github.com/christian-gama/go-booking-api/internal/domain/entity"
-	"github.com/christian-gama/go-booking-api/internal/domain/errorutil"
+	"github.com/christian-gama/go-booking-api/internal/domain/error"
 	"github.com/christian-gama/go-booking-api/internal/presenter/http/request"
 	"github.com/christian-gama/go-booking-api/internal/presenter/http/response"
 	"github.com/christian-gama/go-booking-api/internal/usecase"
@@ -23,9 +23,9 @@ func (d *deleteRoom) Handle(req *request.Request) *response.Response {
 	}
 
 	if !didDelete {
-		return response.Error([]*errorutil.Error{
+		return response.Error([]*error.Error{
 			{
-				Code:    errorutil.NotFound,
+				Code:    error.NotFound,
 				Message: "could not find room with uuid",
 				Context: util.StructName(entity.Room{}),
 				Param:   "uuid",

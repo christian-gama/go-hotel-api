@@ -3,7 +3,7 @@ package usecase_test
 import (
 	"testing"
 
-	"github.com/christian-gama/go-booking-api/internal/domain/errorutil"
+	"github.com/christian-gama/go-booking-api/internal/domain/error"
 	"github.com/christian-gama/go-booking-api/internal/usecase"
 	"github.com/christian-gama/go-booking-api/mocks"
 	"github.com/christian-gama/go-booking-api/test"
@@ -37,7 +37,7 @@ func (s *DeleteRoomTestSuite) TestDeleteRoom_Handle_Success() {
 }
 
 func (s *DeleteRoomTestSuite) TestDeleteRoom_Handle_DeleteRoomError() {
-	s.repo.On("DeleteRoom", mock.Anything).Return(false, []*errorutil.Error{{}})
+	s.repo.On("DeleteRoom", mock.Anything).Return(false, []*error.Error{{}})
 
 	result, err := s.deleteRoom.Handle("12345678-1234-1234-1234-123456789012")
 

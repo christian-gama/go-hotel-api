@@ -4,7 +4,7 @@ package mocks
 
 import (
 	entity "github.com/christian-gama/go-booking-api/internal/domain/entity"
-	errorutil "github.com/christian-gama/go-booking-api/internal/domain/errorutil"
+	error "github.com/christian-gama/go-booking-api/internal/domain/error"
 
 	mock "github.com/stretchr/testify/mock"
 )
@@ -15,7 +15,7 @@ type RoomRepo struct {
 }
 
 // DeleteRoom provides a mock function with given fields: uuid
-func (_m *RoomRepo) DeleteRoom(uuid string) (bool, []*errorutil.Error) {
+func (_m *RoomRepo) DeleteRoom(uuid string) (bool, []*error.Error) {
 	ret := _m.Called(uuid)
 
 	var r0 bool
@@ -25,12 +25,12 @@ func (_m *RoomRepo) DeleteRoom(uuid string) (bool, []*errorutil.Error) {
 		r0 = ret.Get(0).(bool)
 	}
 
-	var r1 []*errorutil.Error
-	if rf, ok := ret.Get(1).(func(string) []*errorutil.Error); ok {
+	var r1 []*error.Error
+	if rf, ok := ret.Get(1).(func(string) []*error.Error); ok {
 		r1 = rf(uuid)
 	} else {
 		if ret.Get(1) != nil {
-			r1 = ret.Get(1).([]*errorutil.Error)
+			r1 = ret.Get(1).([]*error.Error)
 		}
 	}
 
@@ -38,7 +38,7 @@ func (_m *RoomRepo) DeleteRoom(uuid string) (bool, []*errorutil.Error) {
 }
 
 // GetRoom provides a mock function with given fields: uuid
-func (_m *RoomRepo) GetRoom(uuid string) (*entity.Room, []*errorutil.Error) {
+func (_m *RoomRepo) GetRoom(uuid string) (*entity.Room, []*error.Error) {
 	ret := _m.Called(uuid)
 
 	var r0 *entity.Room
@@ -50,12 +50,12 @@ func (_m *RoomRepo) GetRoom(uuid string) (*entity.Room, []*errorutil.Error) {
 		}
 	}
 
-	var r1 []*errorutil.Error
-	if rf, ok := ret.Get(1).(func(string) []*errorutil.Error); ok {
+	var r1 []*error.Error
+	if rf, ok := ret.Get(1).(func(string) []*error.Error); ok {
 		r1 = rf(uuid)
 	} else {
 		if ret.Get(1) != nil {
-			r1 = ret.Get(1).([]*errorutil.Error)
+			r1 = ret.Get(1).([]*error.Error)
 		}
 	}
 
@@ -63,7 +63,7 @@ func (_m *RoomRepo) GetRoom(uuid string) (*entity.Room, []*errorutil.Error) {
 }
 
 // ListRooms provides a mock function with given fields:
-func (_m *RoomRepo) ListRooms() ([]*entity.Room, []*errorutil.Error) {
+func (_m *RoomRepo) ListRooms() ([]*entity.Room, []*error.Error) {
 	ret := _m.Called()
 
 	var r0 []*entity.Room
@@ -75,12 +75,12 @@ func (_m *RoomRepo) ListRooms() ([]*entity.Room, []*errorutil.Error) {
 		}
 	}
 
-	var r1 []*errorutil.Error
-	if rf, ok := ret.Get(1).(func() []*errorutil.Error); ok {
+	var r1 []*error.Error
+	if rf, ok := ret.Get(1).(func() []*error.Error); ok {
 		r1 = rf()
 	} else {
 		if ret.Get(1) != nil {
-			r1 = ret.Get(1).([]*errorutil.Error)
+			r1 = ret.Get(1).([]*error.Error)
 		}
 	}
 
@@ -88,7 +88,7 @@ func (_m *RoomRepo) ListRooms() ([]*entity.Room, []*errorutil.Error) {
 }
 
 // SaveRoom provides a mock function with given fields: room
-func (_m *RoomRepo) SaveRoom(room *entity.Room) (*entity.Room, []*errorutil.Error) {
+func (_m *RoomRepo) SaveRoom(room *entity.Room) (*entity.Room, []*error.Error) {
 	ret := _m.Called(room)
 
 	var r0 *entity.Room
@@ -100,12 +100,12 @@ func (_m *RoomRepo) SaveRoom(room *entity.Room) (*entity.Room, []*errorutil.Erro
 		}
 	}
 
-	var r1 []*errorutil.Error
-	if rf, ok := ret.Get(1).(func(*entity.Room) []*errorutil.Error); ok {
+	var r1 []*error.Error
+	if rf, ok := ret.Get(1).(func(*entity.Room) []*error.Error); ok {
 		r1 = rf(room)
 	} else {
 		if ret.Get(1) != nil {
-			r1 = ret.Get(1).([]*errorutil.Error)
+			r1 = ret.Get(1).([]*error.Error)
 		}
 	}
 

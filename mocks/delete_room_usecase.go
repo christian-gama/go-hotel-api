@@ -3,7 +3,7 @@
 package mocks
 
 import (
-	errorutil "github.com/christian-gama/go-booking-api/internal/domain/errorutil"
+	error "github.com/christian-gama/go-booking-api/internal/domain/error"
 	mock "github.com/stretchr/testify/mock"
 )
 
@@ -13,7 +13,7 @@ type DeleteRoomUsecase struct {
 }
 
 // Handle provides a mock function with given fields: uuid
-func (_m *DeleteRoomUsecase) Handle(uuid string) (bool, []*errorutil.Error) {
+func (_m *DeleteRoomUsecase) Handle(uuid string) (bool, []*error.Error) {
 	ret := _m.Called(uuid)
 
 	var r0 bool
@@ -23,12 +23,12 @@ func (_m *DeleteRoomUsecase) Handle(uuid string) (bool, []*errorutil.Error) {
 		r0 = ret.Get(0).(bool)
 	}
 
-	var r1 []*errorutil.Error
-	if rf, ok := ret.Get(1).(func(string) []*errorutil.Error); ok {
+	var r1 []*error.Error
+	if rf, ok := ret.Get(1).(func(string) []*error.Error); ok {
 		r1 = rf(uuid)
 	} else {
 		if ret.Get(1) != nil {
-			r1 = ret.Get(1).([]*errorutil.Error)
+			r1 = ret.Get(1).([]*error.Error)
 		}
 	}
 

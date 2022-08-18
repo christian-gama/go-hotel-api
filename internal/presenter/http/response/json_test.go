@@ -7,7 +7,7 @@ import (
 	"net/http/httptest"
 	"testing"
 
-	"github.com/christian-gama/go-booking-api/internal/domain/errorutil"
+	"github.com/christian-gama/go-booking-api/internal/domain/error"
 	"github.com/christian-gama/go-booking-api/internal/presenter/http/request"
 	"github.com/christian-gama/go-booking-api/internal/presenter/http/response"
 	"github.com/christian-gama/go-booking-api/test"
@@ -63,7 +63,7 @@ func (s *JsonTestSuite) TestUnmarshal_Error() {
 		d,
 	)
 
-	s.Equal(errorutil.InternalError, result.Errors[0].Code)
+	s.Equal(error.InternalError, result.Errors[0].Code)
 }
 
 func TestJsonTestSuite(t *testing.T) {

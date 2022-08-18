@@ -1,7 +1,7 @@
 package controller
 
 import (
-	"github.com/christian-gama/go-booking-api/internal/domain/errorutil"
+	"github.com/christian-gama/go-booking-api/internal/domain/error"
 	"github.com/christian-gama/go-booking-api/internal/presenter/http/request"
 	"github.com/christian-gama/go-booking-api/internal/presenter/http/response"
 )
@@ -12,9 +12,9 @@ type notFound struct{}
 func (n *notFound) Handle(req *request.Request) *response.Response {
 	url := req.URL.Path
 
-	return response.Error([]*errorutil.Error{
+	return response.Error([]*error.Error{
 		{
-			Code:    errorutil.NotFound,
+			Code:    error.NotFound,
 			Message: "url not found",
 			Context: "url",
 			Param:   url,

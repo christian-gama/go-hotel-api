@@ -3,7 +3,7 @@ package entity
 import (
 	"fmt"
 
-	"github.com/christian-gama/go-booking-api/internal/domain/errorutil"
+	"github.com/christian-gama/go-booking-api/internal/domain/error"
 	"github.com/christian-gama/go-booking-api/internal/domain/notification"
 	"github.com/christian-gama/go-booking-api/pkg/util"
 )
@@ -22,11 +22,11 @@ type Restriction struct {
 	Description string `json:"description"`
 }
 
-func (r *Restriction) validate() []*errorutil.Error {
+func (r *Restriction) validate() error.Errors {
 	if r.UUID == "" {
 		r.notification.AddError(
 			&notification.Error{
-				Code:    errorutil.InvalidArgument,
+				Code:    error.InvalidArgument,
 				Message: "uuid cannot be empty",
 				Param:   "uuid",
 			},
@@ -36,7 +36,7 @@ func (r *Restriction) validate() []*errorutil.Error {
 	if r.Name == "" {
 		r.notification.AddError(
 			&notification.Error{
-				Code:    errorutil.InvalidArgument,
+				Code:    error.InvalidArgument,
 				Message: "name cannot be empty",
 				Param:   "name",
 			},
@@ -46,7 +46,7 @@ func (r *Restriction) validate() []*errorutil.Error {
 	if len(r.Name) > MaxRestrictionNameLen {
 		r.notification.AddError(
 			&notification.Error{
-				Code:    errorutil.InvalidArgument,
+				Code:    error.InvalidArgument,
 				Message: fmt.Sprintf("name cannot be longer than %d characters", MaxRestrictionNameLen),
 				Param:   "name",
 			},
@@ -56,7 +56,7 @@ func (r *Restriction) validate() []*errorutil.Error {
 	if len(r.Description) > MaxRestrictionDescriptionLen {
 		r.notification.AddError(
 			&notification.Error{
-				Code:    errorutil.InvalidArgument,
+				Code:    error.InvalidArgument,
 				Message: fmt.Sprintf("description cannot be longer than %d characters", MaxRestrictionDescriptionLen),
 				Param:   "description",
 			},
@@ -66,7 +66,7 @@ func (r *Restriction) validate() []*errorutil.Error {
 	if len(r.Description) < MinRestrictionDescriptionLen {
 		r.notification.AddError(
 			&notification.Error{
-				Code:    errorutil.InvalidArgument,
+				Code:    error.InvalidArgument,
 				Message: fmt.Sprintf("description cannot be shorter than %d characters", MinRestrictionDescriptionLen),
 				Param:   "description",
 			},
@@ -80,7 +80,7 @@ func (r *Restriction) validate() []*errorutil.Error {
 	return nil
 }
 
-func NewRestriction(uuid string, name string, description string) (*Restriction, []*errorutil.Error) {
+func NewRestriction(uuid string, name string, description string) (*Restriction, []*error.Error) {
 	room := &Restriction{
 		notification: *notification.New(util.StructName(Restriction{})),
 

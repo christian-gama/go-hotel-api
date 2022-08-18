@@ -5,7 +5,7 @@ import (
 	"testing"
 
 	"github.com/christian-gama/go-booking-api/internal/domain/entity"
-	"github.com/christian-gama/go-booking-api/internal/domain/errorutil"
+	"github.com/christian-gama/go-booking-api/internal/domain/error"
 	"github.com/christian-gama/go-booking-api/test"
 	"github.com/stretchr/testify/suite"
 )
@@ -45,7 +45,7 @@ func (s *PersonTestSuite) TestNewPerson_UuidEmptyError() {
 	result, err := entity.NewPerson("", s.firstName, s.lastName, s.phone, s.ssn, s.isActive, s.user, s.address)
 
 	s.Nil(result)
-	s.Equal(errorutil.InvalidArgument, err[0].Code)
+	s.Equal(error.InvalidArgument, err[0].Code)
 	s.Equal("uuid", err[0].Param)
 }
 
@@ -53,7 +53,7 @@ func (s *PersonTestSuite) TestNewPerson_NameEmptyError() {
 	result, err := entity.NewPerson(s.uuid, "", s.lastName, s.phone, s.ssn, s.isActive, s.user, s.address)
 
 	s.Nil(result)
-	s.Equal(errorutil.InvalidArgument, err[0].Code)
+	s.Equal(error.InvalidArgument, err[0].Code)
 	s.Equal("name", err[0].Param)
 }
 
@@ -63,7 +63,7 @@ func (s *PersonTestSuite) TestNewPerson_MaxNameLenError() {
 	result, err := entity.NewPerson(s.uuid, firstName, s.lastName, s.phone, s.ssn, s.isActive, s.user, s.address)
 
 	s.Nil(result)
-	s.Equal(errorutil.InvalidArgument, err[0].Code)
+	s.Equal(error.InvalidArgument, err[0].Code)
 	s.Equal("name", err[0].Param)
 }
 
@@ -71,7 +71,7 @@ func (s *PersonTestSuite) TestNewPerson_LastNameEmptyError() {
 	result, err := entity.NewPerson(s.uuid, s.firstName, "", s.phone, s.ssn, s.isActive, s.user, s.address)
 
 	s.Nil(result)
-	s.Equal(errorutil.InvalidArgument, err[0].Code)
+	s.Equal(error.InvalidArgument, err[0].Code)
 	s.Equal("lastName", err[0].Param)
 }
 
@@ -81,7 +81,7 @@ func (s *PersonTestSuite) TestNewPerson_LastNameLenError() {
 	result, err := entity.NewPerson(s.uuid, s.firstName, lastName, s.phone, s.ssn, s.isActive, s.user, s.address)
 
 	s.Nil(result)
-	s.Equal(errorutil.InvalidArgument, err[0].Code)
+	s.Equal(error.InvalidArgument, err[0].Code)
 	s.Equal("lastName", err[0].Param)
 }
 
@@ -89,7 +89,7 @@ func (s *PersonTestSuite) TestNewPerson_PhoneEmptyError() {
 	result, err := entity.NewPerson(s.uuid, s.firstName, s.lastName, "", s.ssn, s.isActive, s.user, s.address)
 
 	s.Nil(result)
-	s.Equal(errorutil.InvalidArgument, err[0].Code)
+	s.Equal(error.InvalidArgument, err[0].Code)
 	s.Equal("phone", err[0].Param)
 }
 
@@ -97,7 +97,7 @@ func (s *PersonTestSuite) TestNewPerson_SsnEmptyError() {
 	result, err := entity.NewPerson(s.uuid, s.firstName, s.lastName, s.phone, "", s.isActive, s.user, s.address)
 
 	s.Nil(result)
-	s.Equal(errorutil.InvalidArgument, err[0].Code)
+	s.Equal(error.InvalidArgument, err[0].Code)
 	s.Equal("ssn", err[0].Param)
 }
 
@@ -105,7 +105,7 @@ func (s *PersonTestSuite) TestNewPerson_AddressNilError() {
 	result, err := entity.NewPerson(s.uuid, s.firstName, s.lastName, s.phone, s.ssn, s.isActive, s.user, nil)
 
 	s.Nil(result)
-	s.Equal(errorutil.InvalidArgument, err[0].Code)
+	s.Equal(error.InvalidArgument, err[0].Code)
 	s.Equal("address", err[0].Param)
 }
 

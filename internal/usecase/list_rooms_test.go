@@ -4,7 +4,7 @@ import (
 	"testing"
 
 	"github.com/christian-gama/go-booking-api/internal/domain/entity"
-	"github.com/christian-gama/go-booking-api/internal/domain/errorutil"
+	"github.com/christian-gama/go-booking-api/internal/domain/error"
 	"github.com/christian-gama/go-booking-api/internal/usecase"
 	"github.com/christian-gama/go-booking-api/mocks"
 	"github.com/christian-gama/go-booking-api/test"
@@ -37,7 +37,7 @@ func (s *ListRoomsTestSuite) TestListRooms_Handle_Success() {
 }
 
 func (s *ListRoomsTestSuite) TestListRooms_Handle_ListRoomsError() {
-	s.repo.On("ListRooms").Return(nil, []*errorutil.Error{{}})
+	s.repo.On("ListRooms").Return(nil, []*error.Error{{}})
 
 	result, err := s.listRooms.Handle()
 

@@ -2,14 +2,14 @@ package usecase
 
 import (
 	"github.com/christian-gama/go-booking-api/internal/domain/entity"
-	"github.com/christian-gama/go-booking-api/internal/domain/errorutil"
+	"github.com/christian-gama/go-booking-api/internal/domain/error"
 	"github.com/christian-gama/go-booking-api/internal/domain/repo"
 )
 
 type (
 	// ListRoomsUsecase is the interface that defines the retrieval of multiple rooms.
 	ListRoomsUsecase interface {
-		Handle() ([]*entity.Room, []*errorutil.Error)
+		Handle() ([]*entity.Room, []*error.Error)
 	}
 
 	// listRoomsImpl is a concrete implementation of the ListRooms.
@@ -20,7 +20,7 @@ type (
 
 // Handle retrieves multiple room. It will return an error if something
 // goes wrong with room retrieval or if the room repo return an error.
-func (l *listRoomsImpl) Handle() ([]*entity.Room, []*errorutil.Error) {
+func (l *listRoomsImpl) Handle() ([]*entity.Room, []*error.Error) {
 	room, err := l.repo.ListRooms()
 	if err != nil {
 		return nil, err

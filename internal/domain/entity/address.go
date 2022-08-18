@@ -3,7 +3,7 @@ package entity
 import (
 	"fmt"
 
-	"github.com/christian-gama/go-booking-api/internal/domain/errorutil"
+	"github.com/christian-gama/go-booking-api/internal/domain/error"
 	"github.com/christian-gama/go-booking-api/internal/domain/notification"
 	"github.com/christian-gama/go-booking-api/pkg/util"
 )
@@ -29,11 +29,11 @@ type Address struct {
 	State   string `json:"state"`
 }
 
-func (a *Address) validate() []*errorutil.Error {
+func (a *Address) validate() error.Errors {
 	if a.UUID == "" {
 		a.notification.AddError(
 			&notification.Error{
-				Code:    errorutil.InvalidArgument,
+				Code:    error.InvalidArgument,
 				Message: "uuid cannot be empty",
 				Param:   "uuid",
 			},
@@ -43,7 +43,7 @@ func (a *Address) validate() []*errorutil.Error {
 	if a.Street == "" {
 		a.notification.AddError(
 			&notification.Error{
-				Code:    errorutil.InvalidArgument,
+				Code:    error.InvalidArgument,
 				Message: "street cannot be empty",
 				Param:   "street",
 			},
@@ -53,7 +53,7 @@ func (a *Address) validate() []*errorutil.Error {
 	if a.ZipCode == "" {
 		a.notification.AddError(
 			&notification.Error{
-				Code:    errorutil.InvalidArgument,
+				Code:    error.InvalidArgument,
 				Message: "zip code cannot be empty",
 				Param:   "zipCode",
 			},
@@ -63,7 +63,7 @@ func (a *Address) validate() []*errorutil.Error {
 	if a.City == "" {
 		a.notification.AddError(
 			&notification.Error{
-				Code:    errorutil.InvalidArgument,
+				Code:    error.InvalidArgument,
 				Message: "city cannot be empty",
 				Param:   "city",
 			},
@@ -73,7 +73,7 @@ func (a *Address) validate() []*errorutil.Error {
 	if a.Country == "" {
 		a.notification.AddError(
 			&notification.Error{
-				Code:    errorutil.InvalidArgument,
+				Code:    error.InvalidArgument,
 				Message: "country cannot be empty",
 				Param:   "country",
 			},
@@ -83,7 +83,7 @@ func (a *Address) validate() []*errorutil.Error {
 	if a.State == "" {
 		a.notification.AddError(
 			&notification.Error{
-				Code:    errorutil.InvalidArgument,
+				Code:    error.InvalidArgument,
 				Message: "state cannot be empty",
 				Param:   "state",
 			},
@@ -93,7 +93,7 @@ func (a *Address) validate() []*errorutil.Error {
 	if len(a.Street) > MaxAddressStreetLen {
 		a.notification.AddError(
 			&notification.Error{
-				Code:    errorutil.InvalidArgument,
+				Code:    error.InvalidArgument,
 				Message: fmt.Sprintf("street cannot be longer than %d characters", MaxAddressStreetLen),
 				Param:   "street",
 			},
@@ -103,7 +103,7 @@ func (a *Address) validate() []*errorutil.Error {
 	if len(a.Number) < MinAddressNumberLen {
 		a.notification.AddError(
 			&notification.Error{
-				Code:    errorutil.InvalidArgument,
+				Code:    error.InvalidArgument,
 				Message: fmt.Sprintf("number cannot be shorter than %d characters", MinAddressNumberLen),
 				Param:   "number",
 			},
@@ -113,7 +113,7 @@ func (a *Address) validate() []*errorutil.Error {
 	if len(a.Number) > MaxAddressNumberLen {
 		a.notification.AddError(
 			&notification.Error{
-				Code:    errorutil.InvalidArgument,
+				Code:    error.InvalidArgument,
 				Message: fmt.Sprintf("number cannot be longer than %d characters", MaxAddressNumberLen),
 				Param:   "number",
 			},
@@ -134,7 +134,7 @@ func NewAddress(uuid string,
 	city string,
 	country string,
 	state string,
-) (*Address, []*errorutil.Error) {
+) (*Address, []*error.Error) {
 	address := &Address{
 		notification: notification.New(util.StructName(Address{})),
 

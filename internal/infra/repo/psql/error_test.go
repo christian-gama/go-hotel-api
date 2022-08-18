@@ -4,7 +4,7 @@ import (
 	"errors"
 	"testing"
 
-	"github.com/christian-gama/go-booking-api/internal/domain/errorutil"
+	"github.com/christian-gama/go-booking-api/internal/domain/error"
 	"github.com/christian-gama/go-booking-api/internal/infra/repo/psql"
 	"github.com/christian-gama/go-booking-api/test"
 	"github.com/stretchr/testify/suite"
@@ -24,7 +24,7 @@ func (s *ErrorTestSuite) TestSqlError_AnyError() {
 	result := psql.Error(errors.New("any error"))
 
 	s.Equal("any error", result[0].Message)
-	s.Equal(errorutil.RepositoryError, result[0].Code)
+	s.Equal(error.RepositoryError, result[0].Code)
 }
 
 func (s *ErrorTestSuite) TestErrIs_UniqueViolation() {
@@ -33,7 +33,7 @@ func (s *ErrorTestSuite) TestErrIs_UniqueViolation() {
 	)
 
 	s.Equal("unique constraint violation", result[0].Message)
-	s.Equal(errorutil.RepositoryError, result[0].Code)
+	s.Equal(error.RepositoryError, result[0].Code)
 }
 
 func (s *ErrorTestSuite) TestErrIs_InvalidUUID() {
@@ -42,7 +42,7 @@ func (s *ErrorTestSuite) TestErrIs_InvalidUUID() {
 	)
 
 	s.Equal("invalid uuid", result[0].Message)
-	s.Equal(errorutil.RepositoryError, result[0].Code)
+	s.Equal(error.RepositoryError, result[0].Code)
 }
 
 func (s *ErrorTestSuite) TestErrIs_NoRows() {
@@ -51,7 +51,7 @@ func (s *ErrorTestSuite) TestErrIs_NoRows() {
 	))
 
 	s.Equal("could not find any result", result[0].Message)
-	s.Equal(errorutil.RepositoryError, result[0].Code)
+	s.Equal(error.RepositoryError, result[0].Code)
 }
 
 func TestErrorTestSuite(t *testing.T) {

@@ -3,7 +3,7 @@ package response_test
 import (
 	"testing"
 
-	"github.com/christian-gama/go-booking-api/internal/domain/errorutil"
+	"github.com/christian-gama/go-booking-api/internal/domain/error"
 	"github.com/christian-gama/go-booking-api/internal/presenter/http/response"
 	"github.com/christian-gama/go-booking-api/test"
 	"github.com/stretchr/testify/suite"
@@ -14,16 +14,16 @@ type ResponseTestSuite struct {
 }
 
 func (s *ResponseTestSuite) TestError() {
-	result := response.Error([]*errorutil.Error{
+	result := response.Error([]*error.Error{
 		{
-			Code:    errorutil.InvalidArgument,
+			Code:    error.InvalidArgument,
 			Param:   "param",
 			Message: "message",
 			Context: "context",
 		},
 	})
 
-	s.Equal(errorutil.InvalidArgument, result.Errors[0].Code)
+	s.Equal(error.InvalidArgument, result.Errors[0].Code)
 	s.Equal("message", result.Errors[0].Message)
 }
 

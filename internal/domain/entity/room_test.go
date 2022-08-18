@@ -5,7 +5,7 @@ import (
 	"testing"
 
 	"github.com/christian-gama/go-booking-api/internal/domain/entity"
-	"github.com/christian-gama/go-booking-api/internal/domain/errorutil"
+	"github.com/christian-gama/go-booking-api/internal/domain/error"
 	"github.com/christian-gama/go-booking-api/test"
 	"github.com/stretchr/testify/suite"
 )
@@ -39,7 +39,7 @@ func (s *RoomTestSuite) TestNewRoom_UuidEmptyError() {
 	result, err := entity.NewRoom("", s.name, s.description, s.bedCount, s.price)
 
 	s.Nil(result)
-	s.Equal(errorutil.InvalidArgument, err[0].Code)
+	s.Equal(error.InvalidArgument, err[0].Code)
 	s.Equal("uuid", err[0].Param)
 }
 
@@ -47,7 +47,7 @@ func (s *RoomTestSuite) TestNewRoom_NameEmptyError() {
 	result, err := entity.NewRoom(s.uuid, "", s.description, s.bedCount, s.price)
 
 	s.Nil(result)
-	s.Equal(errorutil.InvalidArgument, err[0].Code)
+	s.Equal(error.InvalidArgument, err[0].Code)
 	s.Equal("name", err[0].Param)
 }
 
@@ -57,7 +57,7 @@ func (s *RoomTestSuite) TestNewRoom_MinDescriptionLenError() {
 	result, err := entity.NewRoom(s.uuid, s.name, description, s.bedCount, s.price)
 
 	s.Nil(result)
-	s.Equal(errorutil.InvalidArgument, err[0].Code)
+	s.Equal(error.InvalidArgument, err[0].Code)
 	s.Equal("description", err[0].Param)
 }
 
@@ -67,7 +67,7 @@ func (s *RoomTestSuite) TestNewRoom_MaxDescriptionLenError() {
 	result, err := entity.NewRoom(s.uuid, s.name, description, s.bedCount, s.price)
 
 	s.Nil(result)
-	s.Equal(errorutil.InvalidArgument, err[0].Code)
+	s.Equal(error.InvalidArgument, err[0].Code)
 	s.Equal("description", err[0].Param)
 }
 
@@ -77,7 +77,7 @@ func (s *RoomTestSuite) TestNewRoom_MinBedCountError() {
 	result, err := entity.NewRoom(s.uuid, s.name, s.description, bedCount, s.price)
 
 	s.Nil(result)
-	s.Equal(errorutil.InvalidArgument, err[0].Code)
+	s.Equal(error.InvalidArgument, err[0].Code)
 	s.Equal("bedCount", err[0].Param)
 }
 
@@ -87,7 +87,7 @@ func (s *RoomTestSuite) TestNewRoom_MaxBedCountError() {
 	result, err := entity.NewRoom(s.uuid, s.name, s.description, bedCount, s.price)
 
 	s.Nil(result)
-	s.Equal(errorutil.InvalidArgument, err[0].Code)
+	s.Equal(error.InvalidArgument, err[0].Code)
 	s.Equal("bedCount", err[0].Param)
 }
 
@@ -97,7 +97,7 @@ func (s *RoomTestSuite) TestNewRoom_MinPriceError() {
 	result, err := entity.NewRoom(s.uuid, s.name, s.description, s.bedCount, price)
 
 	s.Nil(result)
-	s.Equal(errorutil.InvalidArgument, err[0].Code)
+	s.Equal(error.InvalidArgument, err[0].Code)
 	s.Equal("price", err[0].Param)
 }
 
@@ -107,7 +107,7 @@ func (s *RoomTestSuite) TestNewRoom_MaxPriceError() {
 	result, err := entity.NewRoom(s.uuid, s.name, s.description, s.bedCount, price)
 
 	s.Nil(result)
-	s.Equal(errorutil.InvalidArgument, err[0].Code)
+	s.Equal(error.InvalidArgument, err[0].Code)
 	s.Equal("price", err[0].Param)
 }
 

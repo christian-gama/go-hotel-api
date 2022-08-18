@@ -8,7 +8,7 @@ import (
 	"testing"
 
 	"github.com/christian-gama/go-booking-api/internal/domain/entity"
-	"github.com/christian-gama/go-booking-api/internal/domain/errorutil"
+	"github.com/christian-gama/go-booking-api/internal/domain/error"
 	"github.com/christian-gama/go-booking-api/internal/presenter/controller"
 	"github.com/christian-gama/go-booking-api/internal/presenter/http/request"
 	"github.com/christian-gama/go-booking-api/internal/usecase"
@@ -61,7 +61,7 @@ func (s *CreateRoomTestSuite) TestCreateRoom_Handle_Failure() {
 		},
 	)
 	req := &request.Request{Request: httptest.NewRequest(http.MethodPost, "/", bytes.NewReader(inputByte))}
-	s.createRoomUsecase.On("Handle", mock.Anything).Return(nil, []*errorutil.Error{{}})
+	s.createRoomUsecase.On("Handle", mock.Anything).Return(nil, []*error.Error{{}})
 
 	result := s.ctrl.Handle(req)
 

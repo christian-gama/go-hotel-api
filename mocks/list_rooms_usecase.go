@@ -4,7 +4,7 @@ package mocks
 
 import (
 	entity "github.com/christian-gama/go-booking-api/internal/domain/entity"
-	errorutil "github.com/christian-gama/go-booking-api/internal/domain/errorutil"
+	error "github.com/christian-gama/go-booking-api/internal/domain/error"
 
 	mock "github.com/stretchr/testify/mock"
 )
@@ -15,7 +15,7 @@ type ListRoomsUsecase struct {
 }
 
 // Handle provides a mock function with given fields:
-func (_m *ListRoomsUsecase) Handle() ([]*entity.Room, []*errorutil.Error) {
+func (_m *ListRoomsUsecase) Handle() ([]*entity.Room, []*error.Error) {
 	ret := _m.Called()
 
 	var r0 []*entity.Room
@@ -27,12 +27,12 @@ func (_m *ListRoomsUsecase) Handle() ([]*entity.Room, []*errorutil.Error) {
 		}
 	}
 
-	var r1 []*errorutil.Error
-	if rf, ok := ret.Get(1).(func() []*errorutil.Error); ok {
+	var r1 []*error.Error
+	if rf, ok := ret.Get(1).(func() []*error.Error); ok {
 		r1 = rf()
 	} else {
 		if ret.Get(1) != nil {
-			r1 = ret.Get(1).([]*errorutil.Error)
+			r1 = ret.Get(1).([]*error.Error)
 		}
 	}
 

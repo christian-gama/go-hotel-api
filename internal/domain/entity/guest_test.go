@@ -4,7 +4,7 @@ import (
 	"testing"
 
 	"github.com/christian-gama/go-booking-api/internal/domain/entity"
-	"github.com/christian-gama/go-booking-api/internal/domain/errorutil"
+	"github.com/christian-gama/go-booking-api/internal/domain/error"
 	"github.com/christian-gama/go-booking-api/test"
 	"github.com/stretchr/testify/suite"
 )
@@ -34,7 +34,7 @@ func (s *GuestTestSuite) TestNewGuest_UuidEmptyError() {
 	result, err := entity.NewGuest("", s.credits, s.personId)
 
 	s.Nil(result)
-	s.Equal(errorutil.InvalidArgument, err[0].Code)
+	s.Equal(error.InvalidArgument, err[0].Code)
 	s.Equal("uuid", err[0].Param)
 }
 
@@ -42,7 +42,7 @@ func (s *GuestTestSuite) TestNewGuest_NegativeCreditsError() {
 	result, err := entity.NewGuest(s.uuid, -1.0, s.personId)
 
 	s.Nil(result)
-	s.Equal(errorutil.InvalidArgument, err[0].Code)
+	s.Equal(error.InvalidArgument, err[0].Code)
 	s.Equal("credits", err[0].Param)
 }
 

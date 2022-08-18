@@ -3,7 +3,7 @@ package entity
 import (
 	"time"
 
-	"github.com/christian-gama/go-booking-api/internal/domain/errorutil"
+	"github.com/christian-gama/go-booking-api/internal/domain/error"
 	"github.com/christian-gama/go-booking-api/internal/domain/notification"
 	"github.com/christian-gama/go-booking-api/pkg/util"
 )
@@ -18,11 +18,11 @@ type RoomRestriction struct {
 	EndDate     time.Time    `json:"endDate"`
 }
 
-func (r *RoomRestriction) validate() []*errorutil.Error {
+func (r *RoomRestriction) validate() error.Errors {
 	if r.UUID == "" {
 		r.notification.AddError(
 			&notification.Error{
-				Code:    errorutil.InvalidArgument,
+				Code:    error.InvalidArgument,
 				Message: "uuid cannot be empty",
 				Param:   "uuid",
 			},
@@ -32,7 +32,7 @@ func (r *RoomRestriction) validate() []*errorutil.Error {
 	if r.Room == nil {
 		r.notification.AddError(
 			&notification.Error{
-				Code:    errorutil.InvalidArgument,
+				Code:    error.InvalidArgument,
 				Message: "room cannot be empty",
 				Param:   "room",
 			},
@@ -42,7 +42,7 @@ func (r *RoomRestriction) validate() []*errorutil.Error {
 	if r.Restriction == nil {
 		r.notification.AddError(
 			&notification.Error{
-				Code:    errorutil.InvalidArgument,
+				Code:    error.InvalidArgument,
 				Message: "restriction cannot be empty",
 				Param:   "restriction",
 			},
@@ -52,7 +52,7 @@ func (r *RoomRestriction) validate() []*errorutil.Error {
 	if r.StartDate.After(r.EndDate) {
 		r.notification.AddError(
 			&notification.Error{
-				Code:    errorutil.ConditionNotMet,
+				Code:    error.ConditionNotMet,
 				Message: "start date cannot be after end date",
 				Param:   "startDate",
 			},
@@ -62,7 +62,7 @@ func (r *RoomRestriction) validate() []*errorutil.Error {
 	if r.StartDate.Before(time.Now()) {
 		r.notification.AddError(
 			&notification.Error{
-				Code:    errorutil.ConditionNotMet,
+				Code:    error.ConditionNotMet,
 				Message: "start date cannot be before current time",
 				Param:   "startDate",
 			},
@@ -82,7 +82,7 @@ func NewRoomRestriction(
 	restriction *Restriction,
 	startDate time.Time,
 	endDate time.Time,
-) (*RoomRestriction, []*errorutil.Error) {
+) (*RoomRestriction, []*error.Error) {
 	roomRestriction := &RoomRestriction{
 		notification.New(util.StructName(RoomRestriction{})),
 

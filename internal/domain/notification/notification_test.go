@@ -3,7 +3,7 @@ package notification_test
 import (
 	"testing"
 
-	"github.com/christian-gama/go-booking-api/internal/domain/errorutil"
+	"github.com/christian-gama/go-booking-api/internal/domain/error"
 	"github.com/christian-gama/go-booking-api/internal/domain/notification"
 	"github.com/christian-gama/go-booking-api/test"
 	"github.com/stretchr/testify/suite"
@@ -21,7 +21,7 @@ func (s *NotificationTestSuite) SetupTest() {
 
 func (s *NotificationTestSuite) TestNotification_AddError() {
 	s.notification.AddError(&notification.Error{
-		Code:    errorutil.InvalidArgument,
+		Code:    error.InvalidArgument,
 		Message: "message",
 		Param:   "param",
 	})
@@ -31,7 +31,7 @@ func (s *NotificationTestSuite) TestNotification_AddError() {
 
 func (s *NotificationTestSuite) TestNotification_HasErrors() {
 	s.notification.AddError(&notification.Error{
-		Code:    errorutil.InvalidArgument,
+		Code:    error.InvalidArgument,
 		Message: "message",
 		Param:   "param",
 	})
@@ -41,12 +41,12 @@ func (s *NotificationTestSuite) TestNotification_HasErrors() {
 
 func (s *NotificationTestSuite) TestNotification_Errors() {
 	s.notification.AddError(&notification.Error{
-		Code:    errorutil.InvalidArgument,
+		Code:    error.InvalidArgument,
 		Message: "message",
 		Param:   "param",
 	})
 
-	s.Equal(errorutil.InvalidArgument, s.notification.Errors()[0].Code)
+	s.Equal(error.InvalidArgument, s.notification.Errors()[0].Code)
 	s.Equal("message", s.notification.Errors()[0].Message)
 	s.Equal("param", s.notification.Errors()[0].Param)
 }
