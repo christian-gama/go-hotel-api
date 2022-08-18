@@ -3,7 +3,7 @@
 package mocks
 
 import (
-	request "github.com/christian-gama/go-booking-api/internal/presenter/http/request"
+	request "github.com/christian-gama/go-booking-api/internal/shared/presenter/http/request"
 	mock "github.com/stretchr/testify/mock"
 )
 

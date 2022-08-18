@@ -79,9 +79,6 @@ mock: cmd-exists-docker
 	@docker run \
 		-v "$(PWD)":/src \
 		-w /src vektra/mockery --all --case underscore --exported --dir ./internal --quiet
-	@docker run \
-		-v "$(PWD)":/src \
-		-w /src vektra/mockery --all --case underscore --exported --dir ./pkg --quiet
 
 
 clear:
