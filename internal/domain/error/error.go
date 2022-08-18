@@ -15,6 +15,7 @@ type Error struct {
 	Param string
 }
 
+// Errors is a slice of Error.
 type Errors []*Error
 
 // New creates a new instance of Error.

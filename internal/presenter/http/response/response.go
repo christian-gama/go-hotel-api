@@ -27,7 +27,7 @@ func Exception(errs error.Errors) *Response {
 	}
 }
 
-// OK returns a response with status code 200.
+// OK returns a success response with the given data.
 func OK(data any) *Response {
 	return &Response{
 		Status: success,

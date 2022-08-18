@@ -44,7 +44,7 @@ func (r *roomRepoImpl) SaveRoom(room *entity.Room) (*entity.Room, error.Errors) 
 		room.Price,
 	)
 	if err != nil {
-		return nil, Error(err)
+		return nil, Exception(err)
 	}
 
 	return room, nil
@@ -67,7 +67,7 @@ func (r *roomRepoImpl) GetRoom(uuid string) (*entity.Room, error.Errors) {
 		&room.Price,
 	)
 	if err != nil {
-		return nil, Error(err)
+		return nil, Exception(err)
 	}
 
 	return room, nil
@@ -81,7 +81,7 @@ func (r *roomRepoImpl) ListRooms() ([]*entity.Room, error.Errors) {
 	stmt := `SELECT uuid, name, description, bed_count, price FROM room`
 	rows, err := r.db.QueryContext(ctx, stmt)
 	if err != nil {
-		return nil, Error(err)
+		return nil, Exception(err)
 	}
 	defer rows.Close()
 
@@ -96,7 +96,7 @@ func (r *roomRepoImpl) ListRooms() ([]*entity.Room, error.Errors) {
 			&room.Price,
 		)
 		if err != nil {
-			return nil, Error(err)
+			return nil, Exception(err)
 		}
 		rooms = append(rooms, room)
 	}
@@ -112,7 +112,7 @@ func (r *roomRepoImpl) DeleteRoom(uuid string) (bool, error.Errors) {
 	stmt := `DELETE FROM room WHERE uuid = $1`
 	result, err := r.db.ExecContext(ctx, stmt, uuid)
 	if err != nil {
-		return false, Error(err)
+		return false, Exception(err)
 	}
 
 	rowsAffected, err := result.RowsAffected()

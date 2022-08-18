@@ -10,25 +10,25 @@ import (
 	"github.com/stretchr/testify/suite"
 )
 
-type ErrorTestSuite struct {
+type ExceptionTestSuite struct {
 	suite.Suite
 }
 
-func (s *ErrorTestSuite) TestErrIs_Nil() {
-	result := psql.Error(nil)
+func (s *ExceptionTestSuite) TestException_Nil() {
+	result := psql.Exception(nil)
 
 	s.Nil(result)
 }
 
-func (s *ErrorTestSuite) TestSqlError_AnyError() {
-	result := psql.Error(errors.New("any error"))
+func (s *ExceptionTestSuite) TestException_AnyError() {
+	result := psql.Exception(errors.New("any error"))
 
 	s.Equal("any error", result[0].Message)
 	s.Equal(error.RepositoryError, result[0].Code)
 }
 
-func (s *ErrorTestSuite) TestErrIs_UniqueViolation() {
-	result := psql.Error(errors.New(
+func (s *ExceptionTestSuite) TestException_UniqueViolation() {
+	result := psql.Exception(errors.New(
 		"ERROR: duplicate key value violates unique constraint \"room_name_key\" (SQLSTATE 23505)"),
 	)
 
@@ -36,8 +36,8 @@ func (s *ErrorTestSuite) TestErrIs_UniqueViolation() {
 	s.Equal(error.RepositoryError, result[0].Code)
 }
 
-func (s *ErrorTestSuite) TestErrIs_InvalidUUID() {
-	result := psql.Error(errors.New(
+func (s *ExceptionTestSuite) TestException_InvalidUUID() {
+	result := psql.Exception(errors.New(
 		"ERROR: invalid input syntax for type uuid: \"invalid-uuid\" (SQLSTATE 22P02)"),
 	)
 
@@ -45,8 +45,8 @@ func (s *ErrorTestSuite) TestErrIs_InvalidUUID() {
 	s.Equal(error.RepositoryError, result[0].Code)
 }
 
-func (s *ErrorTestSuite) TestErrIs_NoRows() {
-	result := psql.Error(errors.New(
+func (s *ExceptionTestSuite) TestException_NoRows() {
+	result := psql.Exception(errors.New(
 		"sql: no rows in result set",
 	))
 
@@ -54,6 +54,6 @@ func (s *ErrorTestSuite) TestErrIs_NoRows() {
 	s.Equal(error.RepositoryError, result[0].Code)
 }
 
-func TestErrorTestSuite(t *testing.T) {
-	test.RunUnitTest(t, new(ErrorTestSuite))
+func TestExceptionTestSuite(t *testing.T) {
+	test.RunUnitTest(t, new(ExceptionTestSuite))
 }

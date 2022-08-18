@@ -23,8 +23,8 @@ func errIs(err error, code ErrorCode) bool {
 	return strings.Contains(err.Error(), string(code))
 }
 
-// Error handles the error from postgres.
-func Error(err error) []*apperror.Error {
+// Exception handles the error from postgres.
+func Exception(err error) []*apperror.Error {
 	if err == nil {
 		return nil
 	}
