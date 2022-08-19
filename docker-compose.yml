@@ -26,7 +26,7 @@ services:
       context: .
       dockerfile: Dockerfile
       args:
-        - WORKDIR=/go/src/github.com/christian-gama/go-booking-api
+        - WORKDIR=${WORKDIR}
     ports:
       - "${APP_PORT}:${APP_PORT}"
     env_file:
@@ -37,21 +37,21 @@ services:
       - ${DB_HOST}
     volumes:
       - ./.generated/.cache/go:/root/.cache
-      - ./cmd:/go/src/github.com/christian-gama/go-booking-api/cmd
-      - ./migrations:/go/src/github.com/christian-gama/go-booking-api/migrations
-      - ./internal:/go/src/github.com/christian-gama/go-booking-api/internal
-      - ./.env.dev:/go/src/github.com/christian-gama/go-booking-api/.env.dev
-      - ./.env.prod:/go/src/github.com/christian-gama/go-booking-api/.env.prod
-      - ./.env.test:/go/src/github.com/christian-gama/go-booking-api/.env.test
-      - ./.golangci.yml:/go/src/github.com/christian-gama/go-booking-api/.golangci.yml
-      - ./go.mod:/go/src/github.com/christian-gama/go-booking-api/go.mod
-      - ./go.sum:/go/src/github.com/christian-gama/go-booking-api/go.sum
-      - ./Makefile:/go/src/github.com/christian-gama/go-booking-api/Makefile
-      - ./vendor:/go/src/github.com/christian-gama/go-booking-api/vendor
-      - ./.generated/coverage:/go/src/github.com/christian-gama/go-booking-api/.generated/coverage
-      - ./.generated/build:/go/src/github.com/christian-gama/go-booking-api/.generated/build
-      - ./mocks:/go/src/github.com/christian-gama/go-booking-api/mocks
-      - ./test:/go/src/github.com/christian-gama/go-booking-api/test
+      - ./cmd:${WORKDIR}/cmd
+      - ./migrations:${WORKDIR}/migrations
+      - ./internal:${WORKDIR}/internal
+      - ./.env.dev:${WORKDIR}/.env.dev
+      - ./.env.prod:${WORKDIR}/.env.prod
+      - ./.env.test:${WORKDIR}/.env.test
+      - ./.golangci.yml:${WORKDIR}/.golangci.yml
+      - ./go.mod:${WORKDIR}/go.mod
+      - ./go.sum:${WORKDIR}/go.sum
+      - ./Makefile:${WORKDIR}/Makefile
+      - ./vendor:${WORKDIR}/vendor
+      - ./.generated/coverage:${WORKDIR}/.generated/coverage
+      - ./.generated/build:${WORKDIR}/.generated/build
+      - ./mocks:${WORKDIR}/mocks
+      - ./test:${WORKDIR}/test
   
   psql_test:
     container_name: go_booking_psql_test

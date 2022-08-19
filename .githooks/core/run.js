@@ -21,7 +21,7 @@ module.exports = async function (hook, script) {
     stdout = response.stdout;
   } catch (error) {
     if (error.code !== 0 && error.code !== 7) {
-      log.error(hook, error.stderr);
+      log.error(hook, error.stdout);
     }
   }
 

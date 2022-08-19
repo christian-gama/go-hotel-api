@@ -3,8 +3,11 @@ GENERATED_DIR ?= $(PWD)/.generated
 CACHE_DIR ?= $(PWD)/.cache
 COVERAGE_DIR ?= $(GENERATED_DIR)/coverage
 BUILD_DIR ?= $(GENERATED_DIR)/build
-APP_NAME ?= go_booking
 MAKE = make --no-print-directory
+
+# WORKDIR is used to set the working directory for Dockerfile builds.
+export WORKDIR=/go/src/github.com/christian-gama/go-booking-api
+export APP_NAME = $(shell basename $(PWD))
 
 -include $(ENV_FILE)
 
@@ -27,22 +30,22 @@ build: cmd-exists-go
 
 
 test: cmd-exists-go cmd-exists-gotestsum
-	@TEST_MODE=unit gotestsum --format pkgname -- $(TEST_FLAGS) ./...
+	@TEST_MODE=unit APP_NAME=$(APP_NAME) gotestsum --format pkgname -- $(TEST_FLAGS) ./...
 
 
 test-integration: cmd-exists-go
-	@TEST_MODE=integration gotestsum --format pkgname -- $(TEST_FLAGS) -p 1 ./...
+	@TEST_MODE=integration APP_NAME=$(APP_NAME) gotestsum --format pkgname -- $(TEST_FLAGS) -p 1 ./...
 
 
 test-verbose: cmd-exists-go cmd-exists-gotestsum
-	@TEST_MODE=unit gotestsum --format standard-verbose -- $(TEST_FLAGS) ./...
+	@TEST_MODE=unit APP_NAME=$(APP_NAME) gotestsum --format standard-verbose -- $(TEST_FLAGS) ./...
 
 
 cover: cmd-exists-go
 	@if [ ! -d "$(COVERAGE_DIR)" ]; then \
 		mkdir -p $(COVERAGE_DIR); \
 	fi
-	@TEST_MODE=both gotestsum --format pkgname -- -coverprofile=$(COVERAGE_DIR)/coverage.out -p 1 ./...
+	@TEST_MODE=both APP_NAME=$(APP_NAME) gotestsum --format pkgname -- -coverprofile=$(COVERAGE_DIR)/coverage.out -p 1 ./...
 	@$(MAKE) cover-html
 
 
@@ -67,7 +70,8 @@ migrate-%: cmd-exists-docker
 
 
 migrate: cmd-exists-docker
-	@until docker exec go_booking_psql pg_isready ; do sleep 1 ; done
+	@docker compose --env-file $(ENV_FILE) up -d psql
+	@until docker exec go_booking_psql pg_isready ; do sleep 4 ; done
 
 	@mkdir -p $(PWD)/$(MIG_DIR)
 	@docker run -it \
@@ -94,8 +98,7 @@ clear:
 
 remake:
 	@$(MAKE) clear
-	@docker compose --env-file .env.dev down
-	@docker compose --env-file .env.dev up api -d
+	@WORKDIR=$(WORKDIR) docker compose --env-file .env.dev up api -d
 	@$(MAKE) migrate-up
 
 	@$(MAKE) docker ENV_FILE=.env.dev ENTRY_POINT="make build"
@@ -103,7 +106,7 @@ remake:
 
 
 docker: cmd-exists-docker
-	@docker compose --env-file "$(ENV_FILE)" run \
+	@WORKDIR=$(WORKDIR) APP_NAME=$(APP_NAME) docker compose --env-file "$(ENV_FILE)" run \
 		--name $(APP_NAME) \
 		-p $(APP_PORT):$(APP_PORT) \
 		--rm \
@@ -138,10 +141,6 @@ docker-cover-html: cmd-exists-docker
 
 docker-down: cmd-exists-docker
 	@docker compose --env-file ".env.dev" down 
-
-
-docker-kill: cmd-exists-docker
-	@docker kill $(APP_NAME) 
 
 
 docker-rebuild:
