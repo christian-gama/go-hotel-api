@@ -27,8 +27,8 @@ func (s *PersonTestSuite) SetupTest() {
 	s.uuid = "12345678-1234-1234-1234-123456789012"
 	s.firstName = "Any name"
 	s.lastName = "Any last name"
-	s.phone = "Any phone"
-	s.ssn = "Any ssn"
+	s.phone = "12345678901"
+	s.ssn = "123456789"
 	s.isActive = true
 	s.userId = 1
 	s.address, _ = entity.NewAddress(s.uuid, "Any street", "123A", "45066668", "Any city", "Any country", "Any state")
@@ -93,8 +93,24 @@ func (s *PersonTestSuite) TestNewPerson_PhoneEmptyError() {
 	s.Equal("phone", err[0].Param)
 }
 
+func (s *PersonTestSuite) TestNewPerson_PhoneInvalidError() {
+	result, err := entity.NewPerson(s.uuid, s.firstName, s.lastName, "123456", s.ssn, s.isActive, s.userId, s.address)
+
+	s.Nil(result)
+	s.Equal(error.InvalidArgument, err[0].Code)
+	s.Equal("phone", err[0].Param)
+}
+
 func (s *PersonTestSuite) TestNewPerson_SsnEmptyError() {
 	result, err := entity.NewPerson(s.uuid, s.firstName, s.lastName, s.phone, "", s.isActive, s.userId, s.address)
+
+	s.Nil(result)
+	s.Equal(error.InvalidArgument, err[0].Code)
+	s.Equal("ssn", err[0].Param)
+}
+
+func (s *PersonTestSuite) TestNewPerson_SsnInvalidError() {
+	result, err := entity.NewPerson(s.uuid, s.firstName, s.lastName, s.phone, "123456", s.isActive, s.userId, s.address)
 
 	s.Nil(result)
 	s.Equal(error.InvalidArgument, err[0].Code)

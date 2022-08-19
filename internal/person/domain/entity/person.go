@@ -2,6 +2,7 @@ package entity
 
 import (
 	"fmt"
+	"regexp"
 
 	"github.com/christian-gama/go-booking-api/internal/shared/domain/error"
 	"github.com/christian-gama/go-booking-api/internal/shared/domain/notification"
@@ -87,11 +88,31 @@ func (p *Person) validate() error.Errors {
 		)
 	}
 
+	if !regexp.MustCompile(`^[0-9]{11}$`).MatchString(p.Phone) {
+		p.notification.AddError(
+			&notification.Error{
+				Code:    error.InvalidArgument,
+				Message: "phone is not valid",
+				Param:   "phone",
+			},
+		)
+	}
+
 	if p.Ssn == "" {
 		p.notification.AddError(
 			&notification.Error{
 				Code:    error.InvalidArgument,
 				Message: "ssn cannot be empty",
+				Param:   "ssn",
+			},
+		)
+	}
+
+	if !regexp.MustCompile(`^[0-9]{9}$`).MatchString(p.Ssn) {
+		p.notification.AddError(
+			&notification.Error{
+				Code:    error.InvalidArgument,
+				Message: "ssn is not valid",
 				Param:   "ssn",
 			},
 		)

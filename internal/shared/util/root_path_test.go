@@ -1,6 +1,7 @@
 package util_test
 
 import (
+	"os"
 	"testing"
 
 	"github.com/christian-gama/go-booking-api/internal/shared/util"
@@ -15,7 +16,8 @@ type RootPathTestSuite struct {
 func (s *RootPathTestSuite) TestGetRootPath() {
 	path := util.RootPath()
 
-	s.Regexp("^(.*go-booking-api)$", path)
+	appName := os.Getenv("APP_NAME")
+	s.Regexp("^.*"+appName, path)
 }
 
 func TestRootPathTestSuite(t *testing.T) {

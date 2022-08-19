@@ -10,7 +10,7 @@ import (
 )
 
 func init() {
-	// Clean terminal screen
+	// Clear terminal screen
 	os.Stdout.Write([]byte("\033[H\033[2J"))
 }
 
