@@ -23,7 +23,7 @@ func (s *JsonTestSuite) TestUnmarshal_Success() {
 		Field      string `json:"field"`
 		OtherField string `json:"otherField"`
 	}
-	d := &data{"field", "other field"}
+	d := &data{}
 	bodyMap := map[string]interface{}{
 		"field":      "field",
 		"otherField": "other field",
@@ -45,6 +45,34 @@ func (s *JsonTestSuite) TestUnmarshal_Success() {
 	s.Equal(bodyMap["field"], d.Field)
 }
 
+func (s *JsonTestSuite) TestUnmarshal_TypeError() {
+	type data struct {
+		Field      int    `json:"field"`
+		OtherField string `json:"otherField"`
+	}
+	d := &data{}
+	bodyMap := map[string]interface{}{
+		"field":      "invalid type",
+		"otherField": "other field",
+	}
+	body, _ := json.Marshal(bodyMap)
+
+	result := response.Unmarshal(
+		&request.Request{
+			Request: httptest.NewRequest(
+				http.MethodPost,
+				"/",
+				bytes.NewReader(body),
+			),
+		},
+		d,
+	)
+
+	s.Equal(error.InvalidArgument, result.Errors[0].Code)
+	s.Equal("field", result.Errors[0].Param)
+	s.Equal("unmarshal", result.Errors[0].Context)
+}
+
 func (s *JsonTestSuite) TestUnmarshal_Error() {
 	type data struct {
 		Field      string `json:"field"`
@@ -63,7 +91,9 @@ func (s *JsonTestSuite) TestUnmarshal_Error() {
 		d,
 	)
 
-	s.Equal(error.InternalError, result.Errors[0].Code)
+	s.Equal(error.InvalidArgument, result.Errors[0].Code)
+	s.Equal("json", result.Errors[0].Param)
+	s.Equal("unmarshal", result.Errors[0].Context)
 }
 
 func TestJsonTestSuite(t *testing.T) {
