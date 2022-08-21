@@ -35,6 +35,7 @@ type (
 	}
 )
 
+// Handle handles the creation of a person. It will also create the person's address.
 func (c *createPersonImpl) Handle(input *CreatePersonInput) (*entity.Person, error.Errors) {
 	uuid := c.uuid.Generate()
 	addressUuid := c.uuid.Generate()
@@ -75,6 +76,7 @@ func (c *createPersonImpl) Handle(input *CreatePersonInput) (*entity.Person, err
 	return person, nil
 }
 
+// NewCreatePerson returns a new instance of the CreatePerson.
 func NewCreatePerson(repo repo.SavePersonRepo, uuid uuid.UUID) CreatePersonUsecase {
 	return &createPersonImpl{
 		repo: repo,

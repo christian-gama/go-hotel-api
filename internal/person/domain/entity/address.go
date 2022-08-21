@@ -17,6 +17,7 @@ const (
 	MinAddressNumberLen  = 1
 )
 
+// Address represents a person address.
 type Address struct {
 	notification *notification.Notification
 
@@ -29,6 +30,8 @@ type Address struct {
 	State   string `json:"state"`
 }
 
+// validate ensure the entity is valid. It will add an error to notification each time
+// it fails a validation. It will return nil if the entity is valid.
 func (a *Address) validate() error.Errors {
 	if a.UUID == "" {
 		a.notification.AddError(
@@ -127,6 +130,7 @@ func (a *Address) validate() error.Errors {
 	return nil
 }
 
+// NewAddress returns a new Address instance.
 func NewAddress(uuid string,
 	street string,
 	number string,

@@ -10,10 +10,15 @@ import (
 )
 
 const (
-	MaxPersonNameLen     = 80
+	// MaxPersonNameLen is the maximum length of a person's name.
+	MaxPersonNameLen = 80
+
+	// MaxPersonLastNameLen is the maximum length of a person's last name.
 	MaxPersonLastNameLen = 80
 )
 
+// Person is a entity that aggregates all the information about a person (either a guest or staff). A person can
+// have a user account or not.
 type Person struct {
 	notification *notification.Notification
 
@@ -27,6 +32,8 @@ type Person struct {
 	Address   *Address `json:"address"`
 }
 
+// validate ensure the entity is valid. It will add an error to notification each time
+// it fails a validation. It will return nil if the entity is valid.
 func (p *Person) validate() error.Errors {
 	if p.UUID == "" {
 		p.notification.AddError(
@@ -135,6 +142,7 @@ func (p *Person) validate() error.Errors {
 	return nil
 }
 
+// NewPerson returns a new Person instance.
 func NewPerson(
 	uuid string,
 	firstName string,

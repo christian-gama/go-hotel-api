@@ -8,6 +8,7 @@ import (
 	"github.com/christian-gama/go-booking-api/internal/shared/util"
 )
 
+// RoomRestriction is a combination of a room and a restriction. It is used to set the availability of a room.
 type RoomRestriction struct {
 	notification *notification.Notification
 
@@ -18,6 +19,8 @@ type RoomRestriction struct {
 	EndDate     time.Time    `json:"endDate"`
 }
 
+// validate ensure the entity is valid. It will add an error to notification each time
+// it fails a validation. It will return nil if the entity is valid.
 func (r *RoomRestriction) validate() error.Errors {
 	if r.UUID == "" {
 		r.notification.AddError(
@@ -76,6 +79,7 @@ func (r *RoomRestriction) validate() error.Errors {
 	return nil
 }
 
+// NewRoomRestriction returns a new RoomRestriction instance.
 func NewRoomRestriction(
 	uuid string,
 	room *Room,

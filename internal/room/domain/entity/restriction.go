@@ -14,6 +14,7 @@ const (
 	MinRestrictionDescriptionLen = 10
 )
 
+// Restriction represents a possible restriction for a room.
 type Restriction struct {
 	notification notification.Notification
 
@@ -80,6 +81,7 @@ func (r *Restriction) validate() error.Errors {
 	return nil
 }
 
+// NewRestriction returns a new Restriction instance.
 func NewRestriction(uuid string, name string, description string) (*Restriction, error.Errors) {
 	room := &Restriction{
 		notification: *notification.New(util.StructName(Restriction{})),

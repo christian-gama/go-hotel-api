@@ -10,10 +10,7 @@ import (
 )
 
 const (
-	// WaitTimeToCheckin is the time that a guest must checkin in advance.
-	WaitTimeToCheckin = 1 * time.Hour
-
-	// WaitTimeToCheckout is the time that a guest must wait before checking out after checkin.
+	WaitTimeToCheckin  = 1 * time.Hour
 	WaitTimeToCheckout = 3 * time.Hour
 )
 

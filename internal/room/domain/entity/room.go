@@ -9,23 +9,12 @@ import (
 )
 
 const (
-	// MaxRoomBedCount is the maximum number of beds in a room. Double beds are counted as two.
-	MaxRoomBedCount uint8 = 6
-
-	// MinRoomBedCount is the minimum number of beds in a room. Double beds are counted as two.
-	MinRoomBedCount uint8 = 1
-
-	// MinRoomPrice is the minimum price of a room in dollar.
-	MinRoomPrice float32 = 1.00
-
-	// MaxRoomPrice is the maximum price of a room in dollar.
-	MaxRoomPrice float32 = 999.99
-
-	// MinRoomDescriptionLen is the minimum length of a room description.
-	MinRoomDescriptionLen int = 10
-
-	// MaxRoomDescriptionLen is the maximum length of a room description.
-	MaxRoomDescriptionLen int = 255
+	MaxRoomBedCount       uint8   = 6
+	MinRoomBedCount       uint8   = 1
+	MinRoomPrice          float32 = 1.00
+	MaxRoomPrice          float32 = 999.99
+	MinRoomDescriptionLen int     = 10
+	MaxRoomDescriptionLen int     = 255
 )
 
 // Room represents a room in the hotel.
