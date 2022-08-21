@@ -16,7 +16,6 @@ type UserTestSuite struct {
 	uuid     string
 	email    string
 	password string
-	personId uint32
 }
 
 func (s *UserTestSuite) SetupTest() {
@@ -26,14 +25,14 @@ func (s *UserTestSuite) SetupTest() {
 }
 
 func (s *UserTestSuite) TestNewUser_Success() {
-	result, err := entity.NewUser(s.uuid, s.email, s.password, s.personId)
+	result, err := entity.NewUser(s.uuid, s.email, s.password)
 
 	s.NotNil(result)
 	s.Nil(err)
 }
 
 func (s *UserTestSuite) TestNewUser_UuidEmptyError() {
-	result, err := entity.NewUser("", s.email, s.password, s.personId)
+	result, err := entity.NewUser("", s.email, s.password)
 
 	s.Nil(result)
 	s.Equal(error.InvalidArgument, err[0].Code)
@@ -41,7 +40,7 @@ func (s *UserTestSuite) TestNewUser_UuidEmptyError() {
 }
 
 func (s *UserTestSuite) TestNewUser_EmailEmptyError() {
-	result, err := entity.NewUser(s.uuid, "", s.password, s.personId)
+	result, err := entity.NewUser(s.uuid, "", s.password)
 
 	s.Nil(result)
 	s.Equal(error.InvalidArgument, err[0].Code)
@@ -51,7 +50,7 @@ func (s *UserTestSuite) TestNewUser_EmailEmptyError() {
 func (s *UserTestSuite) TestNewUser_MinPasswordLenError() {
 	password := strings.Repeat("a", entity.MinUserPasswordLen-1)
 
-	result, err := entity.NewUser(s.uuid, s.email, password, s.personId)
+	result, err := entity.NewUser(s.uuid, s.email, password)
 
 	s.Nil(result)
 	s.Equal(error.InvalidArgument, err[0].Code)
@@ -61,7 +60,7 @@ func (s *UserTestSuite) TestNewUser_MinPasswordLenError() {
 func (s *UserTestSuite) TestNewUser_MaxPasswordLenError() {
 	password := strings.Repeat("a", entity.MaxUserPasswordLen+1)
 
-	result, err := entity.NewUser(s.uuid, s.email, password, s.personId)
+	result, err := entity.NewUser(s.uuid, s.email, password)
 
 	s.Nil(result)
 	s.Equal(error.InvalidArgument, err[0].Code)

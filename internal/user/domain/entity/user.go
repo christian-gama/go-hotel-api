@@ -19,7 +19,6 @@ type User struct {
 	UUID     string `json:"uuid"`
 	Email    string `json:"email"`
 	Password string `json:"-"`
-	PersonId uint32 `json:"personId"`
 }
 
 func (u *User) validate() error.Errors {
@@ -70,14 +69,13 @@ func (u *User) validate() error.Errors {
 	return nil
 }
 
-func NewUser(uuid, email, password string, personId uint32) (*User, error.Errors) {
+func NewUser(uuid, email, password string) (*User, error.Errors) {
 	user := &User{
 		notification: notification.New(util.StructName(User{})),
 
 		UUID:     uuid,
 		Email:    email,
 		Password: password,
-		PersonId: personId,
 	}
 
 	if err := user.validate(); len(err) > 0 {
