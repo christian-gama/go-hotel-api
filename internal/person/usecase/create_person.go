@@ -14,7 +14,6 @@ type (
 		LastName  string `json:"lastName"`
 		Phone     string `json:"phone"`
 		Ssn       string `json:"ssn"`
-		UserId    uint32 `json:"userId"`
 		Street    string `json:"street"`
 		City      string `json:"city"`
 		State     string `json:"state"`
@@ -60,7 +59,6 @@ func (c *createPersonImpl) Handle(input *CreatePersonInput) (*entity.Person, err
 		input.Phone,
 		input.Ssn,
 		false,
-		input.UserId,
 		address,
 	)
 	if err != nil {

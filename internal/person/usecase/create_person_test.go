@@ -33,7 +33,6 @@ func (s *CreatePersonTestSuite) SetupTest() {
 		LastName:  "last name",
 		Phone:     "12345678901",
 		Ssn:       "123456789",
-		UserId:    1,
 		Street:    "street",
 		City:      "city",
 		State:     "state",

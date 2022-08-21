@@ -28,7 +28,6 @@ type Person struct {
 	Phone     string   `json:"phone"`
 	Ssn       string   `json:"ssn"`
 	IsActive  bool     `json:"isActive"`
-	UserId    uint32   `json:"userId"`
 	Address   *Address `json:"address"`
 }
 
@@ -150,7 +149,6 @@ func NewPerson(
 	phone string,
 	ssn string,
 	isActive bool,
-	userId uint32,
 	address *Address,
 ) (*Person, error.Errors) {
 	person := &Person{
@@ -162,7 +160,6 @@ func NewPerson(
 		Phone:     phone,
 		Ssn:       ssn,
 		IsActive:  isActive,
-		UserId:    userId,
 		Address:   address,
 	}
 

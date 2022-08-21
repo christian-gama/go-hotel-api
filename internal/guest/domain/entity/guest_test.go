@@ -12,26 +12,26 @@ import (
 type GuestTestSuite struct {
 	suite.Suite
 
-	uuid     string
-	credits  float32
-	personId uint32
+	uuid    string
+	credits float32
+	userId  uint32
 }
 
 func (s *GuestTestSuite) SetupTest() {
 	s.uuid = "12345678-1234-1234-1234-123456789012"
 	s.credits = 0.0
-	s.personId = 1
+	s.userId = 1
 }
 
 func (s *GuestTestSuite) TestNewGuest_Success() {
-	result, err := entity.NewGuest(s.uuid, s.credits, s.personId)
+	result, err := entity.NewGuest(s.uuid, s.credits, s.userId)
 
 	s.NotNil(result)
 	s.Nil(err)
 }
 
 func (s *GuestTestSuite) TestNewGuest_UuidEmptyError() {
-	result, err := entity.NewGuest("", s.credits, s.personId)
+	result, err := entity.NewGuest("", s.credits, s.userId)
 
 	s.Nil(result)
 	s.Equal(error.InvalidArgument, err[0].Code)
@@ -39,7 +39,7 @@ func (s *GuestTestSuite) TestNewGuest_UuidEmptyError() {
 }
 
 func (s *GuestTestSuite) TestNewGuest_NegativeCreditsError() {
-	result, err := entity.NewGuest(s.uuid, -1.0, s.personId)
+	result, err := entity.NewGuest(s.uuid, -1.0, s.userId)
 
 	s.Nil(result)
 	s.Equal(error.InvalidArgument, err[0].Code)
