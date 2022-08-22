@@ -118,7 +118,7 @@ func (r *Room) validate() error.Errors {
 	return nil
 }
 
-// NewRoom creates a new room. It will return an error if does not pass the validation.
+// NewRoom creates a new Room. It will return an error if does not pass the self validation.
 func NewRoom(
 	uuid string,
 	name string,

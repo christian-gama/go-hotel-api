@@ -1,5 +1,5 @@
 BEGIN;
 
-DROP TABLE IF EXISTS restriction;
+DROP TABLE IF EXISTS "restriction";
 
 COMMIT;

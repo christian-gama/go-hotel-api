@@ -47,7 +47,7 @@ func (g *Guest) validate() error.Errors {
 	return nil
 }
 
-// NewGuest creates a new guest. It will return an error if does not pass the validation.
+// NewGuest creates a new Guest. It will return an error if does not pass the self validation.
 func NewGuest(
 	uuid string,
 	credits float32,

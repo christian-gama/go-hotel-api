@@ -89,7 +89,7 @@ func (c *Checkin) validate() error.Errors {
 	return nil
 }
 
-// NewCheckin creates a new checkin. It will return an error if does not pass the validation.
+// NewCheckin creates a new Checkin. It will return an error if does not pass the self validation.
 func NewCheckin(
 	uuid string,
 	guest *Guest,

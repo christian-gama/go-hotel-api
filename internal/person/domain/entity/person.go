@@ -27,7 +27,6 @@ type Person struct {
 	LastName  string   `json:"lastName"`
 	Phone     string   `json:"phone"`
 	Ssn       string   `json:"ssn"`
-	IsActive  bool     `json:"isActive"`
 	Address   *Address `json:"address"`
 }
 
@@ -141,14 +140,13 @@ func (p *Person) validate() error.Errors {
 	return nil
 }
 
-// NewPerson returns a new Person instance.
+// NewPerson creates a new Person. It will return an error if does not pass the self validation.
 func NewPerson(
 	uuid string,
 	firstName string,
 	lastName string,
 	phone string,
 	ssn string,
-	isActive bool,
 	address *Address,
 ) (*Person, error.Errors) {
 	person := &Person{
@@ -159,7 +157,6 @@ func NewPerson(
 		LastName:  lastName,
 		Phone:     phone,
 		Ssn:       ssn,
-		IsActive:  isActive,
 		Address:   address,
 	}
 

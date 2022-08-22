@@ -17,7 +17,7 @@ const (
 	MinAddressNumberLen  = 1
 )
 
-// Address represents a person address.
+// Address represents a person's address.
 type Address struct {
 	notification *notification.Notification
 
@@ -130,7 +130,7 @@ func (a *Address) validate() error.Errors {
 	return nil
 }
 
-// NewAddress returns a new Address instance.
+// NewAddress creates a new Address. It will return an error if does not pass the self validation.
 func NewAddress(uuid string,
 	street string,
 	number string,

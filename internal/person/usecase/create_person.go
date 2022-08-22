@@ -58,7 +58,6 @@ func (c *createPersonImpl) Handle(input *CreatePersonInput) (*entity.Person, err
 		input.LastName,
 		input.Phone,
 		input.Ssn,
-		false,
 		address,
 	)
 	if err != nil {

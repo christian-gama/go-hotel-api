@@ -1,5 +1,5 @@
 BEGIN;
 
-DROP TABLE IF EXISTS room_restriction;
+DROP TABLE IF EXISTS "room_restriction";
 
 COMMIT;

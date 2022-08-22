@@ -79,7 +79,7 @@ func (r *RoomRestriction) validate() error.Errors {
 	return nil
 }
 
-// NewRoomRestriction returns a new RoomRestriction instance.
+// NewRoomRestriction creates a new RoomRestriction. It will return an error if does not pass the self validation.
 func NewRoomRestriction(
 	uuid string,
 	room *Room,

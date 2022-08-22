@@ -81,7 +81,7 @@ func (r *Restriction) validate() error.Errors {
 	return nil
 }
 
-// NewRestriction returns a new Restriction instance.
+// NewRestriction creates a new Restriction. It will return an error if does not pass the self validation.
 func NewRestriction(uuid string, name string, description string) (*Restriction, error.Errors) {
 	room := &Restriction{
 		notification: *notification.New(util.StructName(Restriction{})),

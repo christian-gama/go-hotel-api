@@ -33,14 +33,14 @@ func (s *PersonTestSuite) SetupTest() {
 }
 
 func (s *PersonTestSuite) TestNewPerson_Success() {
-	result, err := entity.NewPerson(s.uuid, s.firstName, s.lastName, s.phone, s.ssn, s.isActive, s.address)
+	result, err := entity.NewPerson(s.uuid, s.firstName, s.lastName, s.phone, s.ssn, s.address)
 
 	s.NotNil(result)
 	s.Nil(err)
 }
 
 func (s *PersonTestSuite) TestNewPerson_UuidEmptyError() {
-	result, err := entity.NewPerson("", s.firstName, s.lastName, s.phone, s.ssn, s.isActive, s.address)
+	result, err := entity.NewPerson("", s.firstName, s.lastName, s.phone, s.ssn, s.address)
 
 	s.Nil(result)
 	s.Equal(error.InvalidArgument, err[0].Code)
@@ -48,7 +48,7 @@ func (s *PersonTestSuite) TestNewPerson_UuidEmptyError() {
 }
 
 func (s *PersonTestSuite) TestNewPerson_NameEmptyError() {
-	result, err := entity.NewPerson(s.uuid, "", s.lastName, s.phone, s.ssn, s.isActive, s.address)
+	result, err := entity.NewPerson(s.uuid, "", s.lastName, s.phone, s.ssn, s.address)
 
 	s.Nil(result)
 	s.Equal(error.InvalidArgument, err[0].Code)
@@ -58,7 +58,7 @@ func (s *PersonTestSuite) TestNewPerson_NameEmptyError() {
 func (s *PersonTestSuite) TestNewPerson_MaxNameLenError() {
 	firstName := strings.Repeat("a", entity.MaxPersonNameLen+1)
 
-	result, err := entity.NewPerson(s.uuid, firstName, s.lastName, s.phone, s.ssn, s.isActive, s.address)
+	result, err := entity.NewPerson(s.uuid, firstName, s.lastName, s.phone, s.ssn, s.address)
 
 	s.Nil(result)
 	s.Equal(error.InvalidArgument, err[0].Code)
@@ -66,7 +66,7 @@ func (s *PersonTestSuite) TestNewPerson_MaxNameLenError() {
 }
 
 func (s *PersonTestSuite) TestNewPerson_LastNameEmptyError() {
-	result, err := entity.NewPerson(s.uuid, s.firstName, "", s.phone, s.ssn, s.isActive, s.address)
+	result, err := entity.NewPerson(s.uuid, s.firstName, "", s.phone, s.ssn, s.address)
 
 	s.Nil(result)
 	s.Equal(error.InvalidArgument, err[0].Code)
@@ -76,7 +76,7 @@ func (s *PersonTestSuite) TestNewPerson_LastNameEmptyError() {
 func (s *PersonTestSuite) TestNewPerson_LastNameLenError() {
 	lastName := strings.Repeat("a", entity.MaxPersonLastNameLen+1)
 
-	result, err := entity.NewPerson(s.uuid, s.firstName, lastName, s.phone, s.ssn, s.isActive, s.address)
+	result, err := entity.NewPerson(s.uuid, s.firstName, lastName, s.phone, s.ssn, s.address)
 
 	s.Nil(result)
 	s.Equal(error.InvalidArgument, err[0].Code)
@@ -84,7 +84,7 @@ func (s *PersonTestSuite) TestNewPerson_LastNameLenError() {
 }
 
 func (s *PersonTestSuite) TestNewPerson_PhoneEmptyError() {
-	result, err := entity.NewPerson(s.uuid, s.firstName, s.lastName, "", s.ssn, s.isActive, s.address)
+	result, err := entity.NewPerson(s.uuid, s.firstName, s.lastName, "", s.ssn, s.address)
 
 	s.Nil(result)
 	s.Equal(error.InvalidArgument, err[0].Code)
@@ -92,7 +92,7 @@ func (s *PersonTestSuite) TestNewPerson_PhoneEmptyError() {
 }
 
 func (s *PersonTestSuite) TestNewPerson_PhoneInvalidError() {
-	result, err := entity.NewPerson(s.uuid, s.firstName, s.lastName, "123456", s.ssn, s.isActive, s.address)
+	result, err := entity.NewPerson(s.uuid, s.firstName, s.lastName, "123456", s.ssn, s.address)
 
 	s.Nil(result)
 	s.Equal(error.InvalidArgument, err[0].Code)
@@ -100,7 +100,7 @@ func (s *PersonTestSuite) TestNewPerson_PhoneInvalidError() {
 }
 
 func (s *PersonTestSuite) TestNewPerson_SsnEmptyError() {
-	result, err := entity.NewPerson(s.uuid, s.firstName, s.lastName, s.phone, "", s.isActive, s.address)
+	result, err := entity.NewPerson(s.uuid, s.firstName, s.lastName, s.phone, "", s.address)
 
 	s.Nil(result)
 	s.Equal(error.InvalidArgument, err[0].Code)
@@ -108,7 +108,7 @@ func (s *PersonTestSuite) TestNewPerson_SsnEmptyError() {
 }
 
 func (s *PersonTestSuite) TestNewPerson_SsnInvalidError() {
-	result, err := entity.NewPerson(s.uuid, s.firstName, s.lastName, s.phone, "123456", s.isActive, s.address)
+	result, err := entity.NewPerson(s.uuid, s.firstName, s.lastName, s.phone, "123456", s.address)
 
 	s.Nil(result)
 	s.Equal(error.InvalidArgument, err[0].Code)
@@ -116,7 +116,7 @@ func (s *PersonTestSuite) TestNewPerson_SsnInvalidError() {
 }
 
 func (s *PersonTestSuite) TestNewPerson_AddressNilError() {
-	result, err := entity.NewPerson(s.uuid, s.firstName, s.lastName, s.phone, s.ssn, s.isActive, nil)
+	result, err := entity.NewPerson(s.uuid, s.firstName, s.lastName, s.phone, s.ssn, nil)
 
 	s.Nil(result)
 	s.Equal(error.InvalidArgument, err[0].Code)

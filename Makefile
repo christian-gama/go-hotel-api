@@ -66,7 +66,7 @@ migrate-%: cmd-exists-docker
 		echo "Error: expected [up|down|force]"; \
 		exit 1; \
 	fi;
-	@ENV_FILE=.env.dev MIGRATION=$(*) make migrate
+	@ENV_FILE=.env.dev MIGRATION=$(*) $(MAKE) migrate
 
 
 migrate: cmd-exists-docker
