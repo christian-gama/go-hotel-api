@@ -3,9 +3,9 @@ package entity
 import (
 	"time"
 
-	"github.com/christian-gama/go-booking-api/internal/shared/domain/error"
-	"github.com/christian-gama/go-booking-api/internal/shared/domain/notification"
-	"github.com/christian-gama/go-booking-api/internal/shared/util"
+	"github.com/christian-gama/go-hotel-api/internal/shared/domain/error"
+	"github.com/christian-gama/go-hotel-api/internal/shared/domain/notification"
+	"github.com/christian-gama/go-hotel-api/internal/shared/util"
 )
 
 // RoomRestriction is a combination of a room and a restriction. It is used to set the availability of a room.

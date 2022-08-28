@@ -4,9 +4,9 @@ import (
 	"errors"
 	"testing"
 
-	"github.com/christian-gama/go-booking-api/internal/shared/domain/error"
-	"github.com/christian-gama/go-booking-api/internal/shared/infra/repo/psql"
-	"github.com/christian-gama/go-booking-api/test"
+	"github.com/christian-gama/go-hotel-api/internal/shared/domain/error"
+	"github.com/christian-gama/go-hotel-api/internal/shared/infra/repo/psql"
+	"github.com/christian-gama/go-hotel-api/test"
 	"github.com/stretchr/testify/suite"
 )
 

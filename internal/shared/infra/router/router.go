@@ -5,8 +5,8 @@ import (
 	"fmt"
 	"net/http"
 
-	"github.com/christian-gama/go-booking-api/internal/shared/presenter/controller"
-	"github.com/christian-gama/go-booking-api/internal/shared/presenter/http/request"
+	"github.com/christian-gama/go-hotel-api/internal/shared/presenter/controller"
+	"github.com/christian-gama/go-hotel-api/internal/shared/presenter/http/request"
 	"github.com/go-chi/chi/v5"
 )
 

@@ -1,10 +1,10 @@
 package usecase
 
 import (
-	"github.com/christian-gama/go-booking-api/internal/person/domain/entity"
-	"github.com/christian-gama/go-booking-api/internal/person/domain/repo"
-	"github.com/christian-gama/go-booking-api/internal/shared/domain/error"
-	"github.com/christian-gama/go-booking-api/internal/shared/domain/uuid"
+	"github.com/christian-gama/go-hotel-api/internal/person/domain/entity"
+	"github.com/christian-gama/go-hotel-api/internal/person/domain/repo"
+	"github.com/christian-gama/go-hotel-api/internal/shared/domain/error"
+	"github.com/christian-gama/go-hotel-api/internal/shared/domain/uuid"
 )
 
 type (

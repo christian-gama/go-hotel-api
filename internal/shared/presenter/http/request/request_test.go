@@ -7,9 +7,9 @@ import (
 	"net/url"
 	"testing"
 
-	"github.com/christian-gama/go-booking-api/internal/shared/presenter/http/request"
-	"github.com/christian-gama/go-booking-api/mocks"
-	"github.com/christian-gama/go-booking-api/test"
+	"github.com/christian-gama/go-hotel-api/internal/shared/presenter/http/request"
+	"github.com/christian-gama/go-hotel-api/mocks"
+	"github.com/christian-gama/go-hotel-api/test"
 	"github.com/stretchr/testify/mock"
 	"github.com/stretchr/testify/suite"
 )

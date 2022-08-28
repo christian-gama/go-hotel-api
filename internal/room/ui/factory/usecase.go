@@ -1,8 +1,8 @@
 package factory
 
 import (
-	"github.com/christian-gama/go-booking-api/internal/room/usecase"
-	sharedfty "github.com/christian-gama/go-booking-api/internal/shared/ui/factory"
+	"github.com/christian-gama/go-hotel-api/internal/room/usecase"
+	sharedfty "github.com/christian-gama/go-hotel-api/internal/shared/ui/factory"
 )
 
 // ListRoomsUsecase is a factory function that returns a new room usecase.

@@ -1,7 +1,7 @@
 package factory
 
 import (
-	"github.com/christian-gama/go-booking-api/internal/shared/infra/config"
+	"github.com/christian-gama/go-hotel-api/internal/shared/infra/config"
 )
 
 func init() {

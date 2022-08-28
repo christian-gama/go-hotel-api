@@ -1,8 +1,8 @@
 package factory
 
 import (
-	"github.com/christian-gama/go-booking-api/internal/room/presenter/controller"
-	sharedctrl "github.com/christian-gama/go-booking-api/internal/shared/presenter/controller"
+	"github.com/christian-gama/go-hotel-api/internal/room/presenter/controller"
+	sharedctrl "github.com/christian-gama/go-hotel-api/internal/shared/presenter/controller"
 )
 
 // CreateRoomController is a factory function that returns a new room controller.

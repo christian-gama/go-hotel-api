@@ -3,7 +3,7 @@ package main
 import (
 	"os"
 
-	"github.com/christian-gama/go-booking-api/internal"
+	"github.com/christian-gama/go-hotel-api/internal"
 	_ "github.com/jackc/pgconn"
 	_ "github.com/jackc/pgx/v4"
 	_ "github.com/jackc/pgx/v4/stdlib"

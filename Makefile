@@ -6,7 +6,7 @@ BUILD_DIR ?= $(GENERATED_DIR)/build
 MAKE = make --no-print-directory
 
 # WORKDIR is used to set the working directory for Dockerfile builds.
-export WORKDIR=/go/src/github.com/christian-gama/go-booking-api
+export WORKDIR=/go/src/github.com/christian-gama/go-hotel-api
 export APP_NAME = $(shell basename $(PWD))
 
 -include $(ENV_FILE)

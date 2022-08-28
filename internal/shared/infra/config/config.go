@@ -5,7 +5,7 @@ import (
 	"os"
 	"strings"
 
-	"github.com/christian-gama/go-booking-api/internal/shared/util"
+	"github.com/christian-gama/go-hotel-api/internal/shared/util"
 	"github.com/joho/godotenv"
 )
 

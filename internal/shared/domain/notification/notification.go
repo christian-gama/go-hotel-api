@@ -3,7 +3,7 @@ package notification
 import (
 	"strings"
 
-	"github.com/christian-gama/go-booking-api/internal/shared/domain/error"
+	"github.com/christian-gama/go-hotel-api/internal/shared/domain/error"
 )
 
 // Error is a notification error.

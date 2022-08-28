@@ -1,4 +1,4 @@
-# Welcome to GoBooking (UNDER CONSTRUCTION!!)
+# Welcome to GoHotel (UNDER CONSTRUCTION!!)
 ## A Modular Monlolith REST API made with Go!
 This is my first Go personal project and I hope you enjoy it. This project is a REST API to manage a fictional hotel. I tried to follow the best practices of modern software development, such as: Test-Driven-Development, Domain-Driven-Design, Clean Architecture, Dependency Injection, REST and more.
 

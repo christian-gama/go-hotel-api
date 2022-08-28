@@ -1,10 +1,10 @@
 package controller
 
 import (
-	"github.com/christian-gama/go-booking-api/internal/room/usecase"
-	"github.com/christian-gama/go-booking-api/internal/shared/presenter/controller"
-	"github.com/christian-gama/go-booking-api/internal/shared/presenter/http/request"
-	"github.com/christian-gama/go-booking-api/internal/shared/presenter/http/response"
+	"github.com/christian-gama/go-hotel-api/internal/room/usecase"
+	"github.com/christian-gama/go-hotel-api/internal/shared/presenter/controller"
+	"github.com/christian-gama/go-hotel-api/internal/shared/presenter/http/request"
+	"github.com/christian-gama/go-hotel-api/internal/shared/presenter/http/response"
 )
 
 type listRooms struct {

@@ -5,11 +5,11 @@ import (
 	"log"
 	"net/http"
 
-	roomRoutes "github.com/christian-gama/go-booking-api/internal/room/ui/routes"
-	"github.com/christian-gama/go-booking-api/internal/shared/infra/config"
-	"github.com/christian-gama/go-booking-api/internal/shared/infra/router"
-	"github.com/christian-gama/go-booking-api/internal/shared/ui/factory"
-	sharedRoutes "github.com/christian-gama/go-booking-api/internal/shared/ui/routes"
+	roomRoutes "github.com/christian-gama/go-hotel-api/internal/room/ui/routes"
+	"github.com/christian-gama/go-hotel-api/internal/shared/infra/config"
+	"github.com/christian-gama/go-hotel-api/internal/shared/infra/router"
+	"github.com/christian-gama/go-hotel-api/internal/shared/ui/factory"
+	sharedRoutes "github.com/christian-gama/go-hotel-api/internal/shared/ui/routes"
 )
 
 // Bootstrap is the main function that starts the application.

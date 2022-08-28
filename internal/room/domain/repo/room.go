@@ -1,8 +1,8 @@
 package repo
 
 import (
-	"github.com/christian-gama/go-booking-api/internal/room/domain/entity"
-	"github.com/christian-gama/go-booking-api/internal/shared/domain/error"
+	"github.com/christian-gama/go-hotel-api/internal/room/domain/entity"
+	"github.com/christian-gama/go-hotel-api/internal/shared/domain/error"
 )
 
 type (

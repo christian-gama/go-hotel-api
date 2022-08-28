@@ -3,7 +3,7 @@
 package mocks
 
 import (
-	router "github.com/christian-gama/go-booking-api/internal/shared/infra/router"
+	router "github.com/christian-gama/go-hotel-api/internal/shared/infra/router"
 	mock "github.com/stretchr/testify/mock"
 )
 

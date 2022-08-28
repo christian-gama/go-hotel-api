@@ -1,6 +1,6 @@
 package response
 
-import "github.com/christian-gama/go-booking-api/internal/shared/domain/error"
+import "github.com/christian-gama/go-hotel-api/internal/shared/domain/error"
 
 // Response represents the response of the HTTP request.
 type Response struct {

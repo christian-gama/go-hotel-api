@@ -1,8 +1,8 @@
 package routes
 
 import (
-	"github.com/christian-gama/go-booking-api/internal/shared/infra/router"
-	"github.com/christian-gama/go-booking-api/internal/shared/ui/factory"
+	"github.com/christian-gama/go-hotel-api/internal/shared/infra/router"
+	"github.com/christian-gama/go-hotel-api/internal/shared/ui/factory"
 )
 
 type Routes struct{}

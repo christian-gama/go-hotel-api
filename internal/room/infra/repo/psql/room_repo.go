@@ -4,12 +4,12 @@ import (
 	"context"
 	"database/sql"
 
-	"github.com/christian-gama/go-booking-api/internal/room/domain/entity"
-	"github.com/christian-gama/go-booking-api/internal/room/domain/repo"
-	"github.com/christian-gama/go-booking-api/internal/shared/domain/error"
-	"github.com/christian-gama/go-booking-api/internal/shared/infra/config"
-	"github.com/christian-gama/go-booking-api/internal/shared/infra/repo/psql"
-	"github.com/christian-gama/go-booking-api/internal/shared/util"
+	"github.com/christian-gama/go-hotel-api/internal/room/domain/entity"
+	"github.com/christian-gama/go-hotel-api/internal/room/domain/repo"
+	"github.com/christian-gama/go-hotel-api/internal/shared/domain/error"
+	"github.com/christian-gama/go-hotel-api/internal/shared/infra/config"
+	"github.com/christian-gama/go-hotel-api/internal/shared/infra/repo/psql"
+	"github.com/christian-gama/go-hotel-api/internal/shared/util"
 )
 
 type RoomRepo interface {

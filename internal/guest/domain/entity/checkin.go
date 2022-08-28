@@ -4,9 +4,9 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/christian-gama/go-booking-api/internal/shared/domain/error"
-	"github.com/christian-gama/go-booking-api/internal/shared/domain/notification"
-	"github.com/christian-gama/go-booking-api/internal/shared/util"
+	"github.com/christian-gama/go-hotel-api/internal/shared/domain/error"
+	"github.com/christian-gama/go-hotel-api/internal/shared/domain/notification"
+	"github.com/christian-gama/go-hotel-api/internal/shared/util"
 )
 
 const (

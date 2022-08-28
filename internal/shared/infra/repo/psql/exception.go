@@ -3,7 +3,7 @@ package psql
 import (
 	"strings"
 
-	apperror "github.com/christian-gama/go-booking-api/internal/shared/domain/error"
+	apperror "github.com/christian-gama/go-hotel-api/internal/shared/domain/error"
 )
 
 type ErrorCode string

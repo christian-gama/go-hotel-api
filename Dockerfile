@@ -24,7 +24,7 @@ ENV GOPATH $HOME/go
 RUN curl -sSL "https://github.com/gotestyourself/gotestsum/releases/download/v1.8.1/gotestsum_1.8.1_linux_amd64.tar.gz" \
     | tar -xz -C /usr/local/go/bin gotestsum 
 
-FROM base AS gobooking
+FROM base AS gohotel
 ARG WORKDIR
 WORKDIR ${WORKDIR} 
 COPY ./go.mod ./go.mod ./

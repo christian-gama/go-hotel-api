@@ -1,8 +1,8 @@
 package factory
 
 import (
-	"github.com/christian-gama/go-booking-api/internal/shared/infra/router"
-	"github.com/christian-gama/go-booking-api/internal/shared/presenter/http/request"
+	"github.com/christian-gama/go-hotel-api/internal/shared/infra/router"
+	"github.com/christian-gama/go-hotel-api/internal/shared/presenter/http/request"
 	"github.com/go-chi/chi/v5"
 )
 

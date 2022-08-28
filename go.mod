@@ -1,4 +1,4 @@
-module github.com/christian-gama/go-booking-api
+module github.com/christian-gama/go-hotel-api
 
 go 1.19
 
